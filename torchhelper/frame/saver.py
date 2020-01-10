@@ -68,7 +68,7 @@ class Saver:
         with open(self._infofn, "w", encoding="utf-8") as w:
             json.dump(info, w)
 
-    def _build_path(self, prefix, epoch: int):
+    def _build_model_path(self, prefix, epoch: int):
         i = 0
         path = os.path.join(self._save_dir, "{}.ckpth.tar.{}{:05d}".format(prefix, i, epoch))
 
@@ -114,6 +114,10 @@ class Saver:
         path = os.path.join(self._save_dir, "{}.pth".format(fn_prefix))
         return torch.load(path)
 
+    def _is_info(self,v):
+        return any([isinstance(v,i) for i in {int,str,float}])
+
+
     def checkpoint(self, epoch, ckpt_dict):
         '''
         保存一个断点，保存路径为建立类时传入的文件夹下的路径
@@ -121,13 +125,24 @@ class Saver:
         :param ckpt_dict:  与torch.save() 方法传入字典类型时的要求一样
         :return: 断点文件的路径
         '''
-        ckpt_dict["_saver_epoch"] = epoch
-        ckpt_dict["_saver_pointer"] = self.pointers
-        ckpt_fn = self._build_path("model", epoch)
+
+
         if len(self.pointers) == 0:
             pointer = 1
         else:
             pointer = max(self.pointers) + 1
+
+        ckpt_dict["_saver_epoch"] = epoch
+        ckpt_dict["_saver_pointer"] = pointer
+
+        ckpt_fn = self._build_model_path("model", epoch)
+        ckpt_info_fn = "{}.json".format(ckpt_fn)
+
+        info_dict = {k: v for k, v in ckpt_dict.items() if self._is_info(v)}
+
+        with open(ckpt_info_fn, "w", encoding="utf-8") as w:
+            json.dump(info_dict, w, indent=2)
+
         self._info[pointer] = ckpt_fn
         self._info["pointers"].append(pointer)
         torch.save(ckpt_dict, ckpt_fn)

@@ -91,14 +91,6 @@ class LogParam:
     def float(self, key, acc=4):
         self.format_dict[key] = "{{:.{}f}}".format(acc)
 
-    # @property
-    # def info(self):
-    #     return self._infos
-    #
-    # @info.setter
-    # def info(self,content):
-    #     self._infos.append(content)
-
     @property
     def params(self):
         res = OrderedDict()
