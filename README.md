@@ -1,16 +1,16 @@
 # TorchHelper
-写的一个torch的帮助类，帮助使用者专注于训练逻辑，避免其他重复性劳动。
+写的一个torch的帮助类，帮助使用者专注于训练逻辑，避免其他重复性劳动。建议有一定torch使用经验者用。
 
 > 先定一个小目标：torch界的kears？
 
-文档：[document](/docs/build/html/index.html)（持续更新中）
-
 ### introduction
 
-install
+#### install
 ```bash
 pip install torchhelper
 ```
+#### use
+全部的代码位于[examples/normal.py](examples/templete.py)
 
 import:
 ```python
@@ -107,11 +107,14 @@ if __name__ == '__main__':
                          monitor="loss",
                          max_to_keep=3,
                          mode="min")
-    sv.auto_hook(trainer)
+    sv.auto_hook(trainer) # 根据callback类中有的on_xxx_begin()/_end()方法去寻找trainer中相应的方法绑定
     
-    # 输出所有函数的执行流程的回调类
+    # 输出所有函数的执行流程的回调类，注意此时的调用方法为 reverse_hook（根据trainer有哪些方法，依次hook callback）
     # dbg = DebugCallback()
     # dbg.reverse_hook(trainer)
+    
+    # 如果要单独绑定trainer的某个方法，则通过以下方式：
+    # trainer.add_callback(trainer.eval,callback=...)
 
     trainer.train()
 ```
