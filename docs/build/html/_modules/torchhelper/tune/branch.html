@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>torchhelper.tune.branch &mdash; TorchHelper https://github.com/sailist/TorchHelper/releases documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> TorchHelper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">TorchHelper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>torchhelper.tune.branch</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for torchhelper.tune.branch</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">   Copyright 2020 Sailist</span>
+
+<span class="sd">   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="sd">   you may not use this file except in compliance with the License.</span>
+<span class="sd">   You may obtain a copy of the License at</span>
+
+<span class="sd">     http://www.apache.org/licenses/LICENSE-2.0</span>
+
+<span class="sd">   Unless required by applicable law or agreed to in writing, software</span>
+<span class="sd">   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="sd">   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="sd">   See the License for the specific language governing permissions and</span>
+<span class="sd">   limitations under the License.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span><span class="p">,</span> <span class="n">Iterable</span>
+
+<div class="viewcode-block" id="PseudoVar"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.PseudoVar">[docs]</a><span class="k">class</span> <span class="nc">PseudoVar</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span></div>
+
+<div class="viewcode-block" id="VarDict"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.VarDict">[docs]</a><span class="k">class</span> <span class="nc">VarDict</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="n">item</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="FuncGraph"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.FuncGraph">[docs]</a><span class="k">class</span> <span class="nc">FuncGraph</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    模仿TensorFlow的静态图构造出的静态执行方法的类</span>
+
+<span class="sd">    ::</span>
+<span class="sd">        def add(a, b):</span>
+<span class="sd">        print(&quot;add&quot;)</span>
+<span class="sd">        return a + b</span>
+
+<span class="sd">        def multi(a, b):</span>
+<span class="sd">            print(&quot;multi&quot;)</span>
+<span class="sd">            return a * b</span>
+
+<span class="sd">        def swap(a, b):</span>
+<span class="sd">            print(&quot;swap&quot;)</span>
+<span class="sd">            return b, a</span>
+
+<span class="sd">        func = FuncGraph()</span>
+<span class="sd">        p = PseudoVar()</span>
+<span class="sd">        func.add_func_node(add, [p.a, p.b], to=[p.c])</span>
+<span class="sd">        func.add_func_node(multi, [p.a, p.c], to=[p.d])</span>
+<span class="sd">        func.add_func_node(swap, [p.a, p.b], to=[p.sa, p.sb])</span>
+<span class="sd">        func.build([&quot;d&quot;,&quot;sa&quot;])</span>
+<span class="sd">        print(func.run({&quot;a&quot;: 2, &quot;b&quot;: 4}))</span>
+
+<span class="sd">        func.rebuild([&quot;c&quot;])</span>
+<span class="sd">        print(func.run({&quot;a&quot;: 2, &quot;b&quot;: 4}))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DATA_BY</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">DATA_TO</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">FUNC_SUSP</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">FUNC_EXEC</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">need_variables</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cacu_data</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FuncGraph.add_func_node"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.FuncGraph.add_func_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_func_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">func_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">        :param func:</span>
+<span class="sd">        :param by:</span>
+<span class="sd">        :param to:</span>
+<span class="sd">        :param replace:</span>
+<span class="sd">        :param args: 如果最后的需求变量中需要该函数的执行，但是该函数确实不想执行，那么该</span>
+<span class="sd">        :param func_name:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">func_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">func_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">,</span> <span class="n">func_name</span><span class="p">),</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">func_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">),</span> <span class="s2">&quot;function name must be not started with &#39;__&#39;&quot;</span>
+        <span class="k">while</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span><span class="p">:</span>
+            <span class="n">func_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
+            <span class="n">by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span>
+            <span class="n">to</span><span class="o">=</span><span class="n">to</span><span class="p">,</span>
+            <span class="n">force_disable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">replace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">exec</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">func_name</span></div>
+
+    <span class="k">def</span> <span class="nf">_add_data_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">is_by</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">dict</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;by&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;func&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="n">is_by</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;by&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;to&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">_bind_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">func_name</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">,</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;func&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_update_data_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">_enable_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;exec&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;by&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label_cacu_data</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">var_name</span><span class="p">][</span><span class="s2">&quot;func&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_enable_func</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_label_cacu_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cacu_data</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_by_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func_name</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span><span class="p">[</span><span class="n">func_name</span><span class="p">][</span><span class="s2">&quot;by&quot;</span><span class="p">]:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;by&quot;</span><span class="p">],</span> <span class="n">k</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+<div class="viewcode-block" id="FuncGraph.force_disable"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.FuncGraph.force_disable">[docs]</a>    <span class="k">def</span> <span class="nf">force_disable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func_flag</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span><span class="p">[</span><span class="n">func_flag</span><span class="p">][</span><span class="s2">&quot;force_disable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span><span class="p">[</span><span class="n">func_flag</span><span class="p">][</span><span class="s2">&quot;replace&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">replace</span></div>
+
+<div class="viewcode-block" id="FuncGraph.build"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.FuncGraph.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">need_variables</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;by&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_data_node</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;replace&quot;</span><span class="p">],</span> <span class="n">is_by</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_data_node</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;replace&quot;</span><span class="p">],</span> <span class="n">is_by</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bind_func</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">need_variables</span> <span class="o">=</span> <span class="n">need_variables</span>
+        <span class="k">for</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">need_variables</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">,</span> <span class="s2">&quot;variable &#39;</span><span class="si">{}</span><span class="s2">&#39; not be assigned, please check the code.&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label_cacu_data</span><span class="p">(</span><span class="n">var_name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="p">[</span><span class="n">var_name</span><span class="p">][</span><span class="s2">&quot;func&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_enable_func</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FuncGraph.rebuild"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.FuncGraph.rebuild">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">need_variables</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">need_variables</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_node</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cacu_data</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">v</span><span class="p">[</span><span class="s2">&quot;exec&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">need_variables</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FuncGraph.run"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.FuncGraph.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feed_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VarDict</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">VarDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">feed_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_data_node</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_node</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;exec&quot;</span><span class="p">]:</span>
+                <span class="k">continue</span>
+
+            <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_by_list</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">func_res</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;func&quot;</span><span class="p">](</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">func_res</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+                <span class="n">func_res</span> <span class="o">=</span> <span class="p">[</span><span class="n">func_res</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">to_n</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">],</span> <span class="n">func_res</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_update_data_node</span><span class="p">(</span><span class="n">to_n</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">to_n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">need_variables</span><span class="p">:</span>
+                    <span class="n">res</span><span class="p">[</span><span class="n">to_n</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># elif to_n in self.cacu_data:</span>
+                    <span class="n">mid_res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;__mid_var_res&quot;</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="n">mid_res</span><span class="p">[</span><span class="n">to_n</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+
+        <span class="k">return</span> <span class="n">res</span></div></div>
+
+
+<div class="viewcode-block" id="Branch"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.Branch">[docs]</a><span class="k">class</span> <span class="nc">Branch</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    基于FuncGraph的更简单的使用类，用于更好的控制执行逻辑::</span>
+
+<span class="sd">        def add(a, b):</span>
+<span class="sd">            print(&quot;add&quot;)</span>
+<span class="sd">            return a + b</span>
+
+<span class="sd">        def multi(a, b):</span>
+<span class="sd">            print(&quot;multi&quot;)</span>
+<span class="sd">            return a * b</span>
+
+<span class="sd">        def swap(a, b):</span>
+<span class="sd">            print(&quot;swap&quot;)</span>
+<span class="sd">            return b, a</span>
+
+<span class="sd">        p = PseudoVar()</span>
+<span class="sd">        br = Branch()</span>
+
+<span class="sd">        br.add_node = add, (p.a, p.b), (p.c)</span>
+<span class="sd">        br.multi = multi, (p.a, p.c), (p.d)</span>
+<span class="sd">        br.swap = swap, (p.a, p.b), (p.sa, p.sb)</span>
+
+<span class="sd">        res = br.run_for(p.d, p.sa, a=1, b=2)</span>
+<span class="sd">        print(res,type(res))</span>
+<span class="sd">        print(res.d)</span>
+
+<span class="sd">        # or</span>
+<span class="sd">        br.add_needs(p.d,p.sa)</span>
+<span class="sd">        br.run(a=1,b=2)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">FuncGraph</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">need_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;init&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">assert</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">5</span>
+        <span class="n">force_dis</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">replace</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">func</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">force_dis</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">func</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">to</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">func</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">force_dis</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">func</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">force_dis</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="n">func_flag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_func_node</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">force_dis</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">force_disable</span><span class="p">(</span><span class="n">func_flag</span><span class="o">=</span><span class="n">func_flag</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="n">replace</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Branch.add_needs"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.Branch.add_needs">[docs]</a>    <span class="k">def</span> <span class="nf">add_needs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">need_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Branch.clear_needs"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.Branch.clear_needs">[docs]</a>    <span class="k">def</span> <span class="nf">clear_needs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">need_set</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Branch.build"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.Branch.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">rebuild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">need_set</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Branch.run"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.Branch.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Branch.run_for"><a class="viewcode-back" href="../../../torchhelper.tune.html#torchhelper.tune.branch.Branch.run_for">[docs]</a>    <span class="k">def</span> <span class="nf">run_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VarDict</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">rebuild</span><span class="p">(</span><span class="n">need_variables</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">feed_dict</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">to</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">force_dis</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">by</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">force_dis</span><span class="p">,</span> <span class="n">replace</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, sailist
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1694 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>torchhelper.frame package &mdash; TorchHelper https://github.com/sailist/TorchHelper/releases documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> TorchHelper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">torchhelper.frame package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-torchhelper.frame.callbacks">torchhelper.frame.callbacks module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.frame.databundler">torchhelper.frame.databundler module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.frame.logwrapper">torchhelper.frame.logwrapper module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.frame.parameter">torchhelper.frame.parameter module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.frame.saver">torchhelper.frame.saver module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.frame.trainer">torchhelper.frame.trainer module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.frame.trainerv2">torchhelper.frame.trainerv2 module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.frame">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TorchHelper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>torchhelper.frame package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/torchhelper.frame.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="torchhelper-frame-package">
+<h1>torchhelper.frame package<a class="headerlink" href="#torchhelper-frame-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-torchhelper.frame.callbacks">
+<span id="torchhelper-frame-callbacks-module"></span><h2>torchhelper.frame.callbacks module<a class="headerlink" href="#module-torchhelper.frame.callbacks" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<blockquote>
+<div><dl>
+<dt>温馨提示：</dt><dd><p>抵制不良代码，拒绝乱用代码。</p>
+<p>注意自我保护，谨防上当受骗。</p>
+<p>适当编程益脑，沉迷编程伤身。</p>
+<p>合理安排时间，享受健康生活！</p>
+</dd>
+</dl>
+<p>用于Trainer 执行过程中各方法的回调，</p>
+</div></blockquote>
+<dl class="class">
+<dt id="torchhelper.frame.callbacks.Callback">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.callbacks.</code><code class="sig-name descname">Callback</code><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>基类</p>
+<p>除了基本的回调接口外，还实现了`auto_hook`和`reverse_hook`两个方法，
+用来将callback实现的方法绑定到trainer和将trainer所有可回调的函数绑定到callback中。</p>
+<p>因为绑定的方法只会调用on_begin()和on_end()，因此对于具体的方法需要进行判断进行方法的分流，或者不使用自动绑定，
+而是主动用trainer绑定:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">add_callback</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">cb</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Callback.auto_hook">
+<code class="sig-name descname">auto_hook</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Callback.auto_hook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Callback.auto_hook" title="Permalink to this definition">¶</a></dt>
+<dd><p>自动将自己已有的on_func_begin/on_func_end方法绑定</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Callback.on_begin">
+<code class="sig-name descname">on_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Callback.on_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Callback.on_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Callback.on_end">
+<code class="sig-name descname">on_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Callback.on_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Callback.on_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Callback.on_hook_failed">
+<code class="sig-name descname">on_hook_failed</code><span class="sig-paren">(</span><em class="sig-param">trainer</em>, <em class="sig-param">func</em>, <em class="sig-param">message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Callback.on_hook_failed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Callback.on_hook_failed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Callback.on_hooked">
+<code class="sig-name descname">on_hooked</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Callback.on_hooked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Callback.on_hooked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="torchhelper.frame.callbacks.Callback.priority">
+<code class="sig-name descname">priority</code><em class="property"> = 0</em><a class="headerlink" href="#torchhelper.frame.callbacks.Callback.priority" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Callback.reverse_hook">
+<code class="sig-name descname">reverse_hook</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Callback.reverse_hook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Callback.reverse_hook" title="Permalink to this definition">¶</a></dt>
+<dd><p>将trainer 的所有可绑定的方法进行绑定</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.callbacks.DebugCallback">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.callbacks.</code><code class="sig-name descname">DebugCallback</code><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#DebugCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.DebugCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.callbacks.DispatchCallback" title="torchhelper.frame.callbacks.DispatchCallback"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.callbacks.DispatchCallback</span></code></a></p>
+<p>用于debug的回调函数，会绑定所有Trainer中能绑定的函数，并进行输出:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dbg</span> <span class="o">=</span> <span class="n">DebugCallback</span><span class="p">()</span>
+<span class="n">dbg</span><span class="o">.</span><span class="n">reverse_hook</span><span class="p">(</span><span class="n">trainer</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.DebugCallback.on_begin">
+<code class="sig-name descname">on_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#DebugCallback.on_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.DebugCallback.on_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.DebugCallback.on_end">
+<code class="sig-name descname">on_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#DebugCallback.on_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.DebugCallback.on_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.DebugCallback.on_hook_failed">
+<code class="sig-name descname">on_hook_failed</code><span class="sig-paren">(</span><em class="sig-param">trainer</em>, <em class="sig-param">func</em>, <em class="sig-param">message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#DebugCallback.on_hook_failed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.DebugCallback.on_hook_failed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.DebugCallback.on_hooked">
+<code class="sig-name descname">on_hooked</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#DebugCallback.on_hooked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.DebugCallback.on_hooked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.callbacks.DispatchCallback">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.callbacks.</code><code class="sig-name descname">DispatchCallback</code><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#DispatchCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.DispatchCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.callbacks.Callback" title="torchhelper.frame.callbacks.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.callbacks.Callback</span></code></a></p>
+<p>实现了任意函数的回调，子类实现的任意以`on_xxx_end`命名的函数，只要能够和Trainer中的`xxx`对应，都能够完成回调。</p>
+<p>可以参考:class DebugCallback</p>
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.DispatchCallback.on_begin">
+<code class="sig-name descname">on_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#DispatchCallback.on_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.DispatchCallback.on_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.DispatchCallback.on_end">
+<code class="sig-name descname">on_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#DispatchCallback.on_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.DispatchCallback.on_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.callbacks.DrawCallBack">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.callbacks.</code><code class="sig-name descname">DrawCallBack</code><span class="sig-paren">(</span><em class="sig-param">base_dir</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#DrawCallBack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.DrawCallBack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.callbacks.Callback" title="torchhelper.frame.callbacks.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.callbacks.Callback</span></code></a></p>
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.DrawCallBack.on_hooked">
+<code class="sig-name descname">on_hooked</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#DrawCallBack.on_hooked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.DrawCallBack.on_hooked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.callbacks.EarlyStop">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.callbacks.</code><code class="sig-name descname">EarlyStop</code><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#EarlyStop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.EarlyStop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.callbacks.TrainCallback" title="torchhelper.frame.callbacks.TrainCallback"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.callbacks.TrainCallback</span></code></a></p>
+<p>用于控制模型提前停止 TODO 目前只用来临时使用过，内部逻辑没有完成</p>
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.EarlyStop.on_hooked">
+<code class="sig-name descname">on_hooked</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#EarlyStop.on_hooked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.EarlyStop.on_hooked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.EarlyStop.on_train_batch_end">
+<code class="sig-name descname">on_train_batch_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#EarlyStop.on_train_batch_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.EarlyStop.on_train_batch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.callbacks.ModelCheckpoint">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.callbacks.</code><code class="sig-name descname">ModelCheckpoint</code><span class="sig-paren">(</span><em class="sig-param">base_dir</em>, <em class="sig-param">monitor</em>, <em class="sig-param">max_to_keep=3</em>, <em class="sig-param">mode='min'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#ModelCheckpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.ModelCheckpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.callbacks.TrainCallback" title="torchhelper.frame.callbacks.TrainCallback"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.callbacks.TrainCallback</span></code></a></p>
+<p>用于自动保存模型断点:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sv</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s2">&quot;all_loss&quot;</span><span class="p">,</span> <span class="n">max_to_keep</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">)</span>
+<span class="n">sv</span><span class="o">.</span><span class="n">auto_hook</span><span class="p">(</span><span class="n">trainer</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.ModelCheckpoint.on_hooked">
+<code class="sig-name descname">on_hooked</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#ModelCheckpoint.on_hooked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.ModelCheckpoint.on_hooked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.ModelCheckpoint.on_train_end">
+<code class="sig-name descname">on_train_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#ModelCheckpoint.on_train_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.ModelCheckpoint.on_train_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.ModelCheckpoint.on_train_epoch_end">
+<code class="sig-name descname">on_train_epoch_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#ModelCheckpoint.on_train_epoch_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.ModelCheckpoint.on_train_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.callbacks.TrainCallback">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.callbacks.</code><code class="sig-name descname">TrainCallback</code><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.callbacks.Callback" title="torchhelper.frame.callbacks.Callback"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.callbacks.Callback</span></code></a></p>
+<p>实现了一般训练过程中的函数函数回调</p>
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_begin">
+<code class="sig-name descname">on_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_end">
+<code class="sig-name descname">on_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_eval_begin">
+<code class="sig-name descname">on_eval_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_eval_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_eval_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_eval_end">
+<code class="sig-name descname">on_eval_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_eval_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_eval_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_test_begin">
+<code class="sig-name descname">on_test_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_test_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_test_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_test_end">
+<code class="sig-name descname">on_test_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_test_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_test_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_train_batch_begin">
+<code class="sig-name descname">on_train_batch_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_train_batch_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_train_batch_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_train_batch_end">
+<code class="sig-name descname">on_train_batch_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_train_batch_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_train_batch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_train_begin">
+<code class="sig-name descname">on_train_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_train_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_train_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_train_end">
+<code class="sig-name descname">on_train_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_train_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_train_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_train_epoch_begin">
+<code class="sig-name descname">on_train_epoch_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_train_epoch_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_train_epoch_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.TrainCallback.on_train_epoch_end">
+<code class="sig-name descname">on_train_epoch_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#TrainCallback.on_train_epoch_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.TrainCallback.on_train_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.callbacks.Traininfo">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.callbacks.</code><code class="sig-name descname">Traininfo</code><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Traininfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Traininfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.callbacks.TrainCallback" title="torchhelper.frame.callbacks.TrainCallback"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.callbacks.TrainCallback</span></code></a></p>
+<p>用于实时输出模型训练信息</p>
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Traininfo.on_eval_begin">
+<code class="sig-name descname">on_eval_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Traininfo.on_eval_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Traininfo.on_eval_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Traininfo.on_eval_end">
+<code class="sig-name descname">on_eval_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Traininfo.on_eval_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Traininfo.on_eval_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Traininfo.on_test_begin">
+<code class="sig-name descname">on_test_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Traininfo.on_test_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Traininfo.on_test_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Traininfo.on_test_end">
+<code class="sig-name descname">on_test_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Traininfo.on_test_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Traininfo.on_test_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Traininfo.on_train_batch_end">
+<code class="sig-name descname">on_train_batch_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Traininfo.on_train_batch_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Traininfo.on_train_batch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Traininfo.on_train_begin">
+<code class="sig-name descname">on_train_begin</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Traininfo.on_train_begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Traininfo.on_train_begin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.callbacks.Traininfo.on_train_epoch_end">
+<code class="sig-name descname">on_train_epoch_end</code><span class="sig-paren">(</span><em class="sig-param">trainer: torchhelper.frame.trainerv2.BaseTrainer</em>, <em class="sig-param">func</em>, <em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em>, <em class="sig-param">meter: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/callbacks.html#Traininfo.on_train_epoch_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.callbacks.Traininfo.on_train_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.frame.databundler">
+<span id="torchhelper-frame-databundler-module"></span><h2>torchhelper.frame.databundler module<a class="headerlink" href="#module-torchhelper.frame.databundler" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="class">
+<dt id="torchhelper.frame.databundler.DataBundler">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.databundler.</code><code class="sig-name descname">DataBundler</code><a class="reference internal" href="_modules/torchhelper/frame/databundler.html#DataBundler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.databundler.DataBundler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>当一个模型需要训练多个数据集的时候，通过DataBundler类和附属的装饰器灵活的提供数据集:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bundler</span> <span class="o">=</span> <span class="n">DataBundler</span><span class="p">()</span>                 <span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="n">cifar_dataloader</span><span class="p">,</span> <span class="s2">&quot;cifar&quot;</span><span class="p">)</span>                 <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">svhn_dataloader</span><span class="p">,</span> <span class="s2">&quot;svhn&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">chain_iter</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">imgs</span><span class="p">,</span><span class="n">labels</span><span class="p">)</span> <span class="ow">in</span> <span class="n">bundler</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>效果等价于:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">imgs</span><span class="p">,</span><span class="n">chains</span><span class="p">)</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="n">cifar_dataloader</span><span class="p">,</span><span class="n">svhn_dataloader</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>主要方便Trainer使用，单独使用可能不会很方便？</p>
+<dl class="method">
+<dt id="torchhelper.frame.databundler.DataBundler.add">
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">loader</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/databundler.html#DataBundler.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.databundler.DataBundler.add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.databundler.DataBundler.chain_iter">
+<code class="sig-name descname">chain_iter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/databundler.html#DataBundler.chain_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.databundler.DataBundler.chain_iter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>切换为chain方式提供所有添加的数据集</dt><dd><p>注意，如果以cycle方法添加了某个数据集，那么该迭代将永远不会停止</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.databundler.DataBundler.cycle">
+<code class="sig-name descname">cycle</code><span class="sig-paren">(</span><em class="sig-param">loader: torch.utils.data.dataloader.DataLoader</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/databundler.html#DataBundler.cycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.databundler.DataBundler.cycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>一般在zip中保证数据量少的数据集不会成为拖累</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.databundler.DataBundler.func_loader">
+<code class="sig-name descname">func_loader</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/databundler.html#DataBundler.func_loader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.databundler.DataBundler.func_loader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.databundler.DataBundler.len_dict">
+<code class="sig-name descname">len_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/databundler.html#DataBundler.len_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.databundler.DataBundler.len_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>返回每个loader的 name:len 字典
+:return: an OrderedDict</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.databundler.DataBundler.len_list">
+<code class="sig-name descname">len_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/databundler.html#DataBundler.len_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.databundler.DataBundler.len_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>按照添加的顺序返回各个dataloader的长度（batch级别）
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.databundler.DataBundler.zip_iter">
+<code class="sig-name descname">zip_iter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/databundler.html#DataBundler.zip_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.databundler.DataBundler.zip_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>切换为zip方式提供所有添加的数据集</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.databundler.ToyDataLoader">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.databundler.</code><code class="sig-name descname">ToyDataLoader</code><span class="sig-paren">(</span><em class="sig-param">xshape</em>, <em class="sig-param">yshape</em>, <em class="sig-param">len=50</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/databundler.html#ToyDataLoader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.databundler.ToyDataLoader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.dataloader.DataLoader</span></code></p>
+<p>用于做临时的数据提供，指定提供的数据的shape和数据batch大小即可</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.frame.logwrapper">
+<span id="torchhelper-frame-logwrapper-module"></span><h2>torchhelper.frame.logwrapper module<a class="headerlink" href="#module-torchhelper.frame.logwrapper" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<blockquote>
+<div><p>用于更快的输出日志</p>
+</div></blockquote>
+<dl class="class">
+<dt id="torchhelper.frame.logwrapper.LogParam">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.logwrapper.</code><code class="sig-name descname">LogParam</code><span class="sig-paren">(</span><em class="sig-param">default_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>meter = LogParam()
+mk = meter.k
+meter.epoch = “{}({})/{}”.format(eidx, idx, self.epoch)</p>
+<p>…</p>
+<p>meter.accuracy = cacu_acc(…)</p>
+<p>meter.percent(mk.accuracy) # will be format like dd.dd%</p>
+<p>meter.loss = loss_function(…) # will be format as dd.dddd
+meter.float(mk.loss,acc = 2) # will be format as dd.dd</p>
+<p>meter.loss.backward()</p>
+<p>meter.info(“I logged some info”)
+return meter  # or use ‘yield meter’ if in loop logits</p>
+<p>you can use meter.param to get the OrderedDict</p>
+<dl class="class">
+<dt id="torchhelper.frame.logwrapper.LogParam.KeyObj">
+<em class="property">class </em><code class="sig-name descname">KeyObj</code><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam.KeyObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.KeyObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogParam.float">
+<code class="sig-name descname">float</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">acc=4</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam.float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.float" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogParam.from_dict">
+<em class="property">static </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">odict: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogParam.ignore">
+<code class="sig-name descname">ignore</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam.ignore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.ignore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogParam.int">
+<code class="sig-name descname">int</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam.int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogParam.merge_dict">
+<code class="sig-name descname">merge_dict</code><span class="sig-paren">(</span><em class="sig-param">obj: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam.merge_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.merge_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogParam.params">
+<em class="property">property </em><code class="sig-name descname">params</code><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogParam.percent">
+<code class="sig-name descname">percent</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">acc=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam.percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.percent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogParam.short">
+<code class="sig-name descname">short</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">short_key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam.short"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.short" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogParam.str">
+<code class="sig-name descname">str</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam.str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogParam.tensorboard">
+<code class="sig-name descname">tensorboard</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogParam.tensorboard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogParam.tensorboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.logwrapper.LogWrapper">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.logwrapper.</code><code class="sig-name descname">LogWrapper</code><span class="sig-paren">(</span><em class="sig-param">head: str = ''</em>, <em class="sig-param">tail: str = ''</em>, <em class="sig-param">asctime: bool = True</em>, <em class="sig-param">datefmt: str = '%m/%d/%Y %I:%M:%S %p'</em>, <em class="sig-param">sep: str = ' - '</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>一个用于日志输出的装饰器。</p>
+<p>已废弃，但是还可以用，也还算好用，就不删除了，代码示例放在这：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">()</span>
+
+<span class="nd">@logger</span><span class="o">.</span><span class="n">logger</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">not_in_class</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cacu</span><span class="p">(</span><span class="n">eidx</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
+        <span class="n">meter</span> <span class="o">=</span> <span class="n">LogParam</span><span class="p">()</span>
+        <span class="n">meter</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">meter</span><span class="o">.</span><span class="n">accr</span> <span class="o">=</span> <span class="mf">0.64</span>
+        <span class="n">meterk</span> <span class="o">=</span> <span class="n">meter</span><span class="o">.</span><span class="n">k</span>
+        <span class="n">meter</span><span class="o">.</span><span class="n">percent</span><span class="p">(</span><span class="n">meterk</span><span class="o">.</span><span class="n">accr</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">meter</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">cacu</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt><a href="#id1"><span class="problematic" id="id2">`</span></a>::</dt><dd><p>&#64;logger.logger(inline=True, not_in_class=True)
+def cacu(eidx,**kw):</p>
+<blockquote>
+<div><p>pass</p>
+</div></blockquote>
+<dl class="simple">
+<dt>for i in range(100):</dt><dd><p>cacu(i,p1 = “arg1”)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogWrapper.add_pipe">
+<code class="sig-name descname">add_pipe</code><span class="sig-paren">(</span><em class="sig-param">fn: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogWrapper.add_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogWrapper.add_pipe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogWrapper.info">
+<code class="sig-name descname">info</code><span class="sig-paren">(</span><em class="sig-param">content=''</em>, <em class="sig-param">sep=''</em>, <em class="sig-param">end='\n'</em>, <em class="sig-param">just_print=False</em>, <em class="sig-param">just_out=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogWrapper.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogWrapper.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogWrapper.logger">
+<code class="sig-name descname">logger</code><span class="sig-paren">(</span><em class="sig-param">inline: bool = False</em>, <em class="sig-param">prefix: str = ''</em>, <em class="sig-param">suffix: str = ''</em>, <em class="sig-param">cacu_time: bool = True</em>, <em class="sig-param">cacu_step=False</em>, <em class="sig-param">max_step=None</em>, <em class="sig-param">not_in_class: bool = False</em>, <em class="sig-param">append_fn: bool = False</em>, <em class="sig-param">append_args: bool = False</em>, <em class="sig-param">append_kws: bool = False</em>, <em class="sig-param">dict_pipe=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogWrapper.logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogWrapper.logger" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>该装饰器装饰的方法，应该返回一个LogParam() 对象或者 一个字典
+如果返回一个LogParam() 对象，那么过程中存储的变量将会是有序的</p>
+<dl class="field-list simple">
+<dt class="field-odd">param inline</dt>
+<dd class="field-odd"><p>输出是否控制在一栏，仅在 循环逻辑中 yield meter 的时候有用</p>
+</dd>
+<dt class="field-even">param prefix</dt>
+<dd class="field-even"><p>输出的前缀，注意在实例化Logger类时，还可以指定头部，头部在前缀前，一般不需要手动添加 ‘</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>‘</dt><dd><dl class="field-list simple">
+<dt class="field-odd">param suffix</dt>
+<dd class="field-odd"><p>输出的后缀，注意在实例化Logger类时，还可以指定尾部，尾部在后缀后，一般不需要手动添加换行符</p>
+</dd>
+<dt class="field-even">param cacu_time</dt>
+<dd class="field-even"><p>是否在输出中添加执行时间</p>
+</dd>
+<dt class="field-odd">param cacu_step</dt>
+<dd class="field-odd"><p>是否在输出中添加该方法内部循环了多少次（epoch级别或batch级别）</p>
+</dd>
+<dt class="field-even">param max_step</dt>
+<dd class="field-even"><p>如果是循环逻辑，那么其最大执行次数是几（多用于测试整个流程是否可以跑通）
+默认为None，即跑到正常结束</p>
+</dd>
+<dt class="field-odd">param not_in_class</dt>
+<dd class="field-odd"><p>如果不是在类方法中使用logger装饰器，那么需要声明该方法不在类中</p>
+</dd>
+<dt class="field-even">param append_fn</dt>
+<dd class="field-even"><p>是否在输出中添加执行的方法名</p>
+</dd>
+<dt class="field-odd">param append_args</dt>
+<dd class="field-odd"><p>是否在输出中添加执行的无名称参数</p>
+</dd>
+<dt class="field-even">param append_kws</dt>
+<dd class="field-even"><p>是否在输出中添加执行的有key 参数</p>
+</dd>
+<dt class="field-odd">param dict_pipe</dt>
+<dd class="field-odd"><p>如果想对返回的meter做一个统一的处理，可以通过该方法
+该方法将接受一个LogParam对象</p>
+</dd>
+<dt class="field-even">return</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.LogWrapper.wrap">
+<code class="sig-name descname">wrap</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">inline: bool = False</em>, <em class="sig-param">prefix: str = ''</em>, <em class="sig-param">suffix: str = ''</em>, <em class="sig-param">cacu_time: bool = True</em>, <em class="sig-param">cacu_step=False</em>, <em class="sig-param">not_in_class: bool = False</em>, <em class="sig-param">append_fn: bool = False</em>, <em class="sig-param">append_args: bool = False</em>, <em class="sig-param">append_kws: bool = False</em>, <em class="sig-param">max_step=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#LogWrapper.wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.LogWrapper.wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>使用该方法代替装饰器，
+logger = Logger()
+func = logger.wrap(func)</p>
+<p>该方法与下面的方法效果等同
+&#64;logger.logger()
+def func():</p>
+<blockquote>
+<div><p>…</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – </p></li>
+<li><p><strong>inline</strong> – </p></li>
+<li><p><strong>prefix</strong> – </p></li>
+<li><p><strong>suffix</strong> – </p></li>
+<li><p><strong>cacu_time</strong> – </p></li>
+<li><p><strong>cacu_step</strong> – </p></li>
+<li><p><strong>not_in_class</strong> – </p></li>
+<li><p><strong>append_fn</strong> – </p></li>
+<li><p><strong>append_args</strong> – </p></li>
+<li><p><strong>append_kws</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.logwrapper.Logger">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.logwrapper.</code><code class="sig-name descname">Logger</code><span class="sig-paren">(</span><em class="sig-param">head: str = ''</em>, <em class="sig-param">tail: str = ''</em>, <em class="sig-param">asctime: bool = True</em>, <em class="sig-param">datefmt: str = '%m/%d/%Y %I:%M:%S %p'</em>, <em class="sig-param">sep: str = ' - '</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#Logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.Logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.Logger.add_pipe">
+<code class="sig-name descname">add_pipe</code><span class="sig-paren">(</span><em class="sig-param">fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#Logger.add_pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.Logger.add_pipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>添加一个输出到文件的管道</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.Logger.format">
+<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param">reses: torchhelper.frame.parameter.LogMeter</em>, <em class="sig-param">prefix=''</em>, <em class="sig-param">inline=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#Logger.format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.Logger.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>根据初始化设置 格式化 前缀和LogMeter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.Logger.handle">
+<code class="sig-name descname">handle</code><span class="sig-paren">(</span><em class="sig-param">logstr</em>, <em class="sig-param">_=''</em>, <em class="sig-param">end=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#Logger.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.Logger.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>handle log stinrg，以指定的方式输出
+:param logstr:
+:param _:
+:param end:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.Logger.info">
+<code class="sig-name descname">info</code><span class="sig-paren">(</span><em class="sig-param">meter: torchhelper.frame.parameter.LogMeter = None</em>, <em class="sig-param">prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#Logger.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.Logger.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>以行为单位输出 前缀 和 LogMeter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.Logger.inline">
+<code class="sig-name descname">inline</code><span class="sig-paren">(</span><em class="sig-param">meter: torchhelper.frame.parameter.LogMeter = None</em>, <em class="sig-param">prefix=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#Logger.inline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.Logger.inline" title="Permalink to this definition">¶</a></dt>
+<dd><p>在一行内输出 前缀 和 LogMeter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.Logger.line">
+<code class="sig-name descname">line</code><span class="sig-paren">(</span><em class="sig-param">content=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#Logger.line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.Logger.line" title="Permalink to this definition">¶</a></dt>
+<dd><p>以行为单位输出文字（有时间前缀）</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.logwrapper.Logger.newline">
+<code class="sig-name descname">newline</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/logwrapper.html#Logger.newline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.logwrapper.Logger.newline" title="Permalink to this definition">¶</a></dt>
+<dd><p>换行</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.frame.parameter">
+<span id="torchhelper-frame-parameter-module"></span><h2>torchhelper.frame.parameter module<a class="headerlink" href="#module-torchhelper.frame.parameter" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<blockquote>
+<div><dl>
+<dt>温馨提示：</dt><dd><p>抵制不良代码，拒绝乱用代码。</p>
+<p>注意自我保护，谨防上当受骗。</p>
+<p>适当编程益脑，沉迷编程伤身。</p>
+<p>合理安排时间，享受健康生活！</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="class">
+<dt id="torchhelper.frame.parameter.LogMeter">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.parameter.</code><code class="sig-name descname">LogMeter</code><span class="sig-paren">(</span><em class="sig-param">default_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/parameter.html#LogMeter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.parameter.LogMeter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="torchhelper.base.html#torchhelper.base.recordable.Recordable" title="torchhelper.base.recordable.Recordable"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.base.recordable.Recordable</span></code></a></p>
+<dl class="method">
+<dt id="torchhelper.frame.parameter.LogMeter.k">
+<em class="property">property </em><code class="sig-name descname">k</code><a class="headerlink" href="#torchhelper.frame.parameter.LogMeter.k" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.parameter.LogMeter.logdict">
+<code class="sig-name descname">logdict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/torchhelper/frame/parameter.html#LogMeter.logdict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.parameter.LogMeter.logdict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.parameter.LogMeter.set_mapfn">
+<code class="sig-name descname">set_mapfn</code><span class="sig-paren">(</span><em class="sig-param">fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/parameter.html#LogMeter.set_mapfn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.parameter.LogMeter.set_mapfn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.parameter.LogMeter.updata">
+<code class="sig-name descname">updata</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/parameter.html#LogMeter.updata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.parameter.LogMeter.updata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.parameter.TrainParam">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.parameter.</code><code class="sig-name descname">TrainParam</code><a class="reference internal" href="_modules/torchhelper/frame/parameter.html#TrainParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.parameter.TrainParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="torchhelper.base.html#torchhelper.base.recordable.Recordable" title="torchhelper.base.recordable.Recordable"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.base.recordable.Recordable</span></code></a></p>
+<p>用于Trainer 训练过程中获取参数使用</p>
+<dl class="method">
+<dt id="torchhelper.frame.parameter.TrainParam.build_exp_name">
+<code class="sig-name descname">build_exp_name</code><span class="sig-paren">(</span><em class="sig-param">names: collections.abc.Iterable</em>, <em class="sig-param">prefix=''</em>, <em class="sig-param">sep='_'</em>, <em class="sig-param">ignore_mode='add'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/parameter.html#TrainParam.build_exp_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.parameter.TrainParam.build_exp_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.parameter.TrainParam.get_exp_name">
+<code class="sig-name descname">get_exp_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/parameter.html#TrainParam.get_exp_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.parameter.TrainParam.get_exp_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.frame.saver">
+<span id="torchhelper-frame-saver-module"></span><h2>torchhelper.frame.saver module<a class="headerlink" href="#module-torchhelper.frame.saver" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<p>用于方便的保存模型和断点</p>
+<dl class="class">
+<dt id="torchhelper.frame.saver.Saver">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.saver.</code><code class="sig-name descname">Saver</code><span class="sig-paren">(</span><em class="sig-param">save_dir</em>, <em class="sig-param">ckpt_suffix='ckpth.tar'</em>, <em class="sig-param">max_to_keep=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/saver.html#Saver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.saver.Saver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>用于方便的保存模型和断点，能够自动保存最近的n个模型</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">saver</span> <span class="o">=</span> <span class="n">Saver</span><span class="p">(</span><span class="s2">&quot;./test&quot;</span><span class="p">,</span> <span class="n">max_to_keep</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1"># saver.clear_checkpoints()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">saver</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">{})</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="torchhelper.frame.saver.Saver.checkpoint">
+<code class="sig-name descname">checkpoint</code><span class="sig-paren">(</span><em class="sig-param">epoch</em>, <em class="sig-param">ckpt_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/saver.html#Saver.checkpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.saver.Saver.checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>保存一个断点，保存路径为建立类时传入的文件夹下的路径
+:param epoch:
+:param ckpt_dict:  与torch.save() 方法传入字典类型时的要求一样</p>
+<blockquote>
+<div><p>实际上由于torch.save() 调用时使用的是pickle，因此只要是可序列化对象都可以传入</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>断点文件的路径</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.saver.Saver.clear_checkpoints">
+<code class="sig-name descname">clear_checkpoints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/saver.html#Saver.clear_checkpoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.saver.Saver.clear_checkpoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>删除所有的断点记录</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.saver.Saver.load">
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">fn_prefix=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/saver.html#Saver.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.saver.Saver.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>加载某个模型
+如果没有变更路径，只需要传入之前save的model即可</p>
+<blockquote>
+<div><p>会自动根据saver的路径参数和model名字构建路径</p>
+</div></blockquote>
+<p>如果要从其他的位置加载模型，那么则需要传入具体的路径path</p>
+<p>实际返回的是 torch.load(path) 的结果
+:param model:
+:param fn_prefix:
+:return:  torch.load(path)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.saver.Saver.pointers">
+<em class="property">property </em><code class="sig-name descname">pointers</code><a class="headerlink" href="#torchhelper.frame.saver.Saver.pointers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.saver.Saver.restore">
+<code class="sig-name descname">restore</code><span class="sig-paren">(</span><em class="sig-param">pointer=-1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/saver.html#Saver.restore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.saver.Saver.restore" title="Permalink to this definition">¶</a></dt>
+<dd><p>返回一个checkpoint，实际上返回的是torch.load()的结果
+:param pointer: 返回保存的第几个断点，默认是-1，即返回最近的
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.saver.Saver.save">
+<code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">model: torch.nn.modules.module.Module</em>, <em class="sig-param">fn_prefix: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/torchhelper/frame/saver.html#Saver.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.saver.Saver.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>保存模型，无需传入后缀，会自动的构造后缀
+:param model:
+:param fn_prefix:
+:return: 保存模型后的路径</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.frame.trainer">
+<span id="torchhelper-frame-trainer-module"></span><h2>torchhelper.frame.trainer module<a class="headerlink" href="#module-torchhelper.frame.trainer" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<blockquote>
+<div><p>Trainer致力于简化模型的训练、验证、测试、断点、保存等一系列过程
+只要遵循Trainer的构造逻辑，即可迅速完成一整个训练流程</p>
+<p>Trainer内部依托torch实现了较为通用的train、eval、test逻辑，并且提供了准确率统计等方法
+同时，Trainer通过包内的另外一个类Saver实现了模型的保存和断点保存</p>
+<p>以及，Trainer内部维护了 eidx 和 global_step 两个变量，用来帮助类内和类外获取训练的次数信息</p>
+<dl>
+<dt>温馨提示：</dt><dd><p>抵制不良代码，拒绝乱用代码。</p>
+<p>注意自我保护，谨防上当受骗。</p>
+<p>适当编码益脑，沉迷编码伤身。
+合理安排时间，享受健康生活！</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="class">
+<dt id="torchhelper.frame.trainer.NormalTrainer">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.trainer.</code><code class="sig-name descname">NormalTrainer</code><span class="sig-paren">(</span><em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.trainer.Trainer" title="torchhelper.frame.trainer.Trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.trainer.Trainer</span></code></a></p>
+<p>实现了正常训练器的训练、验证、测试的逻辑
+仍然是抽象类，需要子类实现_train_epoch、predict等方法
+求accuracy等的方法，虽然可以放到类外，但因为和一些参数输出相关，因此放在类内部</p>
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.accuracy">
+<code class="sig-name descname">accuracy</code><span class="sig-paren">(</span><em class="sig-param">preds</em>, <em class="sig-param">labels</em>, <em class="sig-param">cacu_rate=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.accuracy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.base_train">
+<code class="sig-name descname">base_train</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.base_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.base_train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.change_mode">
+<code class="sig-name descname">change_mode</code><span class="sig-paren">(</span><em class="sig-param">train=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.change_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.change_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.create_eval_dataloaders">
+<code class="sig-name descname">create_eval_dataloaders</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.create_eval_dataloaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.create_eval_dataloaders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.create_test_dataloaders">
+<code class="sig-name descname">create_test_dataloaders</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.create_test_dataloaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.create_test_dataloaders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.create_train_dataloaders">
+<code class="sig-name descname">create_train_dataloaders</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.create_train_dataloaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.create_train_dataloaders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.eval">
+<code class="sig-name descname">eval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.preprocess">
+<code class="sig-name descname">preprocess</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.preprocess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.regeist_train_dataloader">
+<code class="sig-name descname">regeist_train_dataloader</code><span class="sig-paren">(</span><em class="sig-param">dataloader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.regeist_train_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.regeist_train_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.regist_device">
+<code class="sig-name descname">regist_device</code><span class="sig-paren">(</span><em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.regist_device"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.regist_device" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.regist_eval_dataloader">
+<code class="sig-name descname">regist_eval_dataloader</code><span class="sig-paren">(</span><em class="sig-param">dataloader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.regist_eval_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.regist_eval_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>import dataloaders for eval, in eval mode, it will all be eval</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.regist_test_dataloader">
+<code class="sig-name descname">regist_test_dataloader</code><span class="sig-paren">(</span><em class="sig-param">dataloader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.regist_test_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.regist_test_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>import dataloaders for test, in test mode, it will all be tested</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.safe_train">
+<code class="sig-name descname">safe_train</code><span class="sig-paren">(</span><em class="sig-param">unsafe_exit=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.safe_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.safe_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>安全的训练模型，如果出现各种异常则保存断点
+:param unsafe_exit: 如果遇到了异常，处理完后是否直接退出程序（异常状态 1 ）
+:return: 如果不直接退出程序，那么返回是否执行成功，处理过异常返回False，未处理过异常返回True</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.test">
+<code class="sig-name descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.train_epoch">
+<code class="sig-name descname">train_epoch</code><span class="sig-paren">(</span><em class="sig-param">eidx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.train_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.train_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.NormalTrainer.train_from_check_point">
+<code class="sig-name descname">train_from_check_point</code><span class="sig-paren">(</span><em class="sig-param">pointer=-1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#NormalTrainer.train_from_check_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.NormalTrainer.train_from_check_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.trainer.SemiTrainer">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.trainer.</code><code class="sig-name descname">SemiTrainer</code><span class="sig-paren">(</span><em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#SemiTrainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.SemiTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.trainer.NormalTrainer" title="torchhelper.frame.trainer.NormalTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.trainer.NormalTrainer</span></code></a></p>
+<p>因为半监督学习需要同时传入有监督数据和无监督数据，因此与NormalTrainer相比
+该子类只多了两个数据集的参数</p>
+<dl class="method">
+<dt id="torchhelper.frame.trainer.SemiTrainer.create_train_dataloaders">
+<code class="sig-name descname">create_train_dataloaders</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#SemiTrainer.create_train_dataloaders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.SemiTrainer.create_train_dataloaders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.SemiTrainer.regeist_train_dataloader">
+<code class="sig-name descname">regeist_train_dataloader</code><span class="sig-paren">(</span><em class="sig-param">dataloader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#SemiTrainer.regeist_train_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.SemiTrainer.regeist_train_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.SemiTrainer.regist_sup_dataloader">
+<code class="sig-name descname">regist_sup_dataloader</code><span class="sig-paren">(</span><em class="sig-param">dataloader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#SemiTrainer.regist_sup_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.SemiTrainer.regist_sup_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.SemiTrainer.regist_unsup_dataloader">
+<code class="sig-name descname">regist_unsup_dataloader</code><span class="sig-paren">(</span><em class="sig-param">dataloader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#SemiTrainer.regist_unsup_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.SemiTrainer.regist_unsup_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.trainer.SingleModelTrainer">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.trainer.</code><code class="sig-name descname">SingleModelTrainer</code><span class="sig-paren">(</span><em class="sig-param">params</em>, <em class="sig-param">model: torch.nn.modules.module.Module</em>, <em class="sig-param">optimizer</em>, <em class="sig-param">loss</em>, <em class="sig-param">sup_dataloader</em>, <em class="sig-param">eval_dataloader</em>, <em class="sig-param">test_dataloader</em>, <em class="sig-param">device</em>, <em class="sig-param">logged=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#SingleModelTrainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.SingleModelTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.trainer.SupervisedTrainer" title="torchhelper.frame.trainer.SupervisedTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.trainer.SupervisedTrainer</span></code></a></p>
+<p>只有一个模型的最通用的Trainer
+from torchhelper.trainer import SingleModelTrainer
+model = get_model(…)
+params = TrainerParam()
+optimizer = …
+train_dataloader = …
+eval_dataloader = …
+test_dataloader = …
+trainer = SingleModelTrainer(</p>
+<blockquote>
+<div><p>params,model,optimizer,loss = “mse”,
+train_dataloader,eval_dataloader,test_dataloader,
+logged = True)</p>
+</div></blockquote>
+<p>trainer.train()</p>
+<dl class="method">
+<dt id="torchhelper.frame.trainer.SingleModelTrainer.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#SingleModelTrainer.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.SingleModelTrainer.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.SingleModelTrainer.train_epoch">
+<code class="sig-name descname">train_epoch</code><span class="sig-paren">(</span><em class="sig-param">eidx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#SingleModelTrainer.train_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.SingleModelTrainer.train_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.trainer.SupervisedTrainer">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.trainer.</code><code class="sig-name descname">SupervisedTrainer</code><span class="sig-paren">(</span><em class="sig-param">params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#SupervisedTrainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.SupervisedTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.trainer.NormalTrainer" title="torchhelper.frame.trainer.NormalTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.trainer.NormalTrainer</span></code></a></p>
+<p>有监督学习只需要传入有监督数据</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.trainer.Trainer">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.trainer.</code><code class="sig-name descname">Trainer</code><span class="sig-paren">(</span><em class="sig-param">params: torchhelper.frame.trainer.TrainerParams</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Trainer类实例构建的第一个参数即TrainerParam，
+实现了保存ckpt和model的逻辑，抽象了加载ckpt和model内容的方法，抽象了其他通用的train、eval、test、predict方法
+实现了logger模块的日志记录功能</p>
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.assert_isinstance">
+<code class="sig-name descname">assert_isinstance</code><span class="sig-paren">(</span><em class="sig-param">clazz</em>, <em class="sig-param">*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.assert_isinstance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.assert_isinstance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.create_checkpoint_dict">
+<code class="sig-name descname">create_checkpoint_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.create_checkpoint_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.create_checkpoint_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>和torch.save的逻辑一样，要保存多少变量直接写上即可</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.create_model_state_dict">
+<code class="sig-name descname">create_model_state_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.create_model_state_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.create_model_state_dict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>默认返回一个{model_name:model_dict}，model_dict的每一个key表示一个需要保存的模型</dt><dd><p>（是模型而不是state_dict()）</p>
+</dd>
+<dt>类似optimizer 中的 param group 方法，每一个key对应一个要保存的模型</dt><dd><p>如果要保存多个模型到一个文件中，那么该文件的key对应一个模型字典即可</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.eval">
+<code class="sig-name descname">eval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.load_checkpoint">
+<code class="sig-name descname">load_checkpoint</code><span class="sig-paren">(</span><em class="sig-param">pointer=-1</em>, <em class="sig-param">not_exist_ok=False</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.load_checkpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.load_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>load instance checkpoint, and return trained epoch
+:param pointer:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.load_model">
+<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.load_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.load_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.load_params">
+<code class="sig-name descname">load_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.load_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.load_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.log_handle">
+<code class="sig-name descname">log_handle</code><span class="sig-paren">(</span><em class="sig-param">logger: torchhelper.frame.logwrapper.LogWrapper</em>, <em class="sig-param">fn</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.log_handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.log_handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.model_dict">
+<em class="property">property </em><code class="sig-name descname">model_dict</code><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.model_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>该方法返回由regeist_model_and_optim方法构造出来的模型字典
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.model_name">
+<em class="property">property </em><code class="sig-name descname">model_name</code><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.model_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.model_state_dict">
+<em class="property">property </em><code class="sig-name descname">model_state_dict</code><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.model_state_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>该方法返回由regeist_model_and_optim方法构造出来的变量
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.optim_dict">
+<em class="property">property </em><code class="sig-name descname">optim_dict</code><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.optim_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>该方法返回由regeist_model_and_optim方法构造出来的优化器字典
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.optim_state_dict">
+<em class="property">property </em><code class="sig-name descname">optim_state_dict</code><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.optim_state_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.regeist_model_name">
+<code class="sig-name descname">regeist_model_name</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.regeist_model_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.regeist_model_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.regist_model_and_optim">
+<code class="sig-name descname">regist_model_and_optim</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.regist_model_and_optim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.regist_model_and_optim" title="Permalink to this definition">¶</a></dt>
+<dd><p>声明在该Trainer中用到的模型和优化器，从而可以自动完成模型保存和恢复（如果没有特殊用途的话）
+（一切保存和恢复通过 state_dict() load_state_dict() 完成的变量）
+:param kwargs:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.save_checkpoint">
+<code class="sig-name descname">save_checkpoint</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.save_checkpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.save_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>保存断点，断点要保存的内容从 checkpoint_dict() 方法中获取，通过saver自动保存至相应路径。
+如果没有必要，不需要重写该函数
+:param kwargs: 其他要附加到 checkpoint 中的信息
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.save_model">
+<code class="sig-name descname">save_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.save_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.save_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.test">
+<code class="sig-name descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.Trainer.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#Trainer.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.Trainer.train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.trainer.TrainerParams">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.trainer.</code><code class="sig-name descname">TrainerParams</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#TrainerParams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.TrainerParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>用于设置各种超参数，saver等不会变更的变量
+_default_fields 用于设置默认参数</p>
+<p>该类在构造的时候接受字典，同时内含各种默认参数</p>
+<p>同时可以根据内部的各种配置形成配置字典，以及识别参数加载配置文件</p>
+<dl class="method">
+<dt id="torchhelper.frame.trainer.TrainerParams.assert_params">
+<code class="sig-name descname">assert_params</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#TrainerParams.assert_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.TrainerParams.assert_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>检查该实例化对象中是否包含某个名字的变量，如果不存在则抛出异常</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.TrainerParams.build_dir_name">
+<code class="sig-name descname">build_dir_name</code><span class="sig-paren">(</span><em class="sig-param">names: collections.abc.Iterable</em>, <em class="sig-param">prefix=''</em>, <em class="sig-param">sep='_'</em>, <em class="sig-param">ignore_mode='add'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#TrainerParams.build_dir_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.TrainerParams.build_dir_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.TrainerParams.from_dict">
+<em class="property">static </em><code class="sig-name descname">from_dict</code><span class="sig-paren">(</span><em class="sig-param">params_dict: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#TrainerParams.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.TrainerParams.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>从一个字典中构建一个TrainerParams对象</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.TrainerParams.get_params_dict">
+<code class="sig-name descname">get_params_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#TrainerParams.get_params_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.TrainerParams.get_params_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.TrainerParams.set_item">
+<code class="sig-name descname">set_item</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#TrainerParams.set_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.TrainerParams.set_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>检查某值是否存在，如果不存在，则设置其默认值为value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.TrainerParams.set_items">
+<code class="sig-name descname">set_items</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#TrainerParams.set_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.TrainerParams.set_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>检查是否包含某个名字的变量，如果不包含，则设置其值为value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainer.TrainerParams.to_config">
+<em class="property">static </em><code class="sig-name descname">to_config</code><span class="sig-paren">(</span><em class="sig-param">params</em>, <em class="sig-param">prefix</em>, <em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#TrainerParams.to_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.TrainerParams.to_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="torchhelper.frame.trainer.start_interrupt_protect">
+<code class="sig-prename descclassname">torchhelper.frame.trainer.</code><code class="sig-name descname">start_interrupt_protect</code><span class="sig-paren">(</span><em class="sig-param">protect_func</em>, <em class="sig-param">*pargs</em>, <em class="sig-param">**pkwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainer.html#start_interrupt_protect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainer.start_interrupt_protect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.frame.trainerv2">
+<span id="torchhelper-frame-trainerv2-module"></span><h2>torchhelper.frame.trainerv2 module<a class="headerlink" href="#module-torchhelper.frame.trainerv2" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<blockquote>
+<div><dl>
+<dt>温馨提示：</dt><dd><p>抵制不良代码，拒绝乱用代码。</p>
+<p>注意自我保护，谨防上当受骗。</p>
+<p>适当编程益脑，沉迷编程伤身。</p>
+<p>合理安排时间，享受健康生活！</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="class">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.trainerv2.</code><code class="sig-name descname">BaseTrainer</code><span class="sig-paren">(</span><em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.add_callback">
+<code class="sig-name descname">add_callback</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">callback</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.add_callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.add_callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>添加一个回调函数
+:param func: trainer中的函数，建议用 trainer.function 的形式传入
+:type callable,str
+:param callback:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.add_log_path">
+<code class="sig-name descname">add_log_path</code><span class="sig-paren">(</span><em class="sig-param">log_dir=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.add_log_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.add_log_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.change_mode">
+<code class="sig-name descname">change_mode</code><span class="sig-paren">(</span><em class="sig-param">train=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.change_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.change_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.create_checkpoint_dict">
+<code class="sig-name descname">create_checkpoint_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.create_checkpoint_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.create_checkpoint_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>和torch.save的逻辑一样，要保存多少变量直接写上即可</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.create_model_state_dict">
+<code class="sig-name descname">create_model_state_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.create_model_state_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.create_model_state_dict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>默认返回一个{model_name:model_dict}，model_dict的每一个key表示一个需要保存的模型</dt><dd><p>（是模型而不是state_dict()）</p>
+</dd>
+<dt>类似optimizer 中的 param group 方法，每一个key对应一个要保存的模型</dt><dd><p>如果要保存多个模型到一个文件中，那么该文件的key对应一个模型字典即可</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.device">
+<em class="property">property </em><code class="sig-name descname">device</code><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.device" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.eval">
+<code class="sig-name descname">eval</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.eval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.iter_eval_dataloader">
+<code class="sig-name descname">iter_eval_dataloader</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.iter_eval_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.iter_eval_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.iter_test_dataloader">
+<code class="sig-name descname">iter_test_dataloader</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.iter_test_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.iter_test_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.iter_train_dataloader">
+<code class="sig-name descname">iter_train_dataloader</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.iter_train_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.iter_train_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.load_checkpoint">
+<code class="sig-name descname">load_checkpoint</code><span class="sig-paren">(</span><em class="sig-param">pointer=-1</em>, <em class="sig-param">not_exist_ok=False</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.load_checkpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.load_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>load instance checkpoint, and return trained epoch
+:param pointer:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.load_model">
+<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.load_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.load_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.model_dict">
+<code class="sig-name descname">model_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; torchhelper.base.structure.WalkDict<a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.model_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.model_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.model_state_dict">
+<code class="sig-name descname">model_state_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.model_state_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.model_state_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.optim_dict">
+<code class="sig-name descname">optim_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; torchhelper.base.structure.WalkDict<a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.optim_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.optim_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.optim_state_dict">
+<code class="sig-name descname">optim_state_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.optim_state_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.optim_state_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">xs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.preprocess">
+<code class="sig-name descname">preprocess</code><span class="sig-paren">(</span><em class="sig-param">xs: torch.Tensor</em>, <em class="sig-param">ys: torch.Tensor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.preprocess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.regist_dataloader">
+<code class="sig-name descname">regist_dataloader</code><span class="sig-paren">(</span><em class="sig-param">train</em>, <em class="sig-param">eval</em>, <em class="sig-param">test</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.regist_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.regist_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.regist_device">
+<code class="sig-name descname">regist_device</code><span class="sig-paren">(</span><em class="sig-param">device=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.regist_device"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.regist_device" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.regist_eval_dataloader">
+<code class="sig-name descname">regist_eval_dataloader</code><span class="sig-paren">(</span><em class="sig-param">dataloader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.regist_eval_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.regist_eval_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>import dataloaders for eval, in eval mode, it will all be eval</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.regist_model_and_optim">
+<code class="sig-name descname">regist_model_and_optim</code><span class="sig-paren">(</span><em class="sig-param">exp_name=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.regist_model_and_optim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.regist_model_and_optim" title="Permalink to this definition">¶</a></dt>
+<dd><p>声明在该Trainer中用到的模型和优化器，从而可以自动完成模型保存和恢复（如果没有特殊用途的话）
+（一切保存和恢复通过 state_dict() load_state_dict() 完成的变量）
+:param exp_name: 试验名称，用于保存模型，断点等作为前缀，如果为空，则指定为类名
+:param kwargs:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.regist_test_dataloader">
+<code class="sig-name descname">regist_test_dataloader</code><span class="sig-paren">(</span><em class="sig-param">dataloader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.regist_test_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.regist_test_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>import dataloaders for test, in test mode, it will all be tested</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.regist_train_dataloader">
+<code class="sig-name descname">regist_train_dataloader</code><span class="sig-paren">(</span><em class="sig-param">dataloader</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.regist_train_dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.regist_train_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.save_checkpoint">
+<code class="sig-name descname">save_checkpoint</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.save_checkpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.save_checkpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>保存断点，断点要保存的内容从 checkpoint_dict() 方法中获取，通过saver自动保存至相应路径。
+如果没有必要，不需要重写该函数
+:param kwargs: 其他要附加到 checkpoint 中的信息
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.save_model">
+<code class="sig-name descname">save_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.save_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.save_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.set_saver">
+<code class="sig-name descname">set_saver</code><span class="sig-paren">(</span><em class="sig-param">path=None</em>, <em class="sig-param">max_to_keep=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.set_saver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.set_saver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.test">
+<code class="sig-name descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.train_batch">
+<code class="sig-name descname">train_batch</code><span class="sig-paren">(</span><em class="sig-param">eidx</em>, <em class="sig-param">idx</em>, <em class="sig-param">global_step</em>, <em class="sig-param">data</em>, <em class="sig-param">device</em>, <em class="sig-param">param</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.train_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.train_batch" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eidx</strong> – 第几个epoch</p></li>
+<li><p><strong>idx</strong> – 当前epoch的步</p></li>
+<li><p><strong>global_step</strong> – 全局步</p></li>
+<li><p><strong>data</strong> – batch级的数据</p></li>
+<li><p><strong>param</strong> – 该中的参数只能读，不能写</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>meter，需要日志输出的内容</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.BaseTrainer.train_epoch">
+<code class="sig-name descname">train_epoch</code><span class="sig-paren">(</span><em class="sig-param">eidx</em>, <em class="sig-param">param</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#BaseTrainer.train_epoch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.BaseTrainer.train_epoch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.frame.trainerv2.Trainer">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.frame.trainerv2.</code><code class="sig-name descname">Trainer</code><span class="sig-paren">(</span><em class="sig-param">param: torchhelper.frame.parameter.TrainParam</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#Trainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.Trainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#torchhelper.frame.trainerv2.BaseTrainer" title="torchhelper.frame.trainerv2.BaseTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">torchhelper.frame.trainerv2.BaseTrainer</span></code></a></p>
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.Trainer.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">xs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#Trainer.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.Trainer.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.Trainer.preprocess">
+<code class="sig-name descname">preprocess</code><span class="sig-paren">(</span><em class="sig-param">xs</em>, <em class="sig-param">ys</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#Trainer.preprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.Trainer.preprocess" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.frame.trainerv2.Trainer.train_batch">
+<code class="sig-name descname">train_batch</code><span class="sig-paren">(</span><em class="sig-param">eidx</em>, <em class="sig-param">idx</em>, <em class="sig-param">global_step</em>, <em class="sig-param">data</em>, <em class="sig-param">device</em>, <em class="sig-param">param</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/frame/trainerv2.html#Trainer.train_batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.frame.trainerv2.Trainer.train_batch" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eidx</strong> – 第几个epoch</p></li>
+<li><p><strong>idx</strong> – 当前epoch的步</p></li>
+<li><p><strong>global_step</strong> – 全局步</p></li>
+<li><p><strong>data</strong> – batch级的数据</p></li>
+<li><p><strong>param</strong> – 该中的参数只能读，不能写</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>meter，需要日志输出的内容</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.frame">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-torchhelper.frame" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<p>人启动训练器，并且定制训练器的日志和模型保存路径，并且传递给训练器各种iter过程的参数</p>
+<p>训练器需要自己创造模型，创造数据集（根据参数），创造设备（根据参数）</p>
+<p>在训练、训练iter、验证、测试结束后，依次触发保存、日志输出等“额外”过程</p>
+<p>日志输出和保存需要获取的信息，应该完全能从训练器中获得，包括有哪些模型，有哪些loss或acc需要输出、有哪些超参数需要输出</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, sailist
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>torchhelper.base package &mdash; TorchHelper https://github.com/sailist/TorchHelper/releases documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> TorchHelper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">torchhelper.base package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-torchhelper.base.meta">torchhelper.base.meta module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.base.recordable">torchhelper.base.recordable module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.base.structure">torchhelper.base.structure module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.base">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TorchHelper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>torchhelper.base package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/torchhelper.base.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="torchhelper-base-package">
+<h1>torchhelper.base package<a class="headerlink" href="#torchhelper-base-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-torchhelper.base.meta">
+<span id="torchhelper-base-meta-module"></span><h2>torchhelper.base.meta module<a class="headerlink" href="#module-torchhelper.base.meta" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<blockquote>
+<div><dl>
+<dt>温馨提示：</dt><dd><p>抵制不良代码，拒绝乱用代码。</p>
+<p>注意自我保护，谨防上当受骗。</p>
+<p>适当编程益脑，沉迷编程伤身。</p>
+<p>合理安排时间，享受健康生活！</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="class">
+<dt id="torchhelper.base.meta.Merge">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.base.meta.</code><code class="sig-name descname">Merge</code><a class="reference internal" href="_modules/torchhelper/base/meta.html#Merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.meta.Merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></p>
+<p>元类，用于将子类和父类共有字典，集合时，子类的覆盖行为改为合并父类的字典，集合</p>
+<p>由于用途特殊，仅识别类变量中以下划线开头的变量</p>
+<dl>
+<dt>::</dt><dd><dl class="simple">
+<dt>class A(metaclass=Merge):</dt><dd><p>_dicts = {“1”: 2, “3”: 4}</p>
+</dd>
+<dt>class B(A):</dt><dd><p>_dicts = {“5”:6,7:8}</p>
+</dd>
+</dl>
+<p>print(B._dicts)</p>
+</dd>
+</dl>
+<p>result:
+&gt;&gt;&gt; {‘5’: 6, ‘3’: 4, ‘1’: 2, 7: 8}</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.base.recordable">
+<span id="torchhelper-base-recordable-module"></span><h2>torchhelper.base.recordable module<a class="headerlink" href="#module-torchhelper.base.recordable" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<blockquote>
+<div><dl>
+<dt>温馨提示：</dt><dd><p>抵制不良代码，拒绝乱用代码。</p>
+<p>注意自我保护，谨防上当受骗。</p>
+<p>适当编程益脑，沉迷编程伤身。</p>
+<p>合理安排时间，享受健康生活！</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="class">
+<dt id="torchhelper.base.recordable.Recordable">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.base.recordable.</code><code class="sig-name descname">Recordable</code><span class="sig-paren">(</span><em class="sig-param">default_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>record parameters for use and log.</p>
+<dl class="class">
+<dt id="torchhelper.base.recordable.Recordable.KeyObj">
+<em class="property">class </em><code class="sig-name descname">KeyObj</code><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.KeyObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.KeyObj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.float">
+<code class="sig-name descname">float</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">acc=4</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.float" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.ignore">
+<code class="sig-name descname">ignore</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.ignore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.ignore" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.int">
+<code class="sig-name descname">int</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.load_default">
+<code class="sig-name descname">load_default</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.load_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.load_default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.logdict">
+<code class="sig-name descname">logdict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.logdict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.logdict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.merge_dict">
+<code class="sig-name descname">merge_dict</code><span class="sig-paren">(</span><em class="sig-param">obj: dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.merge_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.merge_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.percent">
+<code class="sig-name descname">percent</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">acc=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.percent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.read_mode">
+<code class="sig-name descname">read_mode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.read_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.read_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.short">
+<code class="sig-name descname">short</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">short_key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.short"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.short" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.str">
+<code class="sig-name descname">str</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.tensorboard">
+<code class="sig-name descname">tensorboard</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.tensorboard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.tensorboard" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.tensorboard_dict">
+<code class="sig-name descname">tensorboard_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.tensorboard_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.tensorboard_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.recordable.Recordable.write_mode">
+<code class="sig-name descname">write_mode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/recordable.html#Recordable.write_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.recordable.Recordable.write_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.base.structure">
+<span id="torchhelper-base-structure-module"></span><h2>torchhelper.base.structure module<a class="headerlink" href="#module-torchhelper.base.structure" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<blockquote>
+<div><dl>
+<dt>温馨提示：</dt><dd><p>抵制不良代码，拒绝乱用代码。</p>
+<p>注意自我保护，谨防上当受骗。</p>
+<p>适当编程益脑，沉迷编程伤身。</p>
+<p>合理安排时间，享受健康生活！</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="class">
+<dt id="torchhelper.base.structure.ScreenStr">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.base.structure.</code><code class="sig-name descname">ScreenStr</code><a class="reference internal" href="_modules/torchhelper/base/structure.html#ScreenStr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.structure.ScreenStr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+<dl class="method">
+<dt id="torchhelper.base.structure.ScreenStr.cacu_offset">
+<code class="sig-name descname">cacu_offset</code><span class="sig-paren">(</span><em class="sig-param">flag=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/structure.html#ScreenStr.cacu_offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.structure.ScreenStr.cacu_offset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.structure.ScreenStr.deltatime">
+<code class="sig-name descname">deltatime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/structure.html#ScreenStr.deltatime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.structure.ScreenStr.deltatime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="torchhelper.base.structure.ScreenStr.dt">
+<code class="sig-name descname">dt</code><em class="property"> = 0.05</em><a class="headerlink" href="#torchhelper.base.structure.ScreenStr.dt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="torchhelper.base.structure.ScreenStr.offset">
+<code class="sig-name descname">offset</code><em class="property"> = 0</em><a class="headerlink" href="#torchhelper.base.structure.ScreenStr.offset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.structure.ScreenStr.set_speed">
+<em class="property">static </em><code class="sig-name descname">set_speed</code><span class="sig-paren">(</span><em class="sig-param">dt: float = 0.05</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/structure.html#ScreenStr.set_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.structure.ScreenStr.set_speed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="torchhelper.base.structure.ScreenStr.t">
+<code class="sig-name descname">t</code><em class="property"> = 0</em><a class="headerlink" href="#torchhelper.base.structure.ScreenStr.t" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.structure.ScreenStr.tostr">
+<code class="sig-name descname">tostr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/structure.html#ScreenStr.tostr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.structure.ScreenStr.tostr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.base.structure.WalkDict">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.base.structure.</code><code class="sig-name descname">WalkDict</code><a class="reference internal" href="_modules/torchhelper/base/structure.html#WalkDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.structure.WalkDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">collections.OrderedDict</span></code></p>
+<p>支持
+{</p>
+<blockquote>
+<div><p>“model_a”=ModelA(),
+“models_b”={</p>
+<blockquote>
+<div><p>“submodela” =SubModelA(),
+“submodelb” =SubModelB(),</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}
+调用model_items()即可递归的迭代依次返回：
+“model_a”=ModelA(),
+“submodela” =SubModelA(),
+“submodelb” =SubModelB(),</p>
+<p>调用model_keys()可依次返回：
+ModelA(),
+SubModelA(),
+SubModelB(),</p>
+<dl class="method">
+<dt id="torchhelper.base.structure.WalkDict.walk_items">
+<code class="sig-name descname">walk_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/structure.html#WalkDict.walk_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.structure.WalkDict.walk_items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.base.structure.WalkDict.walk_keys">
+<code class="sig-name descname">walk_keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/structure.html#WalkDict.walk_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.structure.WalkDict.walk_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="torchhelper.base.structure.get_consolo_width">
+<code class="sig-prename descclassname">torchhelper.base.structure.</code><code class="sig-name descname">get_consolo_width</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/base/structure.html#get_consolo_width"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.base.structure.get_consolo_width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.base">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-torchhelper.base" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<blockquote>
+<div><dl>
+<dt>温馨提示：</dt><dd><p>抵制不良代码，拒绝乱用代码。</p>
+<p>注意自我保护，谨防上当受骗。</p>
+<p>适当编程益脑，沉迷编程伤身。</p>
+<p>合理安排时间，享受健康生活！</p>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, sailist
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

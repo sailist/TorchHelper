@@ -1,0 +1,675 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>torchhelper.frame.logwrapper &mdash; TorchHelper https://github.com/sailist/TorchHelper/releases documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> TorchHelper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">TorchHelper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>torchhelper.frame.logwrapper</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for torchhelper.frame.logwrapper</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">   Copyright 2020 Sailist</span>
+
+<span class="sd">   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="sd">   you may not use this file except in compliance with the License.</span>
+<span class="sd">   You may obtain a copy of the License at</span>
+
+<span class="sd">     http://www.apache.org/licenses/LICENSE-2.0</span>
+
+<span class="sd">   Unless required by applicable law or agreed to in writing, software</span>
+<span class="sd">   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="sd">   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="sd">   See the License for the specific language governing permissions and</span>
+<span class="sd">   limitations under the License.</span>
+
+<span class="sd">    用于更快的输出日志</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">.parameter</span> <span class="k">import</span> <span class="n">LogMeter</span>
+<span class="kn">from</span> <span class="nn">..base.structure</span> <span class="k">import</span> <span class="n">ScreenStr</span>
+
+
+<div class="viewcode-block" id="LogParam"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam">[docs]</a><span class="k">class</span> <span class="nc">LogParam</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    meter = LogParam()</span>
+<span class="sd">    mk = meter.k</span>
+<span class="sd">    meter.epoch = &quot;{}({})/{}&quot;.format(eidx, idx, self.epoch)</span>
+
+<span class="sd">    ...</span>
+
+<span class="sd">    meter.accuracy = cacu_acc(...)</span>
+
+<span class="sd">    meter.percent(mk.accuracy) # will be format like dd.dd%</span>
+
+<span class="sd">    meter.loss = loss_function(...) # will be format as dd.dddd</span>
+<span class="sd">    meter.float(mk.loss,acc = 2) # will be format as dd.dd</span>
+
+<span class="sd">    meter.loss.backward()</span>
+
+<span class="sd">    meter.info(&quot;I logged some info&quot;)</span>
+<span class="sd">    return meter  # or use &#39;yield meter&#39; if in loop logits</span>
+
+<span class="sd">    you can use meter.param to get the OrderedDict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LogParam.KeyObj"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam.KeyObj">[docs]</a>    <span class="k">class</span> <span class="nc">KeyObj</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">item</span></div>
+
+    <span class="n">_noset</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;param_dict&quot;</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;format_dict&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;short_dict&quot;</span><span class="p">,</span> <span class="s2">&quot;default_type&quot;</span><span class="p">,</span> <span class="s2">&quot;_infos&quot;</span><span class="p">,</span> <span class="s2">&quot;ignore_set&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;board_dict&quot;</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">LogParam</span><span class="o">.</span><span class="n">KeyObj</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_type</span> <span class="o">=</span> <span class="n">default_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">short_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board_dict</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_infos</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># @TODO</span>
+
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">LogParam</span><span class="o">.</span><span class="n">_noset</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">board_dict</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_dict</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">&quot;</span><span class="si">{:.0f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">isdecimal</span><span class="p">():</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_type</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+<div class="viewcode-block" id="LogParam.merge_dict"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam.merge_dict">[docs]</a>    <span class="k">def</span> <span class="nf">merge_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span></div>
+
+<div class="viewcode-block" id="LogParam.str"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam.str">[docs]</a>    <span class="k">def</span> <span class="nf">str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="LogParam.int"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam.int">[docs]</a>    <span class="k">def</span> <span class="nf">int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.0f}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="LogParam.short"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam.short">[docs]</a>    <span class="k">def</span> <span class="nf">short</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">short_key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">short_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">short_key</span></div>
+
+<div class="viewcode-block" id="LogParam.ignore"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam.ignore">[docs]</a>    <span class="k">def</span> <span class="nf">ignore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LogParam.percent"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam.percent">[docs]</a>    <span class="k">def</span> <span class="nf">percent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">acc</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;{{:.</span><span class="si">{}</span><span class="s2">%}}%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LogParam.float"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam.float">[docs]</a>    <span class="k">def</span> <span class="nf">float</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">acc</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;{{:.</span><span class="si">{}</span><span class="s2">f}}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LogParam.tensorboard"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam.tensorboard">[docs]</a>    <span class="k">def</span> <span class="nf">tensorboard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">board_dict</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignore_set</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_dict</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">short_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="k">return</span> <span class="n">res</span>
+
+<div class="viewcode-block" id="LogParam.from_dict"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogParam.from_dict">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">odict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">meter</span> <span class="o">=</span> <span class="n">LogParam</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">odict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">meter</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="k">return</span> <span class="n">meter</span></div></div>
+
+
+<div class="viewcode-block" id="LogWrapper"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogWrapper">[docs]</a><span class="k">class</span> <span class="nc">LogWrapper</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    一个用于日志输出的装饰器。</span>
+
+<span class="sd">    已废弃，但是还可以用，也还算好用，就不删除了，代码示例放在这：</span>
+<span class="sd">    ::</span>
+<span class="sd">        logger = Logger()</span>
+
+<span class="sd">        @logger.logger(inline=True, not_in_class=True)</span>
+<span class="sd">        def cacu(eidx):</span>
+<span class="sd">            for i in range(10000):</span>
+<span class="sd">                meter = LogParam()</span>
+<span class="sd">                meter.loss = i</span>
+<span class="sd">                meter.accr = 0.64</span>
+<span class="sd">                meterk = meter.k</span>
+<span class="sd">                meter.percent(meterk.accr)</span>
+<span class="sd">                yield meter</span>
+
+<span class="sd">        for i in range(100):</span>
+<span class="sd">            cacu(i)</span>
+
+<span class="sd">    `::</span>
+<span class="sd">        @logger.logger(inline=True, not_in_class=True)</span>
+<span class="sd">        def cacu(eidx,**kw):</span>
+<span class="sd">            pass</span>
+
+<span class="sd">        for i in range(100):</span>
+<span class="sd">            cacu(i,p1 = &quot;arg1&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tail</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">asctime</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">datefmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y %I:%M:%S %p&#39;</span><span class="p">,</span>
+                 <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot; - &quot;</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        :param head:</span>
+<span class="sd">        :param tail:</span>
+<span class="sd">        :param asctime:</span>
+<span class="sd">        :param datefmt:</span>
+<span class="sd">        :param sep:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">tail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">asctime</span> <span class="o">=</span> <span class="n">asctime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datefmt</span> <span class="o">=</span> <span class="n">datefmt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_channel</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span>
+
+    <span class="k">def</span> <span class="nf">_build_logstr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ordered_dict</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;@</span><span class="si">{}</span><span class="s2">=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ordered_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+
+<div class="viewcode-block" id="LogWrapper.wrap"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogWrapper.wrap">[docs]</a>    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span>
+             <span class="n">inline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+             <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+             <span class="n">cacu_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">cacu_step</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">not_in_class</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+             <span class="n">append_fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">append_args</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">append_kws</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+             <span class="n">max_step</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        使用该方法代替装饰器，</span>
+<span class="sd">        logger = Logger()</span>
+<span class="sd">        func = logger.wrap(func)</span>
+
+<span class="sd">        该方法与下面的方法效果等同</span>
+<span class="sd">        @logger.logger()</span>
+<span class="sd">        def func():</span>
+<span class="sd">            ...</span>
+<span class="sd">        :param func:</span>
+<span class="sd">        :param inline:</span>
+<span class="sd">        :param prefix:</span>
+<span class="sd">        :param suffix:</span>
+<span class="sd">        :param cacu_time:</span>
+<span class="sd">        :param cacu_step:</span>
+<span class="sd">        :param not_in_class:</span>
+<span class="sd">        :param append_fn:</span>
+<span class="sd">        :param append_args:</span>
+<span class="sd">        :param append_kws:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">wrapper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="n">inline</span><span class="p">,</span>
+                              <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">,</span>
+                              <span class="n">cacu_time</span><span class="o">=</span><span class="n">cacu_time</span><span class="p">,</span> <span class="n">cacu_step</span><span class="o">=</span><span class="n">cacu_step</span><span class="p">,</span>
+                              <span class="n">not_in_class</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                              <span class="n">append_fn</span><span class="o">=</span><span class="n">append_fn</span><span class="p">,</span> <span class="n">append_args</span><span class="o">=</span><span class="n">append_args</span><span class="p">,</span> <span class="n">append_kws</span><span class="o">=</span><span class="n">append_kws</span><span class="p">,</span>
+                              <span class="n">max_step</span><span class="o">=</span><span class="n">max_step</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_sec2str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; 将秒数转化为 ddhddmdds 的格式&quot;&quot;&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="c1"># sec = int(s) % 60</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">s</span> <span class="o">-</span> <span class="n">s</span> <span class="o">%</span> <span class="mi">60</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">m</span> <span class="o">-</span> <span class="n">m</span> <span class="o">%</span> <span class="mi">60</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">%</span> <span class="mi">60</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{:02d}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">h</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{:02d}</span><span class="s2">m</span><span class="si">{:02d}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{:02d}</span><span class="s2">h</span><span class="si">{:02d}</span><span class="s2">m</span><span class="si">{:02d}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_ensure_var_exist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clazz</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;确保一个类包含某个变量 item&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">clazz</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">clazz</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LogWrapper.logger"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogWrapper.logger">[docs]</a>    <span class="k">def</span> <span class="nf">logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">inline</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+               <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+               <span class="n">cacu_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">cacu_step</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">not_in_class</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+               <span class="n">append_fn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">append_args</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">append_kws</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+               <span class="n">dict_pipe</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        该装饰器装饰的方法，应该返回一个LogParam() 对象或者 一个字典</span>
+<span class="sd">        如果返回一个LogParam() 对象，那么过程中存储的变量将会是有序的</span>
+
+<span class="sd">        :param inline: 输出是否控制在一栏，仅在 循环逻辑中 yield meter 的时候有用</span>
+<span class="sd">        :param prefix: 输出的前缀，注意在实例化Logger类时，还可以指定头部，头部在前缀前，一般不需要手动添加 &#39;\r&#39;</span>
+<span class="sd">        :param suffix: 输出的后缀，注意在实例化Logger类时，还可以指定尾部，尾部在后缀后，一般不需要手动添加换行符</span>
+<span class="sd">        :param cacu_time: 是否在输出中添加执行时间</span>
+<span class="sd">        :param cacu_step: 是否在输出中添加该方法内部循环了多少次（epoch级别或batch级别）</span>
+<span class="sd">        :param max_step: 如果是循环逻辑，那么其最大执行次数是几（多用于测试整个流程是否可以跑通）</span>
+<span class="sd">            默认为None，即跑到正常结束</span>
+<span class="sd">        :param not_in_class: 如果不是在类方法中使用logger装饰器，那么需要声明该方法不在类中</span>
+<span class="sd">        :param append_fn: 是否在输出中添加执行的方法名</span>
+<span class="sd">        :param append_args: 是否在输出中添加执行的无名称参数</span>
+<span class="sd">        :param append_kws: 是否在输出中添加执行的有key 参数</span>
+<span class="sd">        :param dict_pipe: 如果想对返回的meter做一个统一的处理，可以通过该方法</span>
+<span class="sd">            该方法将接受一个LogParam对象</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">def</span> <span class="nf">funcwrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+                <span class="n">reses</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">not_in_class</span><span class="p">:</span>
+                    <span class="n">instance</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">asctime</span><span class="p">:</span>
+                    <span class="n">cur_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S  &#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">cur_date</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                <span class="n">head</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">inline</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">)</span>
+                <span class="n">tail</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tail</span><span class="p">,</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">inline</span> <span class="k">else</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logstr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reses</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="n">meter</span> <span class="o">=</span> <span class="n">LogParam</span><span class="p">()</span>
+                    <span class="n">meter</span><span class="o">.</span><span class="n">merge_dict</span><span class="p">(</span><span class="n">reses</span><span class="p">)</span>
+                    <span class="n">meter</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="n">append_fn</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">meter</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span> <span class="k">if</span> <span class="n">append_args</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">meter</span><span class="o">.</span><span class="n">merge_dict</span><span class="p">(</span><span class="n">kw</span> <span class="k">if</span> <span class="n">append_kws</span> <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+                    <span class="n">meter</span><span class="o">.</span><span class="n">run_time</span> <span class="o">=</span> <span class="n">LogWrapper</span><span class="o">.</span><span class="n">_sec2str</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="k">if</span> <span class="n">cacu_time</span> <span class="k">else</span> <span class="kc">None</span>
+
+                    <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">dict_pipe</span><span class="p">):</span>
+                        <span class="n">meter</span> <span class="o">=</span> <span class="n">dict_pipe</span><span class="p">(</span><span class="n">meter</span><span class="p">)</span>
+
+                    <span class="n">midstr</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">prefix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_logstr</span><span class="p">(</span><span class="n">meter</span><span class="o">.</span><span class="n">params</span><span class="p">),</span> <span class="n">suffix</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+                    <span class="n">logstr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">head</span><span class="p">,</span> <span class="n">cur_date</span><span class="p">,</span> <span class="n">midstr</span><span class="p">,</span> <span class="n">tail</span><span class="p">])</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">logstr</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reses</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">reses</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">max_step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">max_step</span><span class="p">:</span>
+                                <span class="k">break</span>
+
+                        <span class="c1"># if fself is not None and _cacu_step:</span>
+                        <span class="c1">#     setattr(fself, var_name, getattr(fself, var_name) + 1)</span>
+
+                        <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                            <span class="n">res</span> <span class="o">=</span> <span class="n">LogParam</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">dict_pipe</span><span class="p">):</span>
+                            <span class="n">res</span> <span class="o">=</span> <span class="n">dict_pipe</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">cacu_step</span><span class="p">:</span>
+                            <span class="n">res</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="n">i</span>
+                            <span class="n">res</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="s2">&quot;step&quot;</span><span class="p">)</span>
+
+                        <span class="n">res</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="n">append_fn</span> <span class="k">else</span> <span class="kc">None</span>
+                        <span class="n">res</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span> <span class="k">if</span> <span class="n">append_args</span> <span class="k">else</span> <span class="kc">None</span>
+                        <span class="n">res</span><span class="o">.</span><span class="n">merge_dict</span><span class="p">(</span><span class="n">kw</span> <span class="k">if</span> <span class="n">append_kws</span> <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+                        <span class="n">res</span><span class="o">.</span><span class="n">run_time</span> <span class="o">=</span> <span class="n">LogWrapper</span><span class="o">.</span><span class="n">_sec2str</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="k">if</span> <span class="n">cacu_time</span> <span class="k">else</span> <span class="kc">None</span>
+
+                        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">dict_pipe</span><span class="p">):</span>
+                            <span class="n">res</span> <span class="o">=</span> <span class="n">dict_pipe</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+                        <span class="n">midstr</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                            <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">prefix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_logstr</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">params</span><span class="p">),</span> <span class="n">suffix</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+                        <span class="n">logstr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">head</span><span class="p">,</span> <span class="n">cur_date</span><span class="p">,</span> <span class="n">midstr</span><span class="p">,</span> <span class="n">tail</span><span class="p">])</span>
+                        <span class="k">if</span> <span class="n">inline</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">logstr</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">just_print</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="c1"># else:</span>
+                        <span class="c1">#     self.info(logstr.strip(), sep=&quot;&quot;, end=&quot;\n&quot;, just_print=True)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">logstr</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">just_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reses</span><span class="p">,</span> <span class="n">LogParam</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">dict_pipe</span><span class="p">):</span>
+                        <span class="n">reses</span> <span class="o">=</span> <span class="n">dict_pipe</span><span class="p">(</span><span class="n">reses</span><span class="p">)</span>
+
+                    <span class="n">reses</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="n">append_fn</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">reses</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span> <span class="k">if</span> <span class="n">append_args</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="n">reses</span><span class="o">.</span><span class="n">merge_dict</span><span class="p">(</span><span class="n">kw</span> <span class="k">if</span> <span class="n">append_kws</span> <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+                    <span class="n">reses</span><span class="o">.</span><span class="n">run_time</span> <span class="o">=</span> <span class="n">LogWrapper</span><span class="o">.</span><span class="n">_sec2str</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="k">if</span> <span class="n">cacu_time</span> <span class="k">else</span> <span class="kc">None</span>
+
+                    <span class="n">midstr</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">prefix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_logstr</span><span class="p">(</span><span class="n">reses</span><span class="o">.</span><span class="n">params</span><span class="p">),</span> <span class="n">suffix</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+                    <span class="n">logstr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">head</span><span class="p">,</span> <span class="n">cur_date</span><span class="p">,</span> <span class="n">midstr</span><span class="p">,</span> <span class="n">tail</span><span class="p">])</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">logstr</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">midstr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">prefix</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">_build_logstr</span><span class="p">(</span><span class="n">OrderedDict</span><span class="p">(</span>
+
+                                         <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                                         <span class="n">result</span><span class="o">=</span><span class="n">reses</span><span class="p">,</span>
+                                         <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+                                         <span class="o">**</span><span class="n">kw</span><span class="p">,</span>
+                                         <span class="n">run_time</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:.0f}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">),</span> <span class="p">)),</span>
+                                     <span class="n">suffix</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+                    <span class="n">logstr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">head</span><span class="p">,</span> <span class="n">cur_date</span><span class="p">,</span> <span class="n">midstr</span><span class="p">,</span> <span class="n">tail</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">logstr</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">wrapper</span>
+
+        <span class="k">return</span> <span class="n">funcwrapper</span></div>
+
+<div class="viewcode-block" id="LogWrapper.info"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogWrapper.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">just_print</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">just_out</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">just_out</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">just_print</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_channel</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+                    <span class="n">w</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span></div>
+
+<div class="viewcode-block" id="LogWrapper.add_pipe"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.LogWrapper.add_pipe">[docs]</a>    <span class="k">def</span> <span class="nf">add_pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">fni</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fni</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">fni</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;add output channel on </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fni</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_channel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fni</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Logger"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.Logger">[docs]</a><span class="k">class</span> <span class="nc">Logger</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">head</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tail</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">asctime</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">datefmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y %I:%M:%S %p&#39;</span><span class="p">,</span>
+                 <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot; - &quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param head:</span>
+<span class="sd">        :param tail:</span>
+<span class="sd">        :param asctime:</span>
+<span class="sd">        :param datefmt:</span>
+<span class="sd">        :param sep:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">head</span> <span class="o">=</span> <span class="n">head</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tail</span> <span class="o">=</span> <span class="n">tail</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">asctime</span> <span class="o">=</span> <span class="n">asctime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datefmt</span> <span class="o">=</span> <span class="n">datefmt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_channel</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<div class="viewcode-block" id="Logger.format"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.Logger.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reses</span><span class="p">:</span> <span class="n">LogMeter</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;根据初始化设置 格式化 前缀和LogMeter&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">asctime</span><span class="p">:</span>
+            <span class="n">cur_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S &#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cur_date</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">head</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">inline</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">)</span>
+        <span class="n">tail</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tail</span><span class="p">,</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="n">inline</span> <span class="k">else</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">midstr</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">prefix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_logstr</span><span class="p">(</span><span class="n">reses</span><span class="o">.</span><span class="n">logdict</span><span class="p">())]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">logstr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">head</span><span class="p">,</span> <span class="n">cur_date</span><span class="p">,</span> <span class="n">midstr</span><span class="p">,</span> <span class="n">tail</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">logstr</span></div>
+
+    <span class="k">def</span> <span class="nf">_build_logstr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ordered_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;@</span><span class="si">{}</span><span class="s2">=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">ordered_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+
+<div class="viewcode-block" id="Logger.inline"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.Logger.inline">[docs]</a>    <span class="k">def</span> <span class="nf">inline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meter</span><span class="p">:</span> <span class="n">LogMeter</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;在一行内输出 前缀 和 LogMeter&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">meter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">meter</span> <span class="o">=</span> <span class="n">LogMeter</span><span class="p">()</span>
+        <span class="n">logstr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">meter</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">logstr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Logger.info"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.Logger.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meter</span><span class="p">:</span> <span class="n">LogMeter</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;以行为单位输出 前缀 和 LogMeter&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">meter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">meter</span> <span class="o">=</span> <span class="n">LogMeter</span><span class="p">()</span>
+        <span class="n">logstr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">meter</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">logstr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Logger.line"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.Logger.line">[docs]</a>    <span class="k">def</span> <span class="nf">line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;以行为单位输出文字（有时间前缀）&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">content</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Logger.newline"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.Logger.newline">[docs]</a>    <span class="k">def</span> <span class="nf">newline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;换行&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Logger.handle"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.Logger.handle">[docs]</a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logstr</span><span class="p">,</span> <span class="n">_</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        handle log stinrg，以指定的方式输出</span>
+<span class="sd">        :param logstr:</span>
+<span class="sd">        :param _:</span>
+<span class="sd">        :param end:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">logstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">return_str</span> <span class="o">=</span> <span class="n">logstr</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">ScreenStr</span><span class="p">(</span><span class="n">logstr</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">return_str</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">return_str</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">logstr</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_channel</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">return_str</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">w</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">return_str</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+                    <span class="n">w</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">logstr</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">return_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Logger.add_pipe"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.logwrapper.Logger.add_pipe">[docs]</a>    <span class="k">def</span> <span class="nf">add_pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;添加一个输出到文件的管道&quot;&quot;&quot;</span>
+        <span class="n">path</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">fni</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fni</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">fni</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;add output channel on </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fni</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_channel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fni</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, sailist
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

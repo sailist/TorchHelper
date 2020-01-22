@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>torchhelper.tune package &mdash; TorchHelper https://github.com/sailist/TorchHelper/releases documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> TorchHelper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">torchhelper.tune package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-torchhelper.tune.branch">torchhelper.tune.branch module</a></li>
+<li><a class="reference internal" href="#module-torchhelper.tune">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TorchHelper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>torchhelper.tune package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/torchhelper.tune.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="torchhelper-tune-package">
+<h1>torchhelper.tune package<a class="headerlink" href="#torchhelper-tune-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-torchhelper.tune.branch">
+<span id="torchhelper-tune-branch-module"></span><h2>torchhelper.tune.branch module<a class="headerlink" href="#module-torchhelper.tune.branch" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<dl class="class">
+<dt id="torchhelper.tune.branch.Branch">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.tune.branch.</code><code class="sig-name descname">Branch</code><a class="reference internal" href="_modules/torchhelper/tune/branch.html#Branch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.Branch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>基于FuncGraph的更简单的使用类，用于更好的控制执行逻辑:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;add&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+
+<span class="k">def</span> <span class="nf">multi</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;multi&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+
+<span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;swap&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">PseudoVar</span><span class="p">()</span>
+<span class="n">br</span> <span class="o">=</span> <span class="n">Branch</span><span class="p">()</span>
+
+<span class="n">br</span><span class="o">.</span><span class="n">add_node</span> <span class="o">=</span> <span class="n">add</span><span class="p">,</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
+<span class="n">br</span><span class="o">.</span><span class="n">multi</span> <span class="o">=</span> <span class="n">multi</span><span class="p">,</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">c</span><span class="p">),</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
+<span class="n">br</span><span class="o">.</span><span class="n">swap</span> <span class="o">=</span> <span class="n">swap</span><span class="p">,</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sa</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">sb</span><span class="p">)</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">br</span><span class="o">.</span><span class="n">run_for</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">sa</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">d</span><span class="p">)</span>
+
+<span class="c1"># or</span>
+<span class="n">br</span><span class="o">.</span><span class="n">add_needs</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">d</span><span class="p">,</span><span class="n">p</span><span class="o">.</span><span class="n">sa</span><span class="p">)</span>
+<span class="n">br</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="torchhelper.tune.branch.Branch.add_needs">
+<code class="sig-name descname">add_needs</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/tune/branch.html#Branch.add_needs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.Branch.add_needs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.tune.branch.Branch.build">
+<code class="sig-name descname">build</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/tune/branch.html#Branch.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.Branch.build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.tune.branch.Branch.clear_needs">
+<code class="sig-name descname">clear_needs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/tune/branch.html#Branch.clear_needs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.Branch.clear_needs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.tune.branch.Branch.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/tune/branch.html#Branch.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.Branch.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.tune.branch.Branch.run_for">
+<code class="sig-name descname">run_for</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span> &#x2192; torchhelper.tune.branch.VarDict<a class="reference internal" href="_modules/torchhelper/tune/branch.html#Branch.run_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.Branch.run_for" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.tune.branch.FuncGraph">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.tune.branch.</code><code class="sig-name descname">FuncGraph</code><a class="reference internal" href="_modules/torchhelper/tune/branch.html#FuncGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.FuncGraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>模仿TensorFlow的静态图构造出的静态执行方法的类</p>
+<dl>
+<dt>::</dt><dd><p>def add(a, b):
+print(“add”)
+return a + b</p>
+<dl class="simple">
+<dt>def multi(a, b):</dt><dd><p>print(“multi”)
+return a * b</p>
+</dd>
+<dt>def swap(a, b):</dt><dd><p>print(“swap”)
+return b, a</p>
+</dd>
+</dl>
+<p>func = FuncGraph()
+p = PseudoVar()
+func.add_func_node(add, [p.a, p.b], to=[p.c])
+func.add_func_node(multi, [p.a, p.c], to=[p.d])
+func.add_func_node(swap, [p.a, p.b], to=[p.sa, p.sb])
+func.build([“d”,”sa”])
+print(func.run({“a”: 2, “b”: 4}))</p>
+<p>func.rebuild([“c”])
+print(func.run({“a”: 2, “b”: 4}))</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="torchhelper.tune.branch.FuncGraph.DATA_BY">
+<code class="sig-name descname">DATA_BY</code><em class="property"> = -1</em><a class="headerlink" href="#torchhelper.tune.branch.FuncGraph.DATA_BY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="torchhelper.tune.branch.FuncGraph.DATA_TO">
+<code class="sig-name descname">DATA_TO</code><em class="property"> = 1</em><a class="headerlink" href="#torchhelper.tune.branch.FuncGraph.DATA_TO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="torchhelper.tune.branch.FuncGraph.FUNC_EXEC">
+<code class="sig-name descname">FUNC_EXEC</code><em class="property"> = 1</em><a class="headerlink" href="#torchhelper.tune.branch.FuncGraph.FUNC_EXEC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="torchhelper.tune.branch.FuncGraph.FUNC_SUSP">
+<code class="sig-name descname">FUNC_SUSP</code><em class="property"> = 0</em><a class="headerlink" href="#torchhelper.tune.branch.FuncGraph.FUNC_SUSP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.tune.branch.FuncGraph.add_func_node">
+<code class="sig-name descname">add_func_node</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">by</em>, <em class="sig-param">to</em>, <em class="sig-param">func_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/tune/branch.html#FuncGraph.add_func_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.FuncGraph.add_func_node" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – </p></li>
+<li><p><strong>by</strong> – </p></li>
+<li><p><strong>to</strong> – </p></li>
+<li><p><strong>replace</strong> – </p></li>
+<li><p><strong>args</strong> – 如果最后的需求变量中需要该函数的执行，但是该函数确实不想执行，那么该</p></li>
+<li><p><strong>func_name</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.tune.branch.FuncGraph.build">
+<code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param">need_variables: collections.abc.Iterable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/tune/branch.html#FuncGraph.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.FuncGraph.build" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.tune.branch.FuncGraph.force_disable">
+<code class="sig-name descname">force_disable</code><span class="sig-paren">(</span><em class="sig-param">func_flag</em>, <em class="sig-param">replace=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/tune/branch.html#FuncGraph.force_disable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.FuncGraph.force_disable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.tune.branch.FuncGraph.rebuild">
+<code class="sig-name descname">rebuild</code><span class="sig-paren">(</span><em class="sig-param">need_variables: collections.abc.Iterable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/torchhelper/tune/branch.html#FuncGraph.rebuild"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.FuncGraph.rebuild" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="torchhelper.tune.branch.FuncGraph.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">feed_dict: dict</em><span class="sig-paren">)</span> &#x2192; torchhelper.tune.branch.VarDict<a class="reference internal" href="_modules/torchhelper/tune/branch.html#FuncGraph.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.FuncGraph.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.tune.branch.PseudoVar">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.tune.branch.</code><code class="sig-name descname">PseudoVar</code><a class="reference internal" href="_modules/torchhelper/tune/branch.html#PseudoVar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.PseudoVar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="torchhelper.tune.branch.VarDict">
+<em class="property">class </em><code class="sig-prename descclassname">torchhelper.tune.branch.</code><code class="sig-name descname">VarDict</code><a class="reference internal" href="_modules/torchhelper/tune/branch.html#VarDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#torchhelper.tune.branch.VarDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-torchhelper.tune">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-torchhelper.tune" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2020 Sailist</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+<blockquote>
+<div><p><a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</div></blockquote>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an “AS IS” BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, sailist
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

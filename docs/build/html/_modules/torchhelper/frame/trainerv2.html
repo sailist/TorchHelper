@@ -1,0 +1,636 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>torchhelper.frame.trainerv2 &mdash; TorchHelper https://github.com/sailist/TorchHelper/releases documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> TorchHelper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">TorchHelper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>torchhelper.frame.trainerv2</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for torchhelper.frame.trainerv2</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">   Copyright 2020 Sailist</span>
+
+<span class="sd">   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="sd">   you may not use this file except in compliance with the License.</span>
+<span class="sd">   You may obtain a copy of the License at</span>
+
+<span class="sd">     http://www.apache.org/licenses/LICENSE-2.0</span>
+
+<span class="sd">   Unless required by applicable law or agreed to in writing, software</span>
+<span class="sd">   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="sd">   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="sd">   See the License for the specific language governing permissions and</span>
+<span class="sd">   limitations under the License.</span>
+<span class="sd">   </span>
+<span class="sd">    温馨提示：</span>
+<span class="sd">        抵制不良代码，拒绝乱用代码。</span>
+
+<span class="sd">        注意自我保护，谨防上当受骗。</span>
+
+<span class="sd">        适当编程益脑，沉迷编程伤身。</span>
+
+<span class="sd">        合理安排时间，享受健康生活！</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">chain</span>
+<span class="kn">from</span> <span class="nn">queue</span> <span class="k">import</span> <span class="n">PriorityQueue</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Iterable</span>
+
+<span class="kn">import</span> <span class="nn">torch</span><span class="o">,</span><span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="k">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="k">import</span> <span class="n">optimizer</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="k">import</span> <span class="n">DataLoader</span>
+
+<span class="kn">from</span> <span class="nn">..base.meta</span> <span class="k">import</span> <span class="n">Merge</span>
+<span class="kn">from</span> <span class="nn">..base.structure</span> <span class="k">import</span> <span class="n">WalkDict</span>
+<span class="kn">from</span> <span class="nn">..cacu</span> <span class="k">import</span> <span class="n">accuracy</span> <span class="k">as</span> <span class="n">acc</span>
+<span class="kn">from</span> <span class="nn">.logwrapper</span> <span class="k">import</span> <span class="n">Logger</span>
+<span class="kn">from</span> <span class="nn">.parameter</span> <span class="k">import</span> <span class="n">TrainParam</span><span class="p">,</span><span class="n">LogMeter</span>
+<span class="kn">from</span> <span class="nn">.databundler</span> <span class="k">import</span> <span class="n">DataBundler</span>
+<span class="kn">from</span> <span class="nn">.saver</span> <span class="k">import</span> <span class="n">Saver</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<div class="viewcode-block" id="BaseTrainer"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer">[docs]</a><span class="k">class</span> <span class="nc">BaseTrainer</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">Merge</span><span class="p">):</span>
+    <span class="n">_ignore_call_back</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;model_dict&quot;</span><span class="p">,</span> <span class="s2">&quot;optim_dict&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;model_state_dict&quot;</span><span class="p">,</span> <span class="s2">&quot;optim_state_dict&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;create_checkpoint_dict&quot;</span><span class="p">,</span> <span class="s2">&quot;create_checkpoint_dict&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;iter_train_dataloader&quot;</span><span class="p">,</span> <span class="s2">&quot;iter_eval_dataloader&quot;</span><span class="p">,</span> <span class="s2">&quot;iter_test_dataloader&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;predict&quot;</span><span class="p">,</span> <span class="s2">&quot;preprocess&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;add_callback&quot;</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span> <span class="n">TrainParam</span><span class="p">):</span>
+        <span class="c1"># self.param = param</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param</span> <span class="o">=</span> <span class="n">param</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_base_dir</span> <span class="o">=</span> <span class="s2">&quot;./release/&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_toggle</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_toggle</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="BaseTrainer.set_saver"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.set_saver">[docs]</a>    <span class="k">def</span> <span class="nf">set_saver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">max_to_keep</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_dir</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="o">.</span><span class="n">get_exp_name</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saver</span> <span class="o">=</span> <span class="n">Saver</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">max_to_keep</span><span class="o">=</span><span class="n">max_to_keep</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="s2">&quot;Set Saver in </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="BaseTrainer.add_log_path"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.add_log_path">[docs]</a>    <span class="k">def</span> <span class="nf">add_log_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">log_dir</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">log_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_dir</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="o">.</span><span class="n">get_exp_name</span><span class="p">(),</span><span class="s2">&quot;log.txt&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">call_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">newfunc</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="n">que</span> <span class="o">=</span> <span class="n">call_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">PriorityQueue</span><span class="p">())</span>
+                <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="n">que</span><span class="o">.</span><span class="n">queue</span><span class="p">:</span>
+                    <span class="n">callback</span><span class="o">.</span><span class="n">on_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">meter</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="n">que</span><span class="o">.</span><span class="n">queue</span><span class="p">:</span>
+                    <span class="n">callback</span><span class="o">.</span><span class="n">on_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">,</span> <span class="n">meter</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">meter</span>
+
+            <span class="k">return</span> <span class="n">newfunc</span>
+
+        <span class="n">callback_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">vars</span> <span class="o">=</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="c1"># for name, value in inspect.getmembers(self):</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                <span class="n">callback_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">PriorityQueue</span><span class="p">())</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">callback_dict</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback_dict</span> <span class="o">=</span> <span class="n">callback_dict</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+<div class="viewcode-block" id="BaseTrainer.add_callback"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.add_callback">[docs]</a>    <span class="k">def</span> <span class="nf">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        添加一个回调函数</span>
+<span class="sd">        :param func: trainer中的函数，建议用 trainer.function 的形式传入</span>
+<span class="sd">        :type callable,str</span>
+<span class="sd">        :param callback:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">funcname</span> <span class="o">=</span> <span class="n">func</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">funcname</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Function not found.&quot;</span>
+            <span class="n">callback</span><span class="o">.</span><span class="n">on_hook_failed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;This function is not native.&quot;</span>
+            <span class="n">callback</span><span class="o">.</span><span class="n">on_hook_failed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;do not has function: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="n">callback</span><span class="o">.</span><span class="n">on_hook_failed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;function must not startswith &#39;_&#39;&quot;</span>
+            <span class="n">callback</span><span class="o">.</span><span class="n">on_hook_failed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_call_back</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;This function is in the ignored list, so you can&#39;t add callback on it.&quot;</span>
+            <span class="n">callback</span><span class="o">.</span><span class="n">on_hook_failed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">que</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callback_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">PriorityQueue</span><span class="p">())</span>
+        <span class="n">que</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+        <span class="n">callback</span><span class="o">.</span><span class="n">on_hooked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="c1"># def set_saver(self, base_dir, max_to_keep=3):</span>
+    <span class="c1">#     self._saver = Saver(base_dir, max_to_keep)</span>
+    <span class="c1">#     return {&quot;save_path&quot;}</span>
+
+    <span class="k">def</span> <span class="nf">_regist_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">):</span>
+        <span class="n">bundler</span> <span class="o">=</span> <span class="n">DataBundler</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">):</span>
+            <span class="n">bundler</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">)</span>
+                <span class="n">bundler</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot;test_&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">DataBundler</span><span class="p">):</span>
+            <span class="n">bundler</span> <span class="o">=</span> <span class="n">dataloader</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">)</span>
+                <span class="n">bundler</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">bundler</span>
+
+<div class="viewcode-block" id="BaseTrainer.regist_dataloader"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.regist_dataloader">[docs]</a>    <span class="k">def</span> <span class="nf">regist_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">train</span><span class="p">,</span><span class="nb">eval</span><span class="p">,</span><span class="n">test</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regist_train_dataloader</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regist_eval_dataloader</span><span class="p">(</span><span class="nb">eval</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regist_test_dataloader</span><span class="p">(</span><span class="n">test</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.regist_test_dataloader"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.regist_test_dataloader">[docs]</a>    <span class="k">def</span> <span class="nf">regist_test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;import dataloaders for test, in test mode, it will all be tested&quot;&quot;&quot;</span>
+        <span class="n">bundler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_regist_dataloader</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_databundler</span> <span class="o">=</span> <span class="n">bundler</span>
+
+        <span class="n">meter</span> <span class="o">=</span> <span class="n">LogMeter</span><span class="p">()</span>
+        <span class="n">meter</span><span class="o">.</span><span class="n">updata</span><span class="p">(</span><span class="o">**</span><span class="n">bundler</span><span class="o">.</span><span class="n">len_dict</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">meter</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.regist_eval_dataloader"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.regist_eval_dataloader">[docs]</a>    <span class="k">def</span> <span class="nf">regist_eval_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;import dataloaders for eval, in eval mode, it will all be eval&quot;&quot;&quot;</span>
+        <span class="n">bundler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_regist_dataloader</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval_databundler</span> <span class="o">=</span> <span class="n">bundler</span>
+
+        <span class="n">meter</span> <span class="o">=</span> <span class="n">LogMeter</span><span class="p">()</span>
+        <span class="n">meter</span><span class="o">.</span><span class="n">updata</span><span class="p">(</span><span class="o">**</span><span class="n">bundler</span><span class="o">.</span><span class="n">len_dict</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">meter</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.regist_train_dataloader"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.regist_train_dataloader">[docs]</a>    <span class="k">def</span> <span class="nf">regist_train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">):</span>
+        <span class="n">bundler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_regist_dataloader</span><span class="p">(</span><span class="n">dataloader</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_databundler</span> <span class="o">=</span> <span class="n">bundler</span>
+
+        <span class="n">meter</span> <span class="o">=</span> <span class="n">LogMeter</span><span class="p">()</span>
+        <span class="n">meter</span><span class="o">.</span><span class="n">updata</span><span class="p">(</span><span class="o">**</span><span class="n">bundler</span><span class="o">.</span><span class="n">len_dict</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">meter</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.iter_train_dataloader"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.iter_train_dataloader">[docs]</a>    <span class="k">def</span> <span class="nf">iter_train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_databundler</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.iter_eval_dataloader"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.iter_eval_dataloader">[docs]</a>    <span class="k">def</span> <span class="nf">iter_eval_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_databundler</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.iter_test_dataloader"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.iter_test_dataloader">[docs]</a>    <span class="k">def</span> <span class="nf">iter_test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_databundler</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">device</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;try to get device before called regist_device()&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span>
+
+    <span class="nd">@device</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">d</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">d</span>
+
+<div class="viewcode-block" id="BaseTrainer.regist_device"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.regist_device">[docs]</a>    <span class="k">def</span> <span class="nf">regist_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;device type not support, need str or torch.device, but </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_to_device</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.model_dict"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.model_dict">[docs]</a>    <span class="k">def</span> <span class="nf">model_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WalkDict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_dict</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.optim_dict"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.optim_dict">[docs]</a>    <span class="k">def</span> <span class="nf">optim_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WalkDict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optim_dict</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.model_state_dict"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.model_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">model_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">()</span><span class="o">.</span><span class="n">walk_items</span><span class="p">())}</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.optim_state_dict"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.optim_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">optim_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optim_dict</span><span class="p">()</span><span class="o">.</span><span class="n">walk_items</span><span class="p">())}</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.create_checkpoint_dict"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.create_checkpoint_dict">[docs]</a>    <span class="k">def</span> <span class="nf">create_checkpoint_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;和torch.save的逻辑一样，要保存多少变量直接写上即可&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;eidx&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="o">.</span><span class="n">eidx</span><span class="p">,</span>
+            <span class="s2">&quot;global_step&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="o">.</span><span class="n">global_step</span><span class="p">,</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">model_state_dict</span><span class="p">(),</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">optim_state_dict</span><span class="p">(),</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.create_model_state_dict"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.create_model_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">create_model_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        默认返回一个{model_name:model_dict}，model_dict的每一个key表示一个需要保存的模型</span>
+<span class="sd">            （是模型而不是state_dict()）</span>
+
+<span class="sd">        类似optimizer 中的 param group 方法，每一个key对应一个要保存的模型</span>
+<span class="sd">            如果要保存多个模型到一个文件中，那么该文件的key对应一个模型字典即可</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># return {self.model_name: {k: v.state_dict() for k, v in self.raw_model_dict.items()}}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_state_dict</span><span class="p">()}</span></div>
+
+    <span class="k">def</span> <span class="nf">_model_to_device</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">()</span><span class="o">.</span><span class="n">walk_items</span><span class="p">():</span>  <span class="c1"># type:(None,nn.Module)</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseTrainer.regist_model_and_optim"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.regist_model_and_optim">[docs]</a>    <span class="k">def</span> <span class="nf">regist_model_and_optim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exp_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        声明在该Trainer中用到的模型和优化器，从而可以自动完成模型保存和恢复（如果没有特殊用途的话）</span>
+<span class="sd">        （一切保存和恢复通过 state_dict() load_state_dict() 完成的变量）</span>
+<span class="sd">        :param exp_name: 试验名称，用于保存模型，断点等作为前缀，如果为空，则指定为类名</span>
+<span class="sd">        :param kwargs:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">exp_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_name</span> <span class="o">=</span> <span class="n">exp_name</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_model_dict</span> <span class="o">=</span> <span class="n">WalkDict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optim_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_optim_dict</span> <span class="o">=</span> <span class="n">WalkDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_model_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_optim_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;not module or optimizer&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_to_device</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.save_model"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.save_model">[docs]</a>    <span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_saver</span><span class="p">()</span>
+        <span class="n">meter</span> <span class="o">=</span> <span class="n">LogMeter</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">model_group_name</span><span class="p">,</span> <span class="n">models_dicts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_model_state_dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  <span class="c1"># type: str,dict</span>
+            <span class="n">meter</span><span class="p">[</span><span class="n">model_group_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">models_dicts</span><span class="p">,</span>
+                                                      <span class="n">fn_prefix</span><span class="o">=</span><span class="n">model_group_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">meter</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.change_mode"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.change_mode">[docs]</a>    <span class="k">def</span> <span class="nf">change_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">()</span><span class="o">.</span><span class="n">walk_items</span><span class="p">():</span>  <span class="c1"># type:(None,nn.Module)</span>
+                <span class="n">v</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">()</span><span class="o">.</span><span class="n">walk_items</span><span class="p">():</span>  <span class="c1"># type:(None,nn.Module)</span>
+                <span class="n">v</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.load_model"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.load_model">[docs]</a>    <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_saver</span><span class="p">()</span>
+        <span class="n">ckpt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saver</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">()</span><span class="o">.</span><span class="n">walk_items</span><span class="p">():</span>  <span class="c1"># type:(str,nn.Module)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+                <span class="n">v</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="n">k</span><span class="p">])</span></div>
+
+    <span class="k">def</span> <span class="nf">_check_saver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">saver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_saver</span><span class="p">()</span>
+
+<div class="viewcode-block" id="BaseTrainer.save_checkpoint"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.save_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        保存断点，断点要保存的内容从 checkpoint_dict() 方法中获取，通过saver自动保存至相应路径。</span>
+<span class="sd">        如果没有必要，不需要重写该函数</span>
+<span class="sd">        :param kwargs: 其他要附加到 checkpoint 中的信息</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_saver</span><span class="p">()</span>
+        <span class="n">meter</span> <span class="o">=</span> <span class="n">LogMeter</span><span class="p">()</span>
+        <span class="n">ckpt_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_checkpoint_dict</span><span class="p">()</span>
+        <span class="n">ckpt_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">meter</span><span class="o">.</span><span class="n">ckpt_fn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saver</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="o">.</span><span class="n">eidx</span><span class="p">,</span> <span class="n">ckpt_dict</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">meter</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.load_checkpoint"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.load_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pointer</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">not_exist_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        load instance checkpoint, and return trained epoch</span>
+<span class="sd">        :param pointer:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_saver</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ckpt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">pointer</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">not_exist_ok</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="o">.</span><span class="n">eidx</span> <span class="o">=</span> <span class="n">ckpt</span><span class="p">[</span><span class="s2">&quot;eidx&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="o">.</span><span class="n">global_step</span> <span class="o">=</span> <span class="n">ckpt</span><span class="p">[</span><span class="s2">&quot;global_step&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dict</span><span class="p">()</span><span class="o">.</span><span class="n">walk_items</span><span class="p">():</span>  <span class="c1"># type: (str, nn.Module)</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">optim_dict</span><span class="p">()</span><span class="o">.</span><span class="n">walk_items</span><span class="p">():</span>
+            <span class="n">v</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ckpt</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eidx</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.train"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">meter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span>
+        <span class="k">for</span> <span class="n">eidx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">eidx</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_mode</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">meter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch</span><span class="p">(</span><span class="n">eidx</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_mode</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_toggle</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">train_toggle</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">break</span>
+
+            <span class="sd">&#39;&#39;&#39;将测试结果也添加到checkpoint中&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">meter</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.train_epoch"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.train_epoch">[docs]</a>    <span class="k">def</span> <span class="nf">train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eidx</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+        <span class="n">meter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iter_train_dataloader</span><span class="p">()):</span>
+            <span class="n">meter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_batch</span><span class="p">(</span><span class="n">eidx</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">global_step</span><span class="p">,</span>
+                             <span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+                             <span class="n">param</span><span class="p">)</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">global_step</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">eidx</span> <span class="o">=</span> <span class="n">eidx</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">idx</span> <span class="o">=</span> <span class="n">idx</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_toggle</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_toggle</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="n">meter</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.train_batch"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.train_batch">[docs]</a>    <span class="k">def</span> <span class="nf">train_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eidx</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">global_step</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param eidx: 第几个epoch</span>
+<span class="sd">        :param idx: 当前epoch的步</span>
+<span class="sd">        :param global_step: 全局步</span>
+<span class="sd">        :param data: batch级的数据</span>
+<span class="sd">        :param param: 该中的参数只能读，不能写</span>
+<span class="sd">        :return: meter，需要日志输出的内容</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.preprocess"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.preprocess">[docs]</a>    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">ys</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">xs</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">ys</span> <span class="o">=</span> <span class="n">ys</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.predict"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.test"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_eval_logic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iter_test_dataloader</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseTrainer.eval"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.BaseTrainer.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_eval_logic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iter_eval_dataloader</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_param</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_test_eval_logic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span> <span class="n">TrainParam</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Trainer"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.Trainer">[docs]</a><span class="k">class</span> <span class="nc">Trainer</span><span class="p">(</span><span class="n">BaseTrainer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span> <span class="n">TrainParam</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Trainer.train_batch"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.Trainer.train_batch">[docs]</a>    <span class="k">def</span> <span class="nf">train_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eidx</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">global_step</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Trainer.preprocess"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.Trainer.preprocess">[docs]</a>    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Trainer.predict"><a class="viewcode-back" href="../../../torchhelper.frame.html#torchhelper.frame.trainerv2.Trainer.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_test_eval_logic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataloader</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span> <span class="n">TrainParam</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">count_dict</span> <span class="o">=</span> <span class="n">LogMeter</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">xs</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+                <span class="n">xs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">xs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">xs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+                <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+                <span class="n">total</span><span class="p">,</span> <span class="n">topk_res</span> <span class="o">=</span> <span class="n">acc</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">topk</span><span class="o">=</span><span class="n">param</span><span class="o">.</span><span class="n">topk</span><span class="p">)</span>
+                <span class="n">count_dict</span><span class="p">[</span><span class="s2">&quot;total&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">total</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">topi_res</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">topk</span><span class="p">,</span> <span class="n">topk_res</span><span class="p">):</span>
+                    <span class="n">count_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">topi_res</span>
+        <span class="k">return</span> <span class="n">count_dict</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, sailist
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
