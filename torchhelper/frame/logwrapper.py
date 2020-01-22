@@ -15,13 +15,18 @@
 
     用于更快的输出日志
 '''
+import os
 import time
 from collections import Iterable, OrderedDict
 from datetime import datetime
 from typing import Any
 
+from .parameter import LogMeter
+from ..base.structure import ScreenStr
+
+
 class LogParam:
-    '''
+    """
     meter = LogParam()
     mk = meter.k
     meter.epoch = "{}({})/{}".format(eidx, idx, self.epoch)
@@ -41,23 +46,31 @@ class LogParam:
     return meter  # or use 'yield meter' if in loop logits
 
     you can use meter.param to get the OrderedDict
-    '''
+    """
 
     class KeyObj:
         def __getattr__(self, item):
             return item
 
-    _noset = {"param_dict", "k", "format_dict", "default_type","_infos"}
+    _noset = {"param_dict", "k", "format_dict",
+              "short_dict", "default_type", "_infos", "ignore_set",
+              "board_dict"}
 
     def __init__(self, default_type=None):
         self.param_dict = OrderedDict()
         self.k = LogParam.KeyObj()
         self.default_type = default_type
         self.format_dict = {}
-        self._infos = [] # @TODO
+        self.short_dict = {}
+        self.ignore_set = set()
+        self.board_dict = set()
+        self._infos = []  # @TODO
 
     def __setattr__(self, name: str, value: Any) -> None:
         if name not in LogParam._noset:
+            if name in self.board_dict:
+                pass
+
             self.param_dict[name] = value
             if name not in self.format_dict:
                 try:
@@ -82,8 +95,14 @@ class LogParam:
     def str(self, key):
         self.format_dict[key] = "{}"
 
-    def int(self,key):
+    def int(self, key):
         self.format_dict[key] = "{:.0f}"
+
+    def short(self, key, short_key):
+        self.short_dict[key] = short_key
+
+    def ignore(self, key):
+        self.ignore_set.add(key)
 
     def percent(self, key, acc=2):
         self.format_dict[key] = "{{:.{}%}}%".format(acc)
@@ -91,15 +110,19 @@ class LogParam:
     def float(self, key, acc=4):
         self.format_dict[key] = "{{:.{}f}}".format(acc)
 
+    def tensorboard(self, key):
+        self.board_dict.add(key)
+
     @property
     def params(self):
         res = OrderedDict()
         for k, v in self.param_dict.items():
-            if not v:
+            if v is None or k in self.ignore_set:
                 continue
             if k in self.format_dict:
                 v = self.format_dict[k].format(v)
-            res[k] = v
+            name = self.short_dict.get(k, k)
+            res[name] = v
 
         return res
 
@@ -111,43 +134,35 @@ class LogParam:
         return meter
 
 
-class Logger:
-    '''
-    A Log System for the need of Machine Learning.
-    Do not need log level, just for convient.
+class LogWrapper:
+    """
+    一个用于日志输出的装饰器。
 
-    create An LogParam object, Then yield(if have loop logic) or return it, after method executed, it will be logged
-    automaticly. If not return result, the logger will print the function name and args replaced.
+    已废弃，但是还可以用，也还算好用，就不删除了，代码示例放在这：
+    ::
+        logger = Logger()
 
-    The logged str will follow the format "haed date prefix fn args kwargs meterargs suffix tail"
+        @logger.logger(inline=True, not_in_class=True)
+        def cacu(eidx):
+            for i in range(10000):
+                meter = LogParam()
+                meter.loss = i
+                meter.accr = 0.64
+                meterk = meter.k
+                meter.percent(meterk.accr)
+                yield meter
 
-    Example
-    ```python
-    logger = Logger()
+        for i in range(100):
+            cacu(i)
 
-    @logger.logger(inline=True, not_in_class=True)
-    def cacu(eidx):
-        for i in range(10000):
-            meter = LogParam()
-            meter.loss = i
-            meter.accr = 0.64
-            meterk = meter.k
-            meter.percent(meterk.accr)
-            yield meter
+    `::
+        @logger.logger(inline=True, not_in_class=True)
+        def cacu(eidx,**kw):
+            pass
 
-    for i in range(100):
-        cacu(i)
-    ```
-
-    ```python
-    @logger.logger(inline=True, not_in_class=True)
-    def cacu(eidx,**kw):
-        pass
-
-    for i in range(100):
-        cacu(i,p1 = "arg1")
-    ```
-    '''
+        for i in range(100):
+            cacu(i,p1 = "arg1")
+    """
 
     def __init__(self, head: str = "", tail: str = "", asctime: bool = True, datefmt: str = '%m/%d/%Y %I:%M:%S %p',
                  sep: str = " - "):
@@ -163,7 +178,7 @@ class Logger:
         self.tail = tail
         self.asctime = asctime
         self.datefmt = datefmt
-
+        self.out_channel = []
         self.sep = sep
 
     def _build_logstr(self, ordered_dict: OrderedDict):
@@ -174,8 +189,9 @@ class Logger:
              prefix: str = "", suffix: str = "",
              cacu_time: bool = True, cacu_step=False,
              not_in_class: bool = False,
-             append_fn: bool = False, append_args: bool = False, append_kws: bool = False):
-        '''
+             append_fn: bool = False, append_args: bool = False, append_kws: bool = False,
+             max_step=None):
+        """
         使用该方法代替装饰器，
         logger = Logger()
         func = logger.wrap(func)
@@ -184,7 +200,6 @@ class Logger:
         @logger.logger()
         def func():
             ...
-
         :param func:
         :param inline:
         :param prefix:
@@ -196,17 +211,19 @@ class Logger:
         :param append_args:
         :param append_kws:
         :return:
-        '''
+        """
 
         wrapper = self.logger(inline=inline,
                               prefix=prefix, suffix=suffix,
                               cacu_time=cacu_time, cacu_step=cacu_step,
-                              not_in_class=not_in_class,
-                              append_fn=append_fn, append_args=append_args, append_kws=append_kws)
+                              not_in_class=True,
+                              append_fn=append_fn, append_args=append_args, append_kws=append_kws,
+                              max_step=max_step)
         return wrapper(func)
 
-    def _sec2str(self, s):
-        ''' 将秒数转化为 ddhddmdds 的格式'''
+    @staticmethod
+    def _sec2str(s):
+        """ 将秒数转化为 ddhddmdds 的格式"""
         s = int(s)
         # sec = int(s) % 60
         m = int((s - s % 60) / 60)
@@ -226,9 +243,10 @@ class Logger:
     def logger(self,
                inline: bool = False,
                prefix: str = "", suffix: str = "",
-               cacu_time: bool = True, cacu_step=False,max_step = None,
+               cacu_time: bool = True, cacu_step=False, max_step=None,
                not_in_class: bool = False,
-               append_fn: bool = False, append_args: bool = False, append_kws: bool = False, dict_pipe=None):
+               append_fn: bool = False, append_args: bool = False, append_kws: bool = False,
+               dict_pipe=None):
         '''
         该装饰器装饰的方法，应该返回一个LogParam() 对象或者 一个字典
         如果返回一个LogParam() 对象，那么过程中存储的变量将会是有序的
@@ -237,10 +255,7 @@ class Logger:
         :param prefix: 输出的前缀，注意在实例化Logger类时，还可以指定头部，头部在前缀前，一般不需要手动添加 '\r'
         :param suffix: 输出的后缀，注意在实例化Logger类时，还可以指定尾部，尾部在后缀后，一般不需要手动添加换行符
         :param cacu_time: 是否在输出中添加执行时间
-        :param cacu_step: 在类中添加执行了该方法多少次的变量，仅在类方法中有效
-            可以传入bool类型或str类型，默认为False，即不计算该方法执行了多少步
-            如果为True，则默认添加到 self.global_step 变量中
-            如果为str，则可以使用 self.{cacu_step} 访问
+        :param cacu_step: 是否在输出中添加该方法内部循环了多少次（epoch级别或batch级别）
         :param max_step: 如果是循环逻辑，那么其最大执行次数是几（多用于测试整个流程是否可以跑通）
             默认为None，即跑到正常结束
         :param not_in_class: 如果不是在类方法中使用logger装饰器，那么需要声明该方法不在类中
@@ -256,21 +271,11 @@ class Logger:
             def wrapper(*args, **kw):
                 start = time.time()
 
-                var_name = None
-                _cacu_step = False
-                fself = None
-                if not not_in_class and (cacu_step or isinstance(cacu_step, str)):
-                    fself = args[0]
-                    if isinstance(cacu_step, str):
-                        var_name = cacu_step
-                        _cacu_step = True
-                    elif cacu_step:
-                        var_name = "global_step"
-                        _cacu_step = True
-                    self._ensure_var_exist(fself, var_name, 0)
-
                 reses = func(*args, **kw)
                 end = time.time()
+
+                if not not_in_class:
+                    instance, *args = args
 
                 if self.asctime:
                     cur_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S  ')
@@ -279,16 +284,14 @@ class Logger:
 
                 head = "{}{}".format("\r" if inline else "", self.head)
                 tail = "{}{}".format(self.tail, "" if inline else "\n")
+                logstr = ""
                 if isinstance(reses, dict):
-                    if fself is not None and _cacu_step:
-                        setattr(fself, var_name, getattr(fself, var_name) + 1)
-
                     meter = LogParam()
                     meter.merge_dict(reses)
                     meter.func = func.__name__ if append_fn else None
                     meter.args = args if append_args else None
                     meter.merge_dict(kw if append_kws else {"": None})
-                    meter.run_time = self._sec2str(end - start) if cacu_time else None
+                    meter.run_time = LogWrapper._sec2str(end - start) if cacu_time else None
 
                     if callable(dict_pipe):
                         meter = dict_pipe(meter)
@@ -296,15 +299,15 @@ class Logger:
                     midstr = " ".join([i for i in [prefix, self._build_logstr(meter.params), suffix] if len(i) > 0])
                     logstr = "".join([head, cur_date, midstr, tail])
 
-                    print(logstr, sep="", end="", flush=True)
+                    self.info(logstr, sep="", end="")
                 elif isinstance(reses, Iterable):
-                    for i,res in enumerate(reses):
+                    for i, res in enumerate(reses):
                         if max_step is not None:
-                            if i>max_step:
+                            if i > max_step:
                                 break
 
-                        if fself is not None and _cacu_step:
-                            setattr(fself, var_name, getattr(fself, var_name) + 1)
+                        # if fself is not None and _cacu_step:
+                        #     setattr(fself, var_name, getattr(fself, var_name) + 1)
 
                         end = time.time()
                         if isinstance(res, dict):
@@ -313,10 +316,14 @@ class Logger:
                         if callable(dict_pipe):
                             res = dict_pipe(res)
 
+                        if cacu_step:
+                            res.step = i
+                            res.int("step")
+
                         res.func = func.__name__ if append_fn else None
                         res.args = args if append_args else None
                         res.merge_dict(kw if append_kws else {"": None})
-                        res.run_time = self._sec2str(end - start) if cacu_time else None
+                        res.run_time = LogWrapper._sec2str(end - start) if cacu_time else None
 
                         if callable(dict_pipe):
                             res = dict_pipe(res)
@@ -324,30 +331,28 @@ class Logger:
                         midstr = " ".join(
                             [i for i in [prefix, self._build_logstr(res.params), suffix] if len(i) > 0])
                         logstr = "".join([head, cur_date, midstr, tail])
-
-                        print(logstr, sep="", end="", flush=True)
-                    print()
+                        if inline:
+                            self.info(logstr, sep="", end="", just_print=True)
+                        # else:
+                        #     self.info(logstr.strip(), sep="", end="\n", just_print=True)
+                    else:
+                        self.info(logstr, sep="", end="", just_out=True)
+                    self.info()
                 elif isinstance(reses, LogParam):
                     if callable(dict_pipe):
                         reses = dict_pipe(reses)
 
-                    if fself is not None and _cacu_step:
-                        setattr(fself, var_name, getattr(fself, var_name) + 1)
-
                     reses.func = func.__name__ if append_fn else None
                     reses.args = args if append_args else None
                     reses.merge_dict(kw if append_kws else {"": None})
-                    reses.run_time = self._sec2str(end - start) if cacu_time else None
+                    reses.run_time = LogWrapper._sec2str(end - start) if cacu_time else None
 
                     midstr = " ".join(
                         [i for i in [prefix, self._build_logstr(reses.params), suffix] if len(i) > 0])
                     logstr = "".join([head, cur_date, midstr, tail])
 
-                    print(logstr, sep="", end="\n", flush=True)
+                    self.info(logstr, sep="", end="\n")
                 else:
-                    if fself is not None and _cacu_step:
-                        setattr(fself, var_name, getattr(fself, var_name) + 1)
-
                     midstr = self.sep.join(
                         [i for i in [prefix,
                                      self._build_logstr(OrderedDict(
@@ -359,12 +364,127 @@ class Logger:
                                          run_time="{:.0f}s".format(end - start), )),
                                      suffix] if len(i) > 0])
                     logstr = "".join([head, cur_date, midstr, tail])
-
-                    print(logstr, sep="", end="\n", flush=True)
+                    self.info(logstr, sep="", end="\n")
 
             return wrapper
 
         return funcwrapper
 
-    def info(self,content):
-        print(content)
+    def info(self, content="", sep="", end="\n", just_print=False, just_out=False):
+        if not just_out:
+            print(content, sep=sep, end=end, flush=True)
+
+        if not just_print:
+            for o in self.out_channel:
+                with open(o, "a", encoding="utf-8") as w:
+                    w.write("{}\n".format(content.strip()))
+
+    def add_pipe(self, fn: str):
+        path, _ = os.path.split(fn)
+        os.makedirs(path, exist_ok=True)
+        i = 0
+        fni = "{}.{}".format(fn, i)
+        while os.path.exists(fni):
+            i += 1
+            fni = "{}.{}".format(fn, i)
+
+        print("add output channel on {}".format(fni))
+        self.out_channel.append(fni)
+
+
+class Logger:
+    def __init__(self, head: str = "", tail: str = "", asctime: bool = True, datefmt: str = '%m/%d/%Y %I:%M:%S %p',
+                 sep: str = " - "):
+        """
+        :param head:
+        :param tail:
+        :param asctime:
+        :param datefmt:
+        :param sep:
+        """
+
+        self.head = head
+        self.tail = tail
+        self.asctime = asctime
+        self.datefmt = datefmt
+        self.out_channel = []
+        self.sep = sep
+        self.return_str = ""
+
+    def format(self, reses: LogMeter, prefix="", inline=False):
+        """根据初始化设置 格式化 前缀和LogMeter"""
+        if self.asctime:
+            cur_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S ')
+        else:
+            cur_date = ""
+
+        head = "{}{}".format("\r" if inline else "", self.head)
+        tail = "{}{}".format(self.tail, "" if inline else "\n")
+
+        midstr = " ".join(
+            [i for i in [prefix, self._build_logstr(reses.logdict())] if len(i) > 0])
+        logstr = "".join([head, cur_date, midstr, tail])
+
+        return logstr
+
+    def _build_logstr(self, ordered_dict: dict):
+        return self.sep.join(["@{}={}".format(k, v) for k, v in ordered_dict.items()])
+
+    def inline(self, meter: LogMeter = None, prefix=""):
+        """在一行内输出 前缀 和 LogMeter"""
+        if meter is None:
+            meter = LogMeter()
+        logstr = self.format(meter, prefix=prefix, inline=True)
+        self.handle(logstr)
+
+    def info(self, meter: LogMeter = None, prefix=""):
+        """以行为单位输出 前缀 和 LogMeter"""
+        if meter is None:
+            meter = LogMeter()
+        logstr = self.format(meter, prefix=prefix, inline=False)
+        self.handle(logstr)
+
+    def line(self,content = ""):
+        """以行为单位输出文字（有时间前缀）"""
+        self.info(prefix=content)
+
+    def newline(self):
+        """换行"""
+        self.handle("\n")
+
+    def handle(self, logstr, _="", end=""):
+        """
+        handle log stinrg，以指定的方式输出
+        :param logstr:
+        :param _:
+        :param end:
+        :return:
+        """
+        if logstr.startswith("\r"):
+            self.return_str = logstr
+            print(ScreenStr(logstr), end=end, flush=True)
+        else:
+            if len(self.return_str) != 0:
+                print(self.return_str, end="\n", flush=True)
+            print(logstr,end="",flush=True)
+
+            for i in self.out_channel:
+                with open(i, "a", encoding="utf-8") as w:
+                    if len(self.return_str) != 0:
+                        w.write("{}\n".format(self.return_str.strip()))
+                    w.write(logstr)
+
+            self.return_str = ""
+
+    def add_pipe(self, fn):
+        """添加一个输出到文件的管道"""
+        path, _ = os.path.split(fn)
+        os.makedirs(path, exist_ok=True)
+        i = 0
+        fni = "{}.{}".format(fn, i)
+        while os.path.exists(fni):
+            i += 1
+            fni = "{}.{}".format(fn, i)
+
+        print("add output channel on {}".format(fni))
+        self.out_channel.append(fni)

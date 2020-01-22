@@ -23,19 +23,24 @@
 
     温馨提示：
         抵制不良代码，拒绝乱用代码。
+
         注意自我保护，谨防上当受骗。
+
         适当编码益脑，沉迷编码伤身。
         合理安排时间，享受健康生活！
 '''
 import traceback
 import warnings
-from collections import Iterable
+from collections import Iterable, OrderedDict
 from functools import wraps
+from typing import Any
 
 import torch
 import torch.nn as nn
+from torch.optim import optimizer
 
-from .logger import Logger, LogParam
+from .logwrapper import LogWrapper, LogParam
+from .saver import Saver
 
 
 def start_interrupt_protect(protect_func, *pargs, **pkwargs):
@@ -58,6 +63,8 @@ class TrainerParams:
     _default_fields 用于设置默认参数
 
     该类在构造的时候接受字典，同时内含各种默认参数
+
+    同时可以根据内部的各种配置形成配置字典，以及识别参数加载配置文件
     '''
     _default_fields = dict(
         epoch=100,  # 训练的epoch次数
@@ -65,24 +72,33 @@ class TrainerParams:
     )
 
     def __init__(self, **kwargs):
+        self.params_dict = OrderedDict()
         for k, v in self.__class__._default_fields.items():
             kwargs.setdefault(k, v)
         for k, v in kwargs.items():
             if callable(v):
                 v = v()
-            setattr(self, k, v)
+            self.set_item(k, v)
 
-    def set_default(self, key, value=None):
+    def __setattr__(self, name: str, value: Any) -> None:
+        if name != "params_dict":
+            self.params_dict[name] = value
+        super().__setattr__(name, value)
+
+    def set_item(self, key, value=None):
         '''检查某值是否存在，如果不存在，则设置其默认值为value'''
-        if not hasattr(self, key):
-            if callable(value):
-                value = value()
-            setattr(self, key, value)
+        # if not hasattr(self, key):
+        if callable(value):
+            value = value()
+        self.__setattr__(key, value)
 
-    def set_defaults(self, **kwargs):
+    def get_params_dict(self):
+        return self.params_dict
+
+    def set_items(self, **kwargs):
         '''检查是否包含某个名字的变量，如果不包含，则设置其值为value'''
         for k, v in kwargs.items():
-            self.set_default(k, v)
+            self.set_item(k, v)
 
     def assert_params(self, *args):
         '''检查该实例化对象中是否包含某个名字的变量，如果不存在则抛出异常'''
@@ -94,6 +110,31 @@ class TrainerParams:
         '''从一个字典中构建一个TrainerParams对象'''
         return TrainerParams(**params_dict)
 
+    @staticmethod
+    def to_config(params, prefix, name=None):
+        ''''''
+        pass
+
+    def _can_in_dir_name(self, obj):
+        if isinstance(obj, Saver):
+            return False
+        return True
+
+    def build_dir_name(self, names: Iterable, prefix="", sep="_", ignore_mode="add"):
+        prefix = prefix.strip()
+        res = []
+        if len(prefix) != 0:
+            res.append(prefix)
+        if ignore_mode == "add":
+            for name in names:
+                if hasattr(self, name):
+                    obj = getattr(self, name)
+                    if self._can_in_dir_name(obj):
+                        res.append("{}={}".format(name, obj))
+                else:
+                    res.append(name)
+        return "./{}/".format(sep.join(res))
+
 
 class Trainer():
     '''
@@ -104,35 +145,79 @@ class Trainer():
     _essential_param = []
     _default_param_dict = {}
 
-    def __init__(self, params):
+    def __init__(self, params: TrainerParams):
         if isinstance(params, dict):
             params = TrainerParams.from_dict(params)
         self.params = params
+        self.eidx = 0
+        self.global_step = 0
         self.load_params()
 
     @property
     def model_name(self):
-        if not hasattr(self, "__model_name"):
+        if not hasattr(self, "_model_name"):
             _model_name = "auto_{}_model".format(self.__class__.__name__)
             warnings.warn("未使用 regeist_model_name() 方法指定方法名或重写 model_dict() 方法，保存模型名称前缀将使用 {}".format(_model_name))
         else:
-            _model_name = self.__model_name
-
+            _model_name = self._model_name
         return _model_name
 
     @property
-    def raw_model_dict(self):
-        overwrite_me = "\n".join([self.create_model_dict.__name__,
+    def model_dict(self):
+        """
+        该方法返回由regeist_model_and_optim方法构造出来的模型字典
+        :return:
+        """
+        overwrite_me = "\n".join([self.create_model_state_dict.__name__,
                                   self.load_model.__name__,
                                   self.create_checkpoint_dict.__name__,
                                   self.load_checkpoint.__name__])
-        assert hasattr(self, "_model_dict"), \
-            "需要使用 {} 方法指定模型与优化器，或重写以下方法：\n{}".format(
-                self.regist_model_and_optim.__name__,
-                overwrite_me)
-
+        # assert hasattr(self, "_model_dict"), \
+        #     "需要使用 {} 方法指定模型与优化器，或重写以下方法：\n{}".format(
+        #         self.regist_model_and_optim.__name__,
+        #         overwrite_me)
 
         return self._model_dict
+
+    @property
+    def optim_dict(self):
+        """
+            该方法返回由regeist_model_and_optim方法构造出来的优化器字典
+            :return:
+        """
+        overwrite_me = "\n".join([self.create_model_state_dict.__name__,
+                                  self.load_model.__name__,
+                                  self.create_checkpoint_dict.__name__,
+                                  self.load_checkpoint.__name__])
+        # assert hasattr(self, "_model_dict"), \
+        #     "需要使用 {} 方法指定模型与优化器，或重写以下方法：\n{}".format(
+        #         self.regist_model_and_optim.__name__,
+        #         overwrite_me)
+        return self._optim_dict
+
+    @property
+    def model_state_dict(self):
+        '''
+                该方法返回由regeist_model_and_optim方法构造出来的变量
+                :return:
+                '''
+        overwrite_me = "\n".join([self.create_model_state_dict.__name__,
+                                  self.load_model.__name__,
+                                  self.create_checkpoint_dict.__name__,
+                                  self.load_checkpoint.__name__])
+        # assert hasattr(self, "_model_dict"), \
+        #     "需要使用 {} 方法指定模型与优化器，或重写以下方法：\n{}".format(
+        #         self.regist_model_and_optim.__name__,
+        #         overwrite_me)
+
+        return {k: v.state_dict() for k, v in self._model_dict.items()}
+
+    @property
+    def optim_state_dict(self):
+        return {k: v.state_dict() for k, v in self._optim_dict.items()}
+
+    def regeist_model_name(self, name):
+        self._model_name = name
 
     def regist_model_and_optim(self, **kwargs):
         '''
@@ -141,13 +226,23 @@ class Trainer():
         :param kwargs:
         :return:
         '''
-        if not hasattr(self, "__model_dict"):
+        if not self._model_dict:
             self._model_dict = dict()
+        if not self._optim_dict:
+            self._optim_dict = dict()
 
         for k, v in kwargs.items():
-            self._model_dict[k] = v
+            if isinstance(v, nn.Module):
 
-    def load_checkpoint(self, pointer=-1, not_exist_ok = False) -> int:
+                self._model_dict[k] = v
+            elif isinstance(v, optimizer.Optimizer):
+                self._optim_dict[k] = v
+            else:
+                assert False, "not module or optimizer"
+
+        self._model_to_device()
+
+    def load_checkpoint(self, pointer=-1, not_exist_ok=False) -> int:
         '''
         load instance checkpoint, and return trained epoch
         :param pointer:
@@ -163,14 +258,16 @@ class Trainer():
                 raise e
         self.eidx = ckpt["eidx"]
         self.global_step = ckpt["global_step"]
-        for k, v in self.raw_model_dict.items():
+        for k, v in self.model_dict.items():  # type: (str, nn.Module)
+            v.load_state_dict(ckpt[k])
+        for k, v in self.optim_dict.items():
             v.load_state_dict(ckpt[k])
 
         return self.eidx
 
     def load_model(self, path):
         ckpt = self.saver.load(path)
-        for k, v in self.raw_model_dict.items():
+        for k, v in self.model_dict.items():  # type:(str,nn.Module)
             if isinstance(v, nn.Module):
                 v.load_state_dict(ckpt[k])
 
@@ -189,8 +286,9 @@ class Trainer():
 
     def save_model(self):
         meter = LogParam()
-        for k, v in self.create_model_dict().items():
-            meter[k] = self.saver.save(v, fn_prefix=k)
+        for model_group_name, models_dicts in self.create_model_state_dict().items():  # type: str,dict
+            meter[model_group_name] = self.saver.save(model=models_dicts,
+                                                      fn_prefix=model_group_name)
         return meter
 
     def create_checkpoint_dict(self) -> dict:
@@ -198,20 +296,22 @@ class Trainer():
         return {
             "eidx": self.eidx,
             "global_step": self.global_step,
-            **{k:v.state_dict() for k,v in self.raw_model_dict.items()}
+            **self.model_state_dict,
+            **self.optim_state_dict,
         }
 
-    def create_model_dict(self) -> dict:
+    def create_model_state_dict(self) -> dict:
         '''
-        需要由子类实现，返回一个字典，每一个key表示一个需要保存的模型，该方法和load_model 方法对应
-        因此可以任意实现，保证返回类型即可
+        默认返回一个{model_name:model_dict}，model_dict的每一个key表示一个需要保存的模型
+            （是模型而不是state_dict()）
 
         类似optimizer 中的 param group 方法，每一个key对应一个要保存的模型
             如果要保存多个模型到一个文件中，那么该文件的key对应一个模型字典即可
         :return:
         '''
 
-        return {self.model_name: {k:v.state_dict() for k,v in self.raw_model_dict.items()}}
+        # return {self.model_name: {k: v.state_dict() for k, v in self.raw_model_dict.items()}}
+        return {self.model_name: self.model_state_dict}
 
     def train(self):
         raise NotImplementedError()
@@ -226,37 +326,26 @@ class Trainer():
         raise NotImplementedError()
 
     def load_params(self):
-        self.params.set_defaults(
+        self.params.set_items(
             **self.__class__._default_param_dict
         )
         self.params.assert_params(*self.__class__._essential_param)
-        return self._default_param_dict
+        return self.params.get_params_dict()
 
-    def log_handle(self, logger: Logger, fn, **kwargs):
+    def log_handle(self, logger: LogWrapper, fn, **kwargs):
         self.__setattr__(fn.__name__, logger.wrap(fn, **kwargs))
-
-    @property
-    def eidx(self):
-        '''epoch'''
-        return getattr(self, "_eidx", 0)
-
-    @eidx.setter
-    def eidx(self, value):
-        self._eidx = value
-
-    @property
-    def global_step(self):
-        '''global_step = old_epoch * total_step_in_epoch + current_step'''
-        return getattr(self, "_global_step", 0)
-
-    @global_step.setter
-    def global_step(self, value):
-        self._global_step = value
 
     def __getattr__(self, item):
         # if isinstance(self.params, dict):
         #     return self.params[item]
-        return getattr(self.params, item)
+        if item == "eidx" or item == "global_step":
+            return 0
+
+        return getattr(self.params, item, None)
+
+    def assert_isinstance(self, clazz, *args):
+        for i in args:
+            assert isinstance(i, clazz), "need to be type {}, but got {}".format(clazz.__name__, i.__class__.__name__)
 
 
 class NormalTrainer(Trainer):
@@ -267,20 +356,8 @@ class NormalTrainer(Trainer):
     '''
     _essential_param = ["saver"]
 
-    def __init__(self, params, eval_dataloader, test_dataloader, device=None):
+    def __init__(self, params):
         super().__init__(params)
-
-        self.test_dataloader = test_dataloader
-        self.eval_dataloader = eval_dataloader
-
-        if device is None:
-            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        elif isinstance(device, str):
-            self.device = torch.device(device)
-        elif isinstance(device, torch.device):
-            self.device = device
-        else:
-            assert False, "device type not support, need str or torch.device, but {}".format(device)
 
     def accuracy(self, preds, labels, cacu_rate=False):
         k = self.topk
@@ -303,7 +380,7 @@ class NormalTrainer(Trainer):
         self.load_checkpoint(pointer)
         self.base_train()
 
-    def safe_train(self, unsafe_exit=False):
+    def safe_train(self, unsafe_exit=True):
         '''
         安全的训练模型，如果出现各种异常则保存断点
         :param unsafe_exit: 如果遇到了异常，处理完后是否直接退出程序（异常状态 1 ）
@@ -316,13 +393,68 @@ class NormalTrainer(Trainer):
         except (Exception, KeyboardInterrupt) as e:
             self.save_checkpoint(_interrupt_info=traceback.format_exc(),
                                  _exception_class=e.__class__.__name__)
-            print()
+            print("====model saved, print the exception info:====")
+            print(traceback.format_exc())
             if unsafe_exit:
                 exit(1)
         return False
 
+    def regist_device(self, device=None):
+        if device is None:
+            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        elif isinstance(device, str):
+            self.device = torch.device(device)
+        elif isinstance(device, torch.device):
+            self.device = device
+        else:
+            assert False, "device type not support, need str or torch.device, but {}".format(device)
+
+        self._model_to_device()
+
+    def _model_to_device(self):
+        if self.device is None:
+            return
+        if self.model_dict is None:
+            return
+
+        for k, v in self.model_dict.items():  # type:(Any,nn.Module)
+            v.to(self.device)
+
+    def regist_test_dataloader(self, dataloader):
+        '''import dataloaders for test, in test mode, it will all be tested'''
+        self.test_dataloader = dataloader
+        return {"test_batch": len(dataloader)}
+
+    def regist_eval_dataloader(self, dataloader):
+        '''import dataloaders for eval, in eval mode, it will all be eval'''
+        self.eval_dataloader = dataloader
+        return {"eval_batch": len(dataloader)}
+
+    def regeist_train_dataloader(self, dataloader):
+        self.train_dataloader = dataloader
+        return {"train_batch": len(dataloader)}
+
+    def create_train_dataloaders(self):
+        return self.train_dataloader
+
+    def create_test_dataloaders(self):
+        return self.test_dataloader
+
+    def create_eval_dataloaders(self):
+        return self.eval_dataloader
+
+    def change_mode(self, train=True):
+        if train:
+            for _, v in self.model_dict.items():  # type:(Any,nn.Module)
+                v.train()
+        else:
+            for _, v in self.model_dict.items():  # type:(Any,nn.Module)
+                v.eval()
+
     def base_train(self):
         for eidx in range(self.eidx, self.epoch + 1):
+            # self.change_mode(True)
+
             self.eidx = eidx
             res = self.train_epoch(eidx)
 
@@ -331,8 +463,16 @@ class NormalTrainer(Trainer):
                 for i in res:
                     pass
 
-            self.save_checkpoint()
-            self.eval()
+            eval_res = self.eval()
+
+            '''将测试结果也添加到checkpoint中'''
+            res_dict = {}
+            if isinstance(eval_res, LogParam):
+                res_dict = eval_res.params
+            elif isinstance(eval_res, dict):
+                res_dict = eval_res
+            self.save_checkpoint(**res_dict)
+
         self.test()
         self.save_model()
 
@@ -356,11 +496,13 @@ class NormalTrainer(Trainer):
         return count_dict
 
     def test(self):
+        # self.change_mode(False)
         count_dict = self._test_eval_logic(self.test_dataloader)
         return count_dict
 
     def eval(self):
-        count_dict = self._test_eval_logic(self.eval_dataloader)
+        # self.change_mode(False)
+        count_dict = self._test_eval_logic(self.test_dataloader)
         return count_dict
 
 
@@ -370,10 +512,22 @@ class SemiTrainer(NormalTrainer):
         该子类只多了两个数据集的参数
     '''
 
-    def __init__(self, params, sup_dataloader, unsup_dataloader, eval_dataloader, test_dataloader, device):
-        super().__init__(params, eval_dataloader, test_dataloader, device)
-        self.sup_dataloader = sup_dataloader
-        self.unsup_dataloader = unsup_dataloader
+    def __init__(self, params):
+        super().__init__(params)
+
+    def regeist_train_dataloader(self, dataloader):
+        assert False, "When extends SemiTrainer, you need to call regeist_sup_dataloader() and regeist_unsup_dataloader()"
+
+    def regist_sup_dataloader(self, dataloader):
+        self.sup_dataloader = dataloader
+        return {"sup_batch": len(dataloader)}
+
+    def regist_unsup_dataloader(self, dataloader):
+        self.unsup_dataloader = dataloader
+        return {"unsup_batch": len(dataloader)}
+
+    def create_train_dataloaders(self):
+        return self.sup_dataloader, self.unsup_dataloader
 
 
 class SupervisedTrainer(NormalTrainer):
@@ -381,9 +535,8 @@ class SupervisedTrainer(NormalTrainer):
         有监督学习只需要传入有监督数据
     '''
 
-    def __init__(self, params, sup_dataloader, eval_dataloader, test_dataloader, device):
-        super().__init__(params, eval_dataloader, test_dataloader, device)
-        self.sup_dataloader = sup_dataloader
+    def __init__(self, params):
+        super().__init__(params)
 
 
 class SingleModelTrainer(SupervisedTrainer):
@@ -411,7 +564,8 @@ class SingleModelTrainer(SupervisedTrainer):
 
     def __init__(self, params, model: nn.Module, optimizer, loss, sup_dataloader, eval_dataloader, test_dataloader,
                  device, logged=True):
-        super().__init__(params, sup_dataloader, eval_dataloader, test_dataloader, device)
+        super().__init__(params)
+
         self.model = model
         self.optimizer = optimizer
         # TODO 分 str、fn 两类做判断
@@ -422,12 +576,14 @@ class SingleModelTrainer(SupervisedTrainer):
             self.lossfn = loss
         else:
             assert False, "loss must be str or callable, but get %s" % loss
-
-        self.regist_model_name(self.model.__class__.__name__)
+        self.regeist_train_dataloader(sup_dataloader)
+        self.regist_test_dataloader(test_dataloader)
+        self.regist_eval_dataloader(eval_dataloader)
+        self.regeist_model_name(self.model.__class__.__name__)
         self.regist_model_and_optim(model=self.model, optim=self.optimizer)
 
         if logged:
-            self.logger = Logger()
+            self.logger = LogWrapper()
             self.log_handle(self.logger, self.train, prefix="Train model: ")
             self.log_handle(self.logger, self.test, prefix="Test  model: ")
             self.log_handle(self.logger, self.eval, prefix="Eval  model: ")

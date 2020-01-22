@@ -24,30 +24,33 @@ class VarDict(dict):
         return self[item]
 
 class FuncGraph:
-    '''
-    def add(a, b):
-    print("add")
-    return a + b
+    """
+    模仿TensorFlow的静态图构造出的静态执行方法的类
 
-    def multi(a, b):
-        print("multi")
-        return a * b
+    ::
+        def add(a, b):
+        print("add")
+        return a + b
 
-    def swap(a, b):
-        print("swap")
-        return b, a
+        def multi(a, b):
+            print("multi")
+            return a * b
 
-    func = FuncGraph()
-    p = PseudoVar()
-    func.add_func_node(add, [p.a, p.b], to=[p.c])
-    func.add_func_node(multi, [p.a, p.c], to=[p.d])
-    func.add_func_node(swap, [p.a, p.b], to=[p.sa, p.sb])
-    func.build(["d","sa"])
-    print(func.run({"a": 2, "b": 4}))
+        def swap(a, b):
+            print("swap")
+            return b, a
 
-    func.rebuild(["c"])
-    print(func.run({"a": 2, "b": 4}))
-    '''
+        func = FuncGraph()
+        p = PseudoVar()
+        func.add_func_node(add, [p.a, p.b], to=[p.c])
+        func.add_func_node(multi, [p.a, p.c], to=[p.d])
+        func.add_func_node(swap, [p.a, p.b], to=[p.sa, p.sb])
+        func.build(["d","sa"])
+        print(func.run({"a": 2, "b": 4}))
+
+        func.rebuild(["c"])
+        print(func.run({"a": 2, "b": 4}))
+    """
 
     DATA_BY = -1
     DATA_TO = 1
@@ -185,32 +188,34 @@ class FuncGraph:
 
 class Branch():
     '''
-    def add(a, b):
-        print("add")
-        return a + b
+    基于FuncGraph的更简单的使用类，用于更好的控制执行逻辑::
 
-    def multi(a, b):
-        print("multi")
-        return a * b
+        def add(a, b):
+            print("add")
+            return a + b
 
-    def swap(a, b):
-        print("swap")
-        return b, a
+        def multi(a, b):
+            print("multi")
+            return a * b
 
-    p = PseudoVar()
-    br = Branch()
+        def swap(a, b):
+            print("swap")
+            return b, a
 
-    br.add_node = add, (p.a, p.b), (p.c)
-    br.multi = multi, (p.a, p.c), (p.d)
-    br.swap = swap, (p.a, p.b), (p.sa, p.sb)
+        p = PseudoVar()
+        br = Branch()
 
-    res = br.run_for(p.d, p.sa, a=1, b=2)
-    print(res,type(res))
-    print(res.d)
+        br.add_node = add, (p.a, p.b), (p.c)
+        br.multi = multi, (p.a, p.c), (p.d)
+        br.swap = swap, (p.a, p.b), (p.sa, p.sb)
 
-    # or
-    br.add_needs(p.d,p.sa)
-    br.run(a=1,b=2)
+        res = br.run_for(p.d, p.sa, a=1, b=2)
+        print(res,type(res))
+        print(res.d)
+
+        # or
+        br.add_needs(p.d,p.sa)
+        br.run(a=1,b=2)
     '''
 
     def __init__(self):

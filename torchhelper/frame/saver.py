@@ -22,19 +22,18 @@ import torch
 
 
 class Saver:
-    '''
+    """
     用于方便的保存模型和断点，能够自动保存最近的n个模型
 
-    Example:
+    Example::
+
         saver = Saver("./test", max_to_keep=3)
         # saver.clear_checkpoints()
 
         for i in range(10):
             ...
             saver.checkpoint(i, {})
-
-
-    '''
+    """
 
     def __init__(self, save_dir, ckpt_suffix="ckpth.tar", max_to_keep=1):
         assert max_to_keep >= 1, "checkpoint must larger than one."
@@ -45,6 +44,7 @@ class Saver:
         self._info = self._initial_info()
 
     def _initial_info(self):
+        """如果该目录是saver留下的目录，那么就加载该目录的信息，否则初始化该目录"""
         if not os.path.exists(self._save_dir):
             os.makedirs(self._save_dir, exist_ok=True)
             info = dict(pointers=[])
@@ -65,10 +65,12 @@ class Saver:
                 return json.load(f, object_hook=keystr2int)
 
     def _updata_info(self, info):
+        """在save方法调用后更新维护断点信息"""
         with open(self._infofn, "w", encoding="utf-8") as w:
             json.dump(info, w)
 
     def _build_model_path(self, prefix, epoch: int):
+        """获取保存的模型路径"""
         i = 0
         path = os.path.join(self._save_dir, "{}.ckpth.tar.{}{:05d}".format(prefix, i, epoch))
 
@@ -78,9 +80,11 @@ class Saver:
         return path
 
     def _del_pointer(self, pointer: int):
+        """删除断点"""
         if pointer not in self._info:
             return
         os.remove(self._info[pointer])
+        os.remove("{}.json".format(self._info[pointer]))
         self._info.pop(pointer)
         self._updata_info(self._info)
 
@@ -89,18 +93,18 @@ class Saver:
         return self._info["pointers"]
 
     def save(self, model: torch.nn.Module, fn_prefix: str) -> str:
-        '''
+        """
         保存模型，无需传入后缀，会自动的构造后缀
         :param model:
         :param fn_prefix:
         :return: 保存模型后的路径
-        '''
+        """
         path = os.path.join(self._save_dir, "{}.pth".format(fn_prefix))
         torch.save(model, path)
         return path
 
     def load(self, fn_prefix=None):
-        '''
+        """
         加载某个模型
         如果没有变更路径，只需要传入之前save的model即可
             会自动根据saver的路径参数和model名字构建路径
@@ -110,22 +114,34 @@ class Saver:
         :param model:
         :param fn_prefix:
         :return:  torch.load(path)
-        '''
+        """
         path = os.path.join(self._save_dir, "{}.pth".format(fn_prefix))
         return torch.load(path)
 
-    def _is_info(self,v):
-        return any([isinstance(v,i) for i in {int,str,float}])
+    def _is_info(self, v):
+        """判断可否被序列化为文本"""
+        if isinstance(v, torch.Tensor):
+            return v
 
+        return any([isinstance(v, i) for i in {int, str, float}])
+
+    def _format_tensor(self, v):
+        """判断tensor是否可序列化（仅序列化标量）"""
+        if isinstance(v, torch.Tensor):
+            if len(v.shape) == 0:
+                return "{:.04f}".format(v)
+            else:
+                return str(v.shape)
+        return v
 
     def checkpoint(self, epoch, ckpt_dict):
-        '''
+        """
         保存一个断点，保存路径为建立类时传入的文件夹下的路径
         :param epoch:
         :param ckpt_dict:  与torch.save() 方法传入字典类型时的要求一样
+            实际上由于torch.save() 调用时使用的是pickle，因此只要是可序列化对象都可以传入
         :return: 断点文件的路径
-        '''
-
+        """
 
         if len(self.pointers) == 0:
             pointer = 1
@@ -138,7 +154,7 @@ class Saver:
         ckpt_fn = self._build_model_path("model", epoch)
         ckpt_info_fn = "{}.json".format(ckpt_fn)
 
-        info_dict = {k: v for k, v in ckpt_dict.items() if self._is_info(v)}
+        info_dict = {k: self._format_tensor(v) for k, v in ckpt_dict.items() if self._is_info(v)}
 
         with open(ckpt_info_fn, "w", encoding="utf-8") as w:
             json.dump(info_dict, w, indent=2)
@@ -155,22 +171,25 @@ class Saver:
         return ckpt_fn
 
     def restore(self, pointer=-1):
-        '''
+        """
         返回一个checkpoint，实际上返回的是torch.load()的结果
-        :param pointer:
+        :param pointer: 返回保存的第几个断点，默认是-1，即返回最近的
         :return:
-        '''
+        """
         assert pointer == -1 or pointer > self._max_to_keep, "do not have this checkpoint"
 
         return torch.load(self._info[self.pointers[pointer]])
 
     def clear_checkpoints(self):
-        '''删除所有的断点记录'''
-        for k, v in self._info.items():
+        """删除所有的断点记录"""
+        for k, v in self._info.items():  # type:(int,str)
             if isinstance(k, int):
                 os.remove(v)
         self._info = dict(pointers=[])
         self._updata_info(self._info)
+
+    def __repr__(self) -> str:
+        return "[Saver,@path={} - @maxkeep={}]".format(self._save_dir, self._max_to_keep)
 
 
 if __name__ == '__main__':

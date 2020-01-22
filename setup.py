@@ -2,7 +2,7 @@ from setuptools import setup,find_packages
 
 setup(
     name='torchhelper',
-    version='0.0.2.dev1',
+    version='0.3.2.dev1',
     description='A torch helper for control log、train process（train/test/eval/checkpoint/save）',
     url='https://github.com/sailist/TorchHelper',
     author='sailist',
@@ -16,7 +16,7 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
-        'License :: OSI Approved :: Apache License 2.0',
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
     ],

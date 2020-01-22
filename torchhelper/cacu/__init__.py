@@ -12,4 +12,17 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+   
+    温馨提示：
+        抵制不良代码，拒绝乱用代码。
+
+        注意自我保护，谨防上当受骗。
+
+        适当编程益脑，沉迷编程伤身。
+
+        合理安排时间，享受健康生活！
+
+
+    用于一些loss和accuracy的计算，后续将随着我的经历或其他贡献添加上去
 '''
+
