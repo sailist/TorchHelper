@@ -3,7 +3,7 @@
 
 > 先定一个小目标：torch界的kears？
 
-文档：[document](.docs/build/html/index.html)（持续更新中）
+文档：[document](/docs/build/html/index.html)（持续更新中）
 
 ### introduction
 
