@@ -120,6 +120,33 @@ if __name__ == '__main__':
 ```
 
 ## more feature
+### trainer中的部份变量逻辑
+- 
+
+### Callbacks
+#### AutoDevice
+当显存溢出时，自动分配下一个GPU
+```bash
+2020-01-23 11:23:28 cuda:0 out of memory.
+2020-01-23 11:23:28 Change to cuda:1
+2020-01-23 11:23:29 cuda:1 out of memory.
+2020-01-23 11:23:32 Change to cuda:2
+2020-01-23 11:23:32 cuda:2 out of memory.
+2020-01-23 11:23:38 Change to cuda:3
+2020-01-23 11:23:38 cuda:3 out of memory.
+2020-01-23 11:23:38 All devices out of memory.
+```
+
+#### Traininfo
+用来输出训练过程中返回的信息，如果实现自己的train_batch()方法，则需要返回一个LogMeter()对象
+
+#### ModelCheckpoint
+用来自动监控LogMeter中的某个变量，从而自动保存更好的模型（类似于Keras中的这个类）
+
+#### DebugCallback
+用来输出所有方法的开始调用和结束调用的提示信息（即用来debug）
+
+
 ### ScreenStr
 shorten text in one line:
 ```python
@@ -189,3 +216,4 @@ if cacu_multi:
 - 认真研究一下版本号规范一下+修正包的开发状态声明（？
 - 修复可能存在的bug？
 - 完善可能需要的document？
+- 添加tensorboard控制逻辑

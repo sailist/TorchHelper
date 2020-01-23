@@ -36,6 +36,7 @@ class TrainParam(Recordable):
         self.eidx = 0
         self.idx = 0
         self.topk = (1, 5)
+        self.auto_device = False
 
     def _can_in_dir_name(self, obj):
         for i in [int, float, str, bool]:

@@ -24,9 +24,11 @@
 
     用于Trainer 执行过程中各方法的回调，
 '''
-import inspect
+import inspect,traceback
+from functools import wraps
 import os
 import re
+from typing import Any
 
 from .parameter import TrainParam, LogMeter
 from .trainerv2 import BaseTrainer
@@ -47,7 +49,28 @@ class Callback():
     """
     priority = 0
 
+    def __new__(cls,*_,**__) -> Any:
+        self = super().__new__(cls)
+
+        def wrapper(func):
+
+            @wraps(func)
+            def on_hooked(*args,**kwargs):
+                self.first = getattr(self, "first", True)
+                if self.first:
+                    self.on_first_hooked(*args,**kwargs)
+                    self.first = False
+                func(*args,**kwargs)
+
+            return on_hooked
+        self.on_hooked = wrapper(self.on_hooked)
+        return self
+
     def on_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
+        pass
+
+    def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
+        """第一次绑定时调用，由元类控制，不受on_hooked等重写逻辑控制"""
         pass
 
     def on_hook_failed(self, trainer, func, message):
@@ -55,6 +78,9 @@ class Callback():
 
     def on_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
         pass
+
+    def on_exception(self,trainer:BaseTrainer,func,param:TrainParam,e:BaseException,*args,**kwargs):
+        return False
 
     def on_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
         pass
@@ -189,6 +215,10 @@ class DebugCallback(DispatchCallback):
     def on_hook_failed(self, trainer, func, message):
         trainer.logger.info(LogMeter(), "debug {} failed".format(func))
 
+    def on_exception(self, trainer: BaseTrainer, func, param: TrainParam, e: BaseException, *args, **kwargs):
+        trainer.logger.info(LogMeter(), "debug catched exception when {}.".format(func))
+        return super().on_exception(trainer, func, param, e, *args, **kwargs)
+
     def on_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
         trainer.logger.info(LogMeter(), "debug {} start".format(func.__name__))
 
@@ -211,10 +241,26 @@ class ModelCheckpoint(TrainCallback):
         self.max_to_keep = max_to_keep
         self.mode = mode
 
-    def on_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
+    def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
         self.ckpt_dir = os.path.join(self.base_dir, param.get_exp_name())
+        trainer.logger.info(prefix="ModelCheckpoint hooked.")
         trainer.set_saver(self.ckpt_dir, max_to_keep=self.max_to_keep)
-        trainer.logger.info(prefix="ModelCheckpoint hooked {}.".format(func.__name__))
+
+    def on_exception(self, trainer: BaseTrainer, func, param: TrainParam, e: BaseException, *args, **kwargs):
+        if not isinstance(e,KeyboardInterrupt):
+            return False
+
+        trainer.logger.newline()
+        trainer.logger.info(prefix="Catched Exception.")
+        ckpt_dict = trainer.create_checkpoint_dict()
+        ckpt_dict.update(dict(
+            _interrupt_info=traceback.format_exc(),
+            _exception_class=e.__class__.__name__
+        ))
+        ckpt_fn = trainer.saver.checkpoint(param.eidx, ckpt_dict)
+        trainer.logger.line("Model saved in {}".format(ckpt_fn))
+
+        return False
 
     def on_train_epoch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
         if not hasattr(self, "monitor_var"):
@@ -251,7 +297,7 @@ class ModelCheckpoint(TrainCallback):
 class Traininfo(TrainCallback):
     """用于实时输出模型训练信息"""
     def on_train_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
-        trainer.logger.info(LogMeter(), "Train start".format(func.__name__))
+        trainer.logger.info(LogMeter(), "Train start.")
 
     def on_test_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
         trainer.logger.newline()
@@ -272,7 +318,7 @@ class Traininfo(TrainCallback):
         trainer.logger.info(meter, "Eval end:")
 
     def on_train_batch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
-        trainer.logger.inline(meter, "Train Batch: {}".format(func.__name__))
+        trainer.logger.inline(meter, "Train Batch:")
 
 
 class EarlyStop(TrainCallback):
@@ -285,3 +331,44 @@ class EarlyStop(TrainCallback):
         if param.idx > 10:
             trainer.train_epoch_toggle = True
             trainer.train_toggle = True
+
+
+class AutoDevice(TrainCallback):
+    """自动分配GPU和CPU"""
+    def __init__(self,cpu_final = False) -> None:
+        """
+        :param cpu_final:如果所有的gpu都不可用，是否使用cpu训练，默认为False
+        """
+        import torch
+        devices = []
+        if torch.cuda.is_available():
+            for i in range(torch.cuda.device_count()):
+                devices.append(torch.device("cuda:{}".format(i)))
+        if cpu_final:
+            devices.append(torch.device("cpu"))
+        self.devices = devices
+        self.idx = 0
+
+    def on_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
+        if func.__name__ == "regist_device":
+            trainer.regist_device(self.devices[self.idx])
+            param.auto_device = True
+
+    def on_exception(self, trainer: BaseTrainer, func, param: TrainParam, e, *args, **kwargs):
+        if not isinstance(e,RuntimeError):
+            return False
+        if "CUDA out of memory" not in str(e):
+            return False
+        trainer.logger.line("cuda:{} out of memory.".format(self.idx))
+        self.idx +=1
+        if self.idx == len(self.devices):
+            trainer.logger.line("All devices out of memory.")
+            return False
+
+        trainer.regist_device(self.devices[self.idx])
+        trainer.logger.line("Change to cuda:{}".format(self.idx))
+        return True
+
+    def auto_hook(self, trainer: BaseTrainer):
+        trainer.add_callback(trainer.regist_device,self)
+        trainer.add_callback(trainer.train_batch,self)

@@ -22,24 +22,26 @@
 
         合理安排时间，享受健康生活！
 '''
+import os,traceback
+import warnings
 from functools import wraps
 from itertools import chain
 from queue import PriorityQueue
-from typing import Iterable
+from typing import Iterable, Any
 
-import torch,os
+import torch
 from torch import nn
 from torch.optim import optimizer
 from torch.utils.data import DataLoader
 
+from .databundler import DataBundler
+from .logwrapper import Logger
+from .parameter import TrainParam, LogMeter
+from .saver import Saver
 from ..base.meta import Merge
 from ..base.structure import WalkDict
 from ..cacu import accuracy as acc
-from .logwrapper import Logger
-from .parameter import TrainParam,LogMeter
-from .databundler import DataBundler
-from .saver import Saver
-import warnings
+
 
 class BaseTrainer(metaclass=Merge):
     _ignore_call_back = {"model_dict", "optim_dict",
@@ -57,18 +59,16 @@ class BaseTrainer(metaclass=Merge):
         self.train_toggle = False
         self.logger = Logger()
 
-
-    def set_saver(self,path=None,max_to_keep=3):
+    def set_saver(self, path=None, max_to_keep=3):
         if path is None:
-            path = os.path.join(self._base_dir,self._param.get_exp_name())
-        self.saver = Saver(path,max_to_keep=max_to_keep)
+            path = os.path.join(self._base_dir, self._param.get_exp_name())
+        self.saver = Saver(path, max_to_keep=max_to_keep)
         self.logger.line("Set Saver in {}".format(path))
 
-
-    def add_log_path(self,log_dir = None):
+    def add_log_path(self, log_dir=None):
         if log_dir is None:
             log_dir = self._base_dir
-        fn = os.path.join(log_dir,self._param.get_exp_name(),"log.txt")
+        fn = os.path.join(log_dir, self._param.get_exp_name(), "log.txt")
         self.logger.add_pipe(fn)
 
     def __new__(cls, *args, **kwargs):
@@ -80,7 +80,16 @@ class BaseTrainer(metaclass=Merge):
                 que = call_dict.setdefault(func.__name__, PriorityQueue())
                 for callback in que.queue:
                     callback.on_begin(self, func, self._param, *args, **kwargs)
-                meter = func(*args, **kwargs)
+                try:
+                    meter = func(*args, **kwargs)
+                except BaseException as e:
+                    handles = [callback.on_exception(self, func, self._param, e, *args, **kwargs)
+                     for callback in que.queue] # TODO 这里可以分几种状态：退出，返回，继续执行...
+                    if any(handles):
+                        return None
+                    else:
+                        raise e
+
                 for callback in que.queue:
                     callback.on_end(self, func, self._param, meter, *args, **kwargs)
                 return meter
@@ -159,7 +168,7 @@ class BaseTrainer(metaclass=Merge):
 
         return bundler
 
-    def regist_dataloader(self,train,eval,test):
+    def regist_dataloader(self, train, eval, test):
         self.regist_train_dataloader(train)
         self.regist_eval_dataloader(eval)
         self.regist_test_dataloader(test)
@@ -201,12 +210,10 @@ class BaseTrainer(metaclass=Merge):
 
     @property
     def device(self):
-        if self._device is None:
-            warnings.warn("try to get device before called regist_device()")
         return self._device
 
     @device.setter
-    def device(self,d):
+    def device(self, d):
         self._device = d
 
     def regist_device(self, device=None):
@@ -380,8 +387,8 @@ class BaseTrainer(metaclass=Merge):
         meter = None
         for idx, data in enumerate(self.iter_train_dataloader()):
             meter = self.train_batch(eidx, idx, param.global_step,
-                             data, self.device,
-                             param)
+                                     data, self.device,
+                                     param)
             param.global_step += 1
             param.eidx = eidx
             param.idx = idx
@@ -422,6 +429,12 @@ class BaseTrainer(metaclass=Merge):
 
     def __getattr__(self, item):
         return None
+
+    def __getattribute__(self, name: str) -> Any:
+        obj = super().__getattribute__(name)
+        if isinstance(obj,nn.Module) and self._param.auto_device:
+            obj = obj.to(self.device)
+        return obj
 
 
 class Trainer(BaseTrainer):
