@@ -87,6 +87,12 @@ class TrainParam(Recordable):
 
 class LogMeter(Recordable):
     def __init__(self, default_type=None):
+        """
+        :param default_type: 变量的默认类型，如果需要从零计数，那么可以直接
+            meter = LogMeter(int)
+            meter.var += 1
+            而不需要事先判断该变量是否存在等逻辑
+        """
         super().__init__(default_type)
         self._mapfn = lambda d: d
 

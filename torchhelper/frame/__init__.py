@@ -24,7 +24,7 @@
 
 """
 
-from .trainerv2 import Trainer,TrainParam
+from .trainer import Trainer,TrainParam
 from .saver import Saver
 from .logwrapper import LogMeter
 from . import callbacks

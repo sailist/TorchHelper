@@ -31,7 +31,7 @@ import re
 from typing import Any
 
 from .parameter import TrainParam, LogMeter
-from .trainerv2 import BaseTrainer
+from .trainer import BaseTrainer
 
 
 class Callback():

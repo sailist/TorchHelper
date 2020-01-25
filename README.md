@@ -3,7 +3,15 @@
 
 > 先定一个小目标：torch界的kears？
 
+### 特性
+
+- 一个训练目标实现一个Trainer类，最简单的情况下，控制好了iteration中的逻辑就能完成一切。
+- 训练过程中涉及到的一切变量简洁，且完全透明，并能够通过回调函数完成
+- 不需要再打印变量来输出日志，只需要基于LogMeter完成正常的训练逻辑，日志会很漂亮的输出出来
+- 通过fire库，能够很灵活的支持命令行参数
+
 ### introduction
+
 
 #### install
 ```bash
@@ -64,7 +72,7 @@ class MyTrainer(Trainer):
         self.lossf = nn.CrossEntropyLoss()
 
     def train_batch(self, eidx, idx, global_step, data, device, param):
-        meter = LogMeter()
+        meter = LogMeter() # 用于日志输出
         meter.epoch = "({}){}/{}".format(idx,eidx,param.epoch)
 
         model = self.model.to(device)
@@ -119,6 +127,24 @@ if __name__ == '__main__':
 ```
 
 ## more feature
+### 日志输出
+日志输出通过回调函数Traininfo来完成，在方法执行过程中，将需要输出的变量通过LogMeter来进行读写，逻辑将完全不受影响；在方法执行结束后返回该LogMeter实例，即可完成标准化的日志输出。
+
+另外，通过继承LogMeter实现自己的日志输出类，可以更方便的控制日志的格式，包括值缩写，精度控制，忽略某变量等
+```bash
+class MyMeter(LogMeter):
+    def __init__(self, default_type=None):
+        super().__init__(default_type)
+        
+        # self._k 
+        # self._k.var 等价于 "var"，，_k是重写了内部getattr方法的变量，这样做是因为这样可能会方便一些ide的智能提示。
+    
+        self.int(self._k.global_step) # 转换为int型
+        self.ignore(self._k.sup_cls_loss) #忽略该变量
+        self.short(self._k.ema_sup_cls_loss, "EMACLS_SL") # 缩写
+        self.short(self._k.mix_un_loss, "MIX_UL")
+        self.float(self._k.all_loss,acc=6) # 精度到小数点后六位（默认4位）
+```
 
 ### 命令行参数解析支持
 编辑文件 main.py
@@ -260,3 +286,10 @@ if cacu_multi:
 - 修复可能存在的bug？
 - 完善可能需要的document？
 - 添加tensorboard控制逻辑（等我试验用到了再加）
+
+
+## Logs
+##### 2020年1月25日
+- 添加了callback的unhook方法
+- 添加了TrainParam的from_opt方法，支持参数的命令行解析了（通过fire库）
+- 更新了部份细节用法和部份代码注释
