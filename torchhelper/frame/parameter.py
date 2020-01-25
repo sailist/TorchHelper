@@ -23,7 +23,7 @@
         合理安排时间，享受健康生活！
 '''
 from collections import Iterable
-
+import fire
 import torch
 from torchhelper.base.recordable import Recordable
 
@@ -76,6 +76,14 @@ class TrainParam(Recordable):
         assert hasattr(self, "_exp_name"), "please first call build_exp_path()!"
 
         return self._exp_name
+
+    def from_opt(self):
+        def func(**kwargs):
+            for k,v in kwargs.items():
+                self[k] = v
+        fire.Fire(func)
+        return self
+
 
 class LogMeter(Recordable):
     def __init__(self, default_type=None):

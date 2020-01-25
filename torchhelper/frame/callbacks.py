@@ -57,6 +57,7 @@ class Callback():
             @wraps(func)
             def on_hooked(*args,**kwargs):
                 self.first = getattr(self, "first", True)
+                self.disposable = False
                 if self.first:
                     self.on_first_hooked(*args,**kwargs)
                     self.first = False
@@ -111,6 +112,16 @@ class Callback():
             if match:
                 funcname = match.group(1)
                 trainer.add_callback(funcname, self)
+
+    def unhook(self):
+        def NULLptr(*args,**kwargs):
+            return False
+
+        self.disposable = True
+        for name in dir(self):
+            value = getattr(self,name,None)
+            if callable(value) and name.startswith("on_"):
+                setattr(self,name,NULLptr)
 
 
 class TrainCallback(Callback):
