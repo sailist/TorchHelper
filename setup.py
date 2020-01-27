@@ -3,7 +3,7 @@ from setuptools import setup,find_packages
 setup(
     name='torchhelper',
     # 主版本，次版本，修订号？，bug修订号，...待定
-    version='0.3.4.1.dev1',
+    version='0.3.4.2.dev1',
     description='A torch helper for control log、train process（train/test/eval/checkpoint/save）',
     url='https://github.com/sailist/TorchHelper',
     author='sailist',

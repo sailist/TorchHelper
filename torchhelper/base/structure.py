@@ -22,14 +22,13 @@
 
         合理安排时间，享受健康生活！
 '''
-import os
 import time
 from collections import OrderedDict
+import shutil
 
 
 def get_consolo_width():
-    rows, columns = os.popen('stty size', 'r').read().split()
-    return int(columns)
+    return shutil.get_terminal_size().columns
 
 
 class WalkDict(OrderedDict):
@@ -68,15 +67,19 @@ class WalkDict(OrderedDict):
                 return self._recur_items(v)
 
 
-class ScreenStr(str):
+class ScreenStr():
     """
     该方法用于长期输出在同一行（如batch级别的loss输出）时，控制屏幕输出位于同一行，支持中英文混合
     该方法效率比较低，需要经过一次调用系统命令，两次对文本的编码解码和（最多）三次嵌套异常处理，
     因此可能适用场景也就限于炼丹了吧（笑
     """
     t = 0
-    dt = 0.05
-    offset = 0
+    dt = 5
+    last = 0
+
+    def __init__(self, content="", debug=False) -> None:
+        self.content = content
+        self.debug = debug
 
     def __str__(self):
         return self._screen_str()
@@ -85,36 +88,37 @@ class ScreenStr(str):
         return self._screen_str()
 
     def tostr(self):
-        return super().__str__()
+        return self.content
 
     @staticmethod
     def set_speed(dt: float = 0.05):
         ScreenStr.dt = dt
 
     def deltatime(self):
-        if ScreenStr.offset == 0:
-            ScreenStr.offset = time.time()
+        if ScreenStr.last == 0:
+            ScreenStr.last = time.time()
             return 0
         else:
             end = time.time()
-            res = end - ScreenStr.offset
-            ScreenStr.offset = end
+            res = end - ScreenStr.last
+            ScreenStr.last = end
             return res
 
     def cacu_offset(self, flag=False):
 
         if flag:
             ScreenStr.dt *= -1
-        ScreenStr.t += self.deltatime() * ScreenStr.dt
+        delta = self.deltatime()
+        ScreenStr.t += delta * ScreenStr.dt
 
         return int(ScreenStr.t)
         # return 0
 
     def __len__(self) -> int:
-        txt = self.encode("gbk")
+        txt = self.content.encode("gbk")
         return len(txt)
 
-    def _decode_sub(self,txt,left,right):
+    def _decode_sub(self, txt, left, right):
         try:
             txt = txt[left:right].decode("gbk")
         except:
@@ -124,17 +128,17 @@ class ScreenStr(str):
                 try:
                     txt = txt[left + 1:right].decode("gbk")
                 except:
-                    txt = txt[left + 1:right-1].decode("gbk")
+                    txt = txt[left + 1:right - 1].decode("gbk")
 
         return txt
 
-    def _screen_str(self: str, margin="..."):
+    def _screen_str(self, margin="..."):
         width = get_consolo_width()
-        txt = self.encode("gbk").strip()
+        txt = self.content.encode("gbk").strip()
         textlen = len(txt)
 
         if textlen <= width:
-            return self
+            return self.content
 
         offset = self.cacu_offset()
 
@@ -145,14 +149,21 @@ class ScreenStr(str):
             left = offset
             right = width - len(margin) + offset
 
-        txt = self._decode_sub(txt,left,right)
+        if self.debug:
+            debug = "[o:{};l:{:.4f};r:{};]".format(offset, ScreenStr.t, right)
+        else:
+            debug = ""
 
-        head = "\r" if self.startswith("\r") else ""
-        tail = "\n" if self.endswith("\n") else ""
-        txt = "{}{}{}".format(head, txt, tail)
+        txt = self._decode_sub(txt, left, right-len(debug))
 
+        head = "\r" if self.content.startswith("\r") else ""
+        tail = "\n" if self.content.endswith("\n") else ""
 
+        txt = "{}{}{}{}".format(head, debug, txt, tail)
 
         return txt + margin
 
 
+if __name__ == '__main__':
+    for i in range(100000):
+        print(ScreenStr("\r{}".format(str([i for i in range(100)])), debug=True), end="")
