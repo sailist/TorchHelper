@@ -105,7 +105,7 @@ class ScreenStr(str):
 
         if flag:
             ScreenStr.dt *= -1
-        ScreenStr.t += self.deltatime() + ScreenStr.dt
+        ScreenStr.t += self.deltatime() * ScreenStr.dt
 
         return int(ScreenStr.t)
         # return 0
