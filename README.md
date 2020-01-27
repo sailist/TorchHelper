@@ -286,7 +286,8 @@ if cacu_multi:
 - 修复可能存在的bug？
 - 完善可能需要的document？
 - 添加tensorboard控制逻辑（等我试验用到了再加）
-
+- 想一下添加TrainParam从ini、json、py文件中读配置项的必要性（没用到好像暂时没啥必要）
+- 好像还有很多小功能会需要：https://zhuanlan.zhihu.com/p/33992733
 
 ## Logs
 ##### 2020年1月25日
