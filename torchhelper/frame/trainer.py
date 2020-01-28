@@ -63,12 +63,13 @@ class BaseTrainer(metaclass=Merge):
         if path is None:
             path = os.path.join(self._base_dir, self._param.get_exp_name())
         self.saver = Saver(path, max_to_keep=max_to_keep)
-        self.logger.line("Set Saver in {}".format(path))
+        self.logger.line("Set Saver in {}".format(os.path.abspath(path)))
 
     def add_log_path(self, log_dir=None):
         if log_dir is None:
             log_dir = self._base_dir
         fn = os.path.join(log_dir, self._param.get_exp_name(), "log.txt")
+        self.logger.line("Add log pipe in {}".format(os.path.abspath(fn)))
         self.logger.add_pipe(fn)
 
     def __new__(cls, *args, **kwargs):
