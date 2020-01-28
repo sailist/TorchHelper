@@ -22,13 +22,17 @@
 
         合理安排时间，享受健康生活！
 '''
+import shutil
 import time
 from collections import OrderedDict
-import shutil
 
 
 def get_consolo_width():
     return shutil.get_terminal_size().columns
+
+
+def test_str(n: int = 30):
+    return "\r{}".format(str([i for i in range(n)]))
 
 
 class WalkDict(OrderedDict):
@@ -74,12 +78,18 @@ class ScreenStr():
     因此可能适用场景也就限于炼丹了吧（笑
     """
     t = 0
-    dt = 5
+    dt = 7
     last = 0
 
-    def __init__(self, content="", debug=False) -> None:
+    max_wait = 1.
+    wait = 0
+    wait_toggle = False
+
+    debug = False
+    last_width = 0
+
+    def __init__(self, content="") -> None:
         self.content = content
-        self.debug = debug
 
     def __str__(self):
         return self._screen_str()
@@ -94,7 +104,8 @@ class ScreenStr():
     def set_speed(dt: float = 0.05):
         ScreenStr.dt = dt
 
-    def deltatime(self):
+    @staticmethod
+    def deltatime():
         if ScreenStr.last == 0:
             ScreenStr.last = time.time()
             return 0
@@ -104,15 +115,22 @@ class ScreenStr():
             ScreenStr.last = end
             return res
 
-    def cacu_offset(self, flag=False):
+    @staticmethod
+    def cacu_offset():
+        delta = ScreenStr.deltatime()
 
-        if flag:
-            ScreenStr.dt *= -1
-        delta = self.deltatime()
+        if ScreenStr.wait_toggle:
+            ScreenStr.wait += abs(delta)
+            if ScreenStr.wait > ScreenStr.max_wait:
+                ScreenStr.wait_toggle = False
+                ScreenStr.wait = 0
+                ScreenStr.dt *= -1
+            else:
+                return int(ScreenStr.t - delta * ScreenStr.dt)
+
         ScreenStr.t += delta * ScreenStr.dt
 
         return int(ScreenStr.t)
-        # return 0
 
     def __len__(self) -> int:
         txt = self.content.encode("gbk")
@@ -132,29 +150,52 @@ class ScreenStr():
 
         return txt
 
-    def _screen_str(self, margin="..."):
+    @staticmethod
+    def refresh():
+        ScreenStr.t = 0
+        ScreenStr.dt = abs(ScreenStr.dt)
+        ScreenStr.last = 0
+
+    @staticmethod
+    def consolo_width():
         width = get_consolo_width()
+        if width != ScreenStr.last_width:
+            ScreenStr.refresh()
+        ScreenStr.last_width = width
+        return width
+
+    @staticmethod
+    def stop():
+        ScreenStr.wait_toggle = True
+
+    def _screen_str(self, margin="..."):
+        width = ScreenStr.consolo_width()
+
         txt = self.content.encode("gbk").strip()
         textlen = len(txt)
 
         if textlen <= width:
             return self.content
 
-        offset = self.cacu_offset()
+        offset = ScreenStr.cacu_offset()
 
-        left = offset
         right = width - len(margin) + offset
-        if right > textlen or left < 0:
-            offset = self.cacu_offset(True)
-            left = offset
-            right = width - len(margin) + offset
+        if width - len(margin) + offset > textlen:
+            right = textlen
+            ScreenStr.stop()
+
+        left = right + len(margin) - width
+        if left < 0:
+            left = 0
+            ScreenStr.stop()
+            right = width - len(margin)
 
         if self.debug:
-            debug = "[o:{};l:{:.4f};r:{};]".format(offset, ScreenStr.t, right)
+            debug = "[o:{};l:{:.4f};r:{:.4f};]".format(offset, ScreenStr.t, ScreenStr.wait)
         else:
             debug = ""
 
-        txt = self._decode_sub(txt, left, right-len(debug))
+        txt = self._decode_sub(txt, left, right - len(debug))
 
         head = "\r" if self.content.startswith("\r") else ""
         tail = "\n" if self.content.endswith("\n") else ""
@@ -166,4 +207,5 @@ class ScreenStr():
 
 if __name__ == '__main__':
     for i in range(100000):
-        print(ScreenStr("\r{}".format(str([i for i in range(100)])), debug=True), end="")
+        print(ScreenStr("\r{}".format(str([i for i in range(30)]))), end="", flush=True)
+        time.sleep(0.01)

@@ -425,7 +425,7 @@ class Logger:
             [i for i in [prefix, self._build_logstr(reses.logdict())] if len(i) > 0])
         logstr = "".join([head, cur_date, midstr, tail])
 
-        return logstr
+        return logstr.rstrip("\r")
 
     def _build_logstr(self, ordered_dict: dict):
         return self.sep.join(["@{}={}".format(k, v) for k, v in ordered_dict.items()])

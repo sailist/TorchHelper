@@ -18,3 +18,5 @@
 
 from .frame import *
 from .importing import *
+
+VERSION = '0.3.4.4.dev1'
