@@ -31,6 +31,10 @@ from .meta import Merge
 class Recordable(metaclass=Merge):
     """
     record parameters for use and log.
+
+    设置变量时如果前面有下划线'_'，则会被加入到类本身的变量中
+    不允许变量名后包含下划线'_'，该类型变量有特殊用途
+    其他变量将会被加入到param_dict中，作为超参数获取，日志输出等用途
     """
     _default_dict = dict()
 
@@ -40,6 +44,7 @@ class Recordable(metaclass=Merge):
 
     def __init__(self, default_type=None):
         self._param_dict = OrderedDict()
+        self._k = self
         self._k = Recordable.KeyObj()
         self._default_type = default_type
         self._format_dict = {}
@@ -53,12 +58,11 @@ class Recordable(metaclass=Merge):
     def __setattr__(self, name: str, value: Any) -> None:
         if name.startswith("_"):
             super().__setattr__(name, value)
+        elif name.endswith("_"):
+            assert False,"attr name must not end with '_'"
         else:
-            # if hasattr(self,name):
-            # assert self._read_mode, "trying to write in read-mode! {}".format(self.__class__.__name__)
-
             if name in self._board_set:
-                pass  # TODO
+                pass  # TODO，添加自动调出面板？或者在callbacks中添加
 
             self._param_dict[name] = value
             if name not in self._format_dict and type(value) not in {int, float}:
@@ -67,6 +71,8 @@ class Recordable(metaclass=Merge):
                         self.float(name)
                 except:
                     self.str(name)
+            elif name not in self._format_dict and isinstance(value,float):
+                self.float(name)
 
     def __getattr__(self, item):
         if item not in self._param_dict:
