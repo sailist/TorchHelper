@@ -22,13 +22,17 @@
 
         合理安排时间，享受健康生活！
 '''
-from collections import Iterable
+# from collections import Iterable
+from collections.abc import Iterable
 import fire
 import torch
+
 from torchhelper.base.recordable import Recordable
+
 
 class TrainParam(Recordable):
     """用于Trainer 训练过程中获取参数使用"""
+
     def __init__(self):
         super().__init__(None)
         self.global_step = 0
@@ -79,8 +83,9 @@ class TrainParam(Recordable):
 
     def from_opt(self):
         def func(**kwargs):
-            for k,v in kwargs.items():
+            for k, v in kwargs.items():
                 self[k] = v
+
         fire.Fire(func)
         return self
 
@@ -99,12 +104,12 @@ class LogMeter(Recordable):
     def set_mapfn(self, fn):
         self._mapfn = fn
 
-    def logdict(self)->dict:
+    def logdict(self) -> dict:
         res = self._mapfn(super().logdict())
         return res
 
-    def updata(self,**kwargs):
-        for k,v in kwargs.items():
+    def updata(self, **kwargs):
+        for k, v in kwargs.items():
             self[k] = v
 
     @property
@@ -112,4 +117,12 @@ class LogMeter(Recordable):
         return self._k
 
     def __repr__(self) -> str:
-        return " - ".join(["@{}={}".format(k,v) for k,v in self.logdict().items()])
+        return " - ".join(["@{}={}".format(k, v) for k, v in self.logdict().items()])
+
+    def __call__(self, *args, **kwargs):
+        return self._k
+
+    def __getattr__(self, item:str):
+        if item.endswith("_"):
+            return item.rstrip("_")
+        return super().__getattr__(item)
