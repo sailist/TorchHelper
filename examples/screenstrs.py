@@ -28,10 +28,10 @@ sys.path.insert(0,"../")
 
 from torchhelper import *
 
-from torchhelper.base.structure import ScreenStr
+from torchhelper.base.structure import ScreenStr,test_str
 print(VERSION)
 # ScreenStr.debug = True
 import time
 for i in range(10000):
-    print(ScreenStr(ScreenStr.test_str(50)),end="",flush=True)
+    print(ScreenStr(test_str(50)),end="",flush=True)
     time.sleep(0.01)
