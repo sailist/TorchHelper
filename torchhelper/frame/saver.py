@@ -17,6 +17,7 @@
 '''
 import json
 import os
+import warnings
 
 import torch
 
@@ -83,8 +84,13 @@ class Saver:
         """删除断点"""
         if pointer not in self._info:
             return
-        os.remove(self._info[pointer])
-        os.remove("{}.json".format(self._info[pointer]))
+
+        if os.path.exists(self._info[pointer]):
+            os.remove(self._info[pointer])
+            os.remove("{}.json".format(self._info[pointer]))
+        else:
+            # TODO 仍然有一个bug，会存在一些情况下要删除的文件不存在
+            warnings.warn("I don't know why checkpoint {} not exists, but it happend.")
         self._info.pop(pointer)
         self._updata_info(self._info)
 
@@ -195,6 +201,9 @@ class Saver:
 if __name__ == '__main__':
     saver = Saver("./test", max_to_keep=3)
     # saver.clear_checkpoints()
+
+    for i in range(10):
+        saver.checkpoint(i, {})
 
     for i in range(10):
         saver.checkpoint(i, {})
