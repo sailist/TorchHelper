@@ -30,8 +30,8 @@ meter = LogMeter()
 
 meter.loss = 0.1638574968
 meter.loss2 = 1.1235435465
-meter.loss3 = 2.4654687987
-
+meter.loss3 = torch.tensor(1.1235467868)
+meter.other = "{}/{}".format(1,20)
 meter.all_loss = meter.loss + meter.loss2 + meter.loss3
 
 meter.float(meter.loss_, acc=6)
@@ -43,5 +43,17 @@ print(meter.loss_)
 print(meter.k.loss)
 print(meter._k.loss)
 
-trainer = Trainer(TrainParam())
-trainer.logger.info(meter, prefix="Logger prefix:")
+param = TrainParam()
+exp_name = param.build_exp_name(["epoch","noval"])
+print(exp_name)
+
+trainer = Trainer(param)
+trainer.add_log_path("./logs/")
+
+
+for i in range(10):
+    trainer.logger.inline(meter, prefix="Logger inline:")
+    time.sleep(0.01)
+
+trainer.logger.info(meter, prefix="Logger info:")
+trainer.logger.line("just talk something")
