@@ -23,11 +23,7 @@
         合理安排时间，享受健康生活！
 '''
 
-import sys
-sys.path.insert(0,"../")
-
 from torchhelper import *
-
 from torchhelper.base.structure import ScreenStr,test_str
 print(VERSION)
 # ScreenStr.debug = True
