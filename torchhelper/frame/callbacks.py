@@ -24,10 +24,11 @@
 
     用于Trainer 执行过程中各方法的回调，
 '''
-import inspect,traceback
-from functools import wraps
+import inspect
 import os
 import re
+import traceback
+from functools import wraps
 from typing import Any
 
 from .parameter import TrainParam, LogMeter
@@ -49,21 +50,21 @@ class Callback():
     """
     priority = 0
 
-    def __new__(cls,*_,**__) -> Any:
+    def __new__(cls, *_, **__) -> Any:
         self = super().__new__(cls)
 
         def wrapper(func):
-
             @wraps(func)
-            def on_hooked(*args,**kwargs):
+            def on_hooked(*args, **kwargs):
                 self.first = getattr(self, "first", True)
                 self.disposable = False
                 if self.first:
-                    self.on_first_hooked(*args,**kwargs)
+                    self.on_first_hooked(*args, **kwargs)
                     self.first = False
-                func(*args,**kwargs)
+                func(*args, **kwargs)
 
             return on_hooked
+
         self.on_hooked = wrapper(self.on_hooked)
         return self
 
@@ -80,7 +81,7 @@ class Callback():
     def on_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
         pass
 
-    def on_exception(self,trainer:BaseTrainer,func,param:TrainParam,e:BaseException,*args,**kwargs):
+    def on_exception(self, trainer: BaseTrainer, func, param: TrainParam, e: BaseException, *args, **kwargs):
         return False
 
     def on_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
@@ -114,14 +115,14 @@ class Callback():
                 trainer.add_callback(funcname, self)
 
     def unhook(self):
-        def NULLptr(*args,**kwargs):
+        def NULLptr(*args, **kwargs):
             return False
 
         self.disposable = True
         for name in dir(self):
-            value = getattr(self,name,None)
+            value = getattr(self, name, None)
             if callable(value) and name.startswith("on_"):
-                setattr(self,name,NULLptr)
+                setattr(self, name, NULLptr)
 
 
 class TrainCallback(Callback):
@@ -253,12 +254,11 @@ class ModelCheckpoint(TrainCallback):
         self.mode = mode
 
     def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
-        self.ckpt_dir = os.path.join(self.base_dir, param.get_exp_name())
-        trainer.logger.info(prefix="ModelCheckpoint hooked.")
-        trainer.set_saver(self.ckpt_dir, max_to_keep=self.max_to_keep)
+        trainer.logger.info(prefix="{} hooked {}.".format(self.__class__.__name__, trainer.__class__.__name__))
+        trainer.set_saver(self.base_dir, max_to_keep=self.max_to_keep)
 
     def on_exception(self, trainer: BaseTrainer, func, param: TrainParam, e: BaseException, *args, **kwargs):
-        if not isinstance(e,KeyboardInterrupt):
+        if not isinstance(e, KeyboardInterrupt):
             return False
 
         trainer.logger.newline()
@@ -274,21 +274,17 @@ class ModelCheckpoint(TrainCallback):
         return False
 
     def on_train_epoch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
-        if not hasattr(self, "monitor_var"):
-            self.monitor_var = meter[self.monitor]
-
-            trainer.logger.newline()
-            trainer.logger.info(prefix="Model improved from nan to {}".format(self.monitor_var))
-            ckpt_dict = trainer.create_checkpoint_dict()
-            ckpt_dict.update(meter.logdict())
-            ckpt_fn = trainer.saver.checkpoint(param.eidx, ckpt_dict)
-            trainer.logger.info(LogMeter(), "Model saved in {}".format(ckpt_fn))
-
-        elif (self.mode == "max" and meter[self.monitor] > self.monitor_var) or \
+        if not hasattr(self, "monitor_var") or \
+                (self.mode == "max" and meter[self.monitor] > self.monitor_var) or \
                 (self.mode == "min" and meter[self.monitor] < self.monitor_var):
+
+            if not hasattr(self, "monitor_var"):
+                self.monitor_var = "nan"
+
             trainer.logger.newline()
-            trainer.logger.info(prefix="Model improved from {} to {}".format(meter[self.monitor],
-                                                                             self.monitor_var))
+            trainer.logger.info(prefix="Model improved from {} to {}".format(self.monitor_var,
+                                                                             meter[self.monitor]
+                                                                             ))
             self.monitor_var = meter[self.monitor]
             ckpt_dict = trainer.create_checkpoint_dict()
             ckpt_dict.update(meter.logdict())
@@ -300,13 +296,17 @@ class ModelCheckpoint(TrainCallback):
         cmeter = LogMeter()
         for model_group_name, models_dicts in state_dict.items():  # type: str,dict
             cmeter[model_group_name] = trainer.saver.save(model=models_dicts,
-                                                       fn_prefix=model_group_name)
+                                                          fn_prefix=model_group_name)
 
         trainer.logger.info(cmeter, "Model Saved")
 
 
 class Traininfo(TrainCallback):
     """用于实时输出模型训练信息"""
+
+    def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
+        trainer.logger.info(prefix="{} hooked {}.".format(self.__class__.__name__, trainer.__class__.__name__))
+
     def on_train_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
         trainer.logger.info(LogMeter(), "Train start.")
 
@@ -334,6 +334,7 @@ class Traininfo(TrainCallback):
 
 class EarlyStop(TrainCallback):
     """用于控制模型提前停止 TODO 目前只用来临时使用过，内部逻辑没有完成"""
+
     def on_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
         pass
 
@@ -346,7 +347,8 @@ class EarlyStop(TrainCallback):
 
 class AutoDevice(TrainCallback):
     """自动分配GPU和CPU"""
-    def __init__(self,cpu_final = False) -> None:
+
+    def __init__(self, cpu_final=False) -> None:
         """
         :param cpu_final:如果所有的gpu都不可用，是否使用cpu训练，默认为False
         """
@@ -366,12 +368,12 @@ class AutoDevice(TrainCallback):
             param.auto_device = True
 
     def on_exception(self, trainer: BaseTrainer, func, param: TrainParam, e, *args, **kwargs):
-        if not isinstance(e,RuntimeError):
+        if not isinstance(e, RuntimeError):
             return False
         if "CUDA out of memory" not in str(e):
             return False
         trainer.logger.line("cuda:{} out of memory.".format(self.idx))
-        self.idx +=1
+        self.idx += 1
         if self.idx == len(self.devices):
             trainer.logger.line("All devices out of memory.")
             return False
@@ -381,5 +383,5 @@ class AutoDevice(TrainCallback):
         return True
 
     def auto_hook(self, trainer: BaseTrainer):
-        trainer.add_callback(trainer.regist_device,self)
-        trainer.add_callback(trainer.train_batch,self)
+        trainer.add_callback(trainer.regist_device, self)
+        trainer.add_callback(trainer.train_batch, self)
