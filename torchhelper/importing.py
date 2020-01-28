@@ -23,13 +23,14 @@
         合理安排时间，享受健康生活！
 '''
 
+import torch
 from torch import nn
 from torch import optim
 from torch.utils import data
 from torch.nn import functional as F
 
-import os
-import sys
+import os,sys,time
+
 try:
     from matplotlib import pyplot as plt
     import numpy as np
