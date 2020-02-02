@@ -35,13 +35,13 @@ from torch.optim import optimizer
 from torch.utils.data import DataLoader
 
 from .databundler import DataBundler
-from .logwrapper import Logger
+from .logger import Logger
 from .parameter import TrainParam, LogMeter
 from .saver import Saver
 from ..base.meta import Merge
 from ..base.structure import WalkDict
 from ..cacu import accuracy as acc
-
+from torch.utils.tensorboard import SummaryWriter
 
 class BaseTrainer(metaclass=Merge):
     _ignore_call_back = {"model_dict", "optim_dict",
@@ -61,16 +61,23 @@ class BaseTrainer(metaclass=Merge):
 
     def set_saver(self, path=None, max_to_keep=3):
         if path is None:
-            path = os.path.join(self._base_dir, self._param.get_exp_name())
+            path = os.path.join(self._base_dir,"modules", self._param.get_exp_name())
         self.saver = Saver(path, max_to_keep=max_to_keep)
         self.logger.line("Set Saver in {}".format(os.path.abspath(path)))
+
+    def set_writter(self,path=None):
+        if path is None:
+            path = os.path.join(self._base_dir,"board",self._param.get_exp_name())
+        self.writer = SummaryWriter(path)
+        self.logger.line("Set Writter in {}".format(os.path.abspath(path)))
 
     def add_log_path(self, log_dir=None):
         if log_dir is None:
             log_dir = self._base_dir
         fn = os.path.join(log_dir, self._param.get_exp_name(), "log.txt")
-        self.logger.line("Add log pipe in {}".format(os.path.abspath(fn)))
-        self.logger.add_pipe(fn)
+
+        if self.logger.add_pipe(fn):
+            self.logger.line("Add log pipe in {}".format(os.path.abspath(fn)))
 
     def __new__(cls, *args, **kwargs):
         self = super().__new__(cls)
