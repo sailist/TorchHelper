@@ -26,6 +26,6 @@
 
 from .trainer import Trainer,TrainParam
 from .saver import Saver
-from .logwrapper import LogMeter
+from .logger import LogMeter
 from . import callbacks
 from .databundler import DataBundler,ToyDataLoader
