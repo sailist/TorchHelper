@@ -28,10 +28,10 @@ sys.path.insert(0,"../")
 
 from torchhelper import *
 
-from torchhelper.frame.logwrapper import Logger
+from torchhelper.frame.logger import Logger
 from torchhelper.base.structure import ScreenStr
 ScreenStr.debug = True
-print(VERSION)
+print(__version__)
 
 logger = Logger()
 import time

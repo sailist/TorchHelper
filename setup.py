@@ -1,9 +1,9 @@
 from setuptools import setup,find_packages
-from torchhelper import VERSION
+from torchhelper import __version__
 setup(
     name='torchhelper',
     # 主版本，次版本，修订号？，bug修订号，...待定
-    version=VERSION,
+    version=__version__,
     description='A torch helper for control log、train process（train/test/eval/checkpoint/save）',
     url='https://github.com/sailist/TorchHelper',
     author='sailist',

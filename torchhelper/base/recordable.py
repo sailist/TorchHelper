@@ -59,19 +59,19 @@ class Recordable(metaclass=Merge):
         if name.startswith("_"):
             super().__setattr__(name, value)
         elif name.endswith("_"):
-            assert False,"attr name must not end with '_'"
+            assert False, "attr name must not end with '_'"
         else:
             if name in self._board_set:
                 pass  # TODO，添加自动调出面板？或者在callbacks中添加
 
             self._param_dict[name] = value
-            if name not in self._format_dict and type(value) not in {int, float}:
+            if name not in self._format_dict and type(value) not in {int, float, bool}:
                 try:
                     if "{:.0f}".format(value).isdecimal():
                         self.float(name)
                 except:
                     self.str(name)
-            elif name not in self._format_dict and isinstance(value,float):
+            elif name not in self._format_dict and isinstance(value, float):
                 self.float(name)
 
     def __getattr__(self, item):
@@ -91,6 +91,8 @@ class Recordable(metaclass=Merge):
         for k, v in obj.items():
             self._param_dict[k] = v
 
+        return self
+
     def str(self, key):
         self._format_dict[key] = "{}"
 
@@ -109,7 +111,7 @@ class Recordable(metaclass=Merge):
     def float(self, key, acc=4):
         self._format_dict[key] = "{{:.{}f}}".format(acc)
 
-    def tensorboard(self, key):
+    def board(self, key):
         self._board_set.add(key)
 
     def logdict(self):
@@ -124,18 +126,16 @@ class Recordable(metaclass=Merge):
 
         return res
 
-    def tensorboard_dict(self):
+    def board_dict(self):
         res = OrderedDict()
         for k, v in self._param_dict.items():
             if k not in self._board_set:
                 continue
-            if v is None or k in self._ignore_set:
+            if v is None:
                 continue
-            if k in self._format_dict:
-                v = self._format_dict[k].format(v)
+
             name = self._short_dict.get(k, k)
             res[name] = v
-
         return res
 
     def read_mode(self):

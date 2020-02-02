@@ -25,7 +25,7 @@
 
 from torchhelper import *
 from torchhelper.base.structure import ScreenStr,test_str
-print(VERSION)
+print(__version__)
 # ScreenStr.debug = True
 import time
 for i in range(10000):
