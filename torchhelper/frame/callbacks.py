@@ -25,11 +25,12 @@
     用于Trainer 执行过程中各方法的回调，
 '''
 import inspect
-import os
 import re
 import traceback
 from functools import wraps
 from typing import Any
+
+import torch
 
 from .parameter import TrainParam, LogMeter
 from .trainer import BaseTrainer
@@ -203,13 +204,46 @@ class DispatchCallback(Callback):
             return getattr(self, call_name)(trainer, func, param, meter, *args, **kwargs)
 
 
-class DrawCallBack(Callback):
-    def __init__(self, base_dir):
-        self.base_dir = base_dir
+class DrawCallBack(TrainCallback):
+    def __init__(self, base_dir, write_interval=50):
+        self.dir_path = base_dir
+        self.interval = write_interval
 
-    def on_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
-        from torch.utils.tensorboard import SummaryWriter
-        self.writer = SummaryWriter(os.path.join(self.base_dir, param.get_exp_name(), "board"))
+    def on_train_batch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        if param.global_step % self.interval == self.interval - 1:
+            for k, v in meter.board_dict().items():
+                if type(v) in {int, float}:
+                    trainer.writer.add_scalar(k, v)
+                elif isinstance(v, torch.Tensor):
+                    trainer.writer.add_scalar(k, v)
+
+    def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
+        trainer.logger.info(prefix="{} hooked {}.".format(self.__class__.__name__, trainer.__class__.__name__))
+        trainer.set_writter(self.dir_path)
+
+    def on_train_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
+        super().on_train_begin(trainer, func, param, *args, **kwargs)
+
+    def on_train_epoch_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
+        super().on_train_epoch_begin(trainer, func, param, *args, **kwargs)
+
+    def on_test_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
+        super().on_test_begin(trainer, func, param, *args, **kwargs)
+
+    def on_train_batch_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
+        super().on_train_batch_begin(trainer, func, param, *args, **kwargs)
+
+    def on_train_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        super().on_train_end(trainer, func, param, meter, *args, **kwargs)
+
+    def on_train_epoch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        trainer.writer.flush()
+
+    def on_test_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        super().on_test_end(trainer, func, param, meter, *args, **kwargs)
+
+    def on_eval_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        super().on_eval_end(trainer, func, param, meter, *args, **kwargs)
 
 
 class DebugCallback(DispatchCallback):
@@ -247,15 +281,15 @@ class ModelCheckpoint(TrainCallback):
 
     """
 
-    def __init__(self, base_dir, monitor, max_to_keep=3, mode="min"):
-        self.base_dir = base_dir
+    def __init__(self, monitor, base_dir=None, max_to_keep=3, mode="min"):
+        self.dir_path = base_dir
         self.monitor = monitor
         self.max_to_keep = max_to_keep
         self.mode = mode
 
     def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
         trainer.logger.info(prefix="{} hooked {}.".format(self.__class__.__name__, trainer.__class__.__name__))
-        trainer.set_saver(self.base_dir, max_to_keep=self.max_to_keep)
+        trainer.set_saver(self.dir_path, max_to_keep=self.max_to_keep)
 
     def on_exception(self, trainer: BaseTrainer, func, param: TrainParam, e: BaseException, *args, **kwargs):
         if not isinstance(e, KeyboardInterrupt):
@@ -308,15 +342,22 @@ class Traininfo(TrainCallback):
         trainer.logger.info(prefix="{} hooked {}.".format(self.__class__.__name__, trainer.__class__.__name__))
 
     def on_train_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
-        trainer.logger.info(LogMeter(), "Train start.")
+        trainer.logger.line("Train start")
+        trainer.logger.info(param, "With Param:")
+        trainer.logger.info(LogMeter().merge_dict(trainer.train_databundler.len_dict()),
+                            "With TrainDataset:")
+        trainer.logger.info(LogMeter().merge_dict(trainer.test_databundler.len_dict()),
+                            "With TestDataset:")
+        trainer.logger.info(LogMeter().merge_dict(trainer.eval_databundler.len_dict()),
+                            "With EvalDataset:")
 
     def on_test_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
         trainer.logger.newline()
-        trainer.logger.info(prefix="Test Start")
+        trainer.logger.line("Test Start")
 
     def on_eval_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
         trainer.logger.newline()
-        trainer.logger.info(prefix="Eval Start")
+        trainer.logger.line("Eval Start")
 
     def on_train_epoch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
         # trainer.logger.newline()
