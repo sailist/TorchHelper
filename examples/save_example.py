@@ -34,9 +34,10 @@ for i in range(10):
 
 saver = Saver("./test", max_to_keep=3)
 
-for i in range(3):
-    saver.checkpoint(i, {})
-    print(saver._info)
+# for i in range(3):
+#     saver.checkpoint(i, {})
+#     print(saver._info)
 
 for i in range(10):
-    saver.checkpoint(i, {})
+    saver.check_keyepoch(i,{"a":1})
+    saver.append_info_to_keyepoch(i,{"b":2})

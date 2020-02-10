@@ -334,6 +334,28 @@ class ModelCheckpoint(TrainCallback):
 
         trainer.logger.info(cmeter, "Model Saved")
 
+class ExpCheckpoint(TrainCallback):
+    def __init__(self,per_epoch = 100):
+        self.per_epoch = per_epoch
+
+    def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
+        trainer.logger.info(
+            prefix="{} hooked {}, model will be kept permanently every {} epoch  ."
+                .format(self.__class__.__name__,
+                        trainer.__class__.__name__,
+                        self.per_epoch))
+
+    def on_train_epoch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        if param.eidx % self.per_epoch == self.per_epoch-1:
+            ckpt_dict = trainer.create_checkpoint_dict()
+            ckpt_dict.update(meter.logdict())
+            ckpt_fn = trainer.saver.check_keyepoch(param.eidx, ckpt_dict)
+            trainer.logger.info(LogMeter(), "Model saved in {}".format(ckpt_fn))
+
+    def on_eval_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        if param.eidx % self.per_epoch == self.per_epoch-1:
+            ckpt_fn = trainer.saver.append_info_to_keyepoch(param.eidx, meter.logdict())
+            trainer.logger.info(LogMeter(), "Eval Result Append to {}".format(ckpt_fn))
 
 class Traininfo(TrainCallback):
     """用于实时输出模型训练信息"""

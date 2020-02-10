@@ -70,10 +70,12 @@ class Saver:
         with open(self._infofn, "w", encoding="utf-8") as w:
             json.dump(info, w)
 
-    def _build_model_path(self, prefix, epoch: int):
+    def _build_model_path(self, prefix, epoch: int, rewrite=False):
         """获取保存的模型路径"""
         i = 0
         path = os.path.join(self._save_dir, "{}.ckpth.tar.{}{:05d}".format(prefix, i, epoch))
+        if rewrite:
+            return path
 
         while os.path.exists(path):
             i += 1
@@ -140,6 +142,18 @@ class Saver:
                 return str(v.shape)
         return v
 
+    def check_keyepoch(self, epoch, ckpt_dict):
+        ckpt_dict["_saver_epoch"] = epoch
+        ckpt_fn = self._build_model_path("key_model", epoch, rewrite=True)
+        ckpt_info_fn = "{}.json".format(ckpt_fn)
+        info_dict = {k: self._format_tensor(v) for k, v in ckpt_dict.items() if self._is_info(v)}
+
+        with open(ckpt_info_fn, "w", encoding="utf-8") as w:
+            json.dump(info_dict, w, indent=2)
+
+        torch.save(ckpt_dict, ckpt_fn)
+        return ckpt_fn
+
     def checkpoint(self, epoch, ckpt_dict):
         """
         保存一个断点，保存路径为建立类时传入的文件夹下的路径
@@ -185,6 +199,24 @@ class Saver:
         assert pointer == -1 or pointer > self._max_to_keep, "do not have this checkpoint"
 
         return torch.load(self._info[self.pointers[pointer]])
+
+    def restore_keyepoch(self, epoch):
+        ckpt_fn = self._build_model_path("key_model", epoch, rewrite=True)
+        return torch.load(ckpt_fn)
+
+    def append_info_to_keyepoch(self,epoch,ckpt_dict):
+        ckpt_fn = self._build_model_path("key_model", epoch, rewrite=True)
+        ckpt_info_fn = "{}.json".format(ckpt_fn)
+        info_dict = {k: self._format_tensor(v) for k, v in ckpt_dict.items() if self._is_info(v)}
+
+        with open(ckpt_info_fn,"r",encoding="utf-8") as r:
+            old_info = json.load(r)
+        for k,v in old_info.items():
+            info_dict[k] = v
+
+        with open(ckpt_info_fn, "w", encoding="utf-8") as w:
+            json.dump(info_dict, w, indent=2)
+        return ckpt_info_fn
 
     def clear_checkpoints(self):
         """删除所有的断点记录"""
