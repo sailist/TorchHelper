@@ -21,6 +21,7 @@ from collections import Iterable, OrderedDict
 from datetime import datetime
 from typing import Any
 
+from ..base.recordable import Recordable
 from .parameter import LogMeter
 from ..base.structure import ScreenStr
 
@@ -35,7 +36,6 @@ class Logger:
         :param datefmt:
         :param sep:
         """
-
         self.head = head
         self.tail = tail
         self.asctime = asctime
@@ -44,8 +44,10 @@ class Logger:
         self.pipe_key = set()
         self.sep = sep
         self.return_str = ""
+        self.listener = []
+        self.stdout = True
 
-    def format(self, reses: LogMeter, prefix="", inline=False):
+    def format(self, reses: Recordable, prefix="", inline=False):
         """根据初始化设置 格式化 前缀和LogMeter"""
         if self.asctime:
             cur_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S ')
@@ -64,14 +66,14 @@ class Logger:
     def _build_logstr(self, ordered_dict: dict):
         return self.sep.join(["@{}={}".format(k, v) for k, v in ordered_dict.items()])
 
-    def inline(self, meter: LogMeter = None, prefix=""):
+    def inline(self, meter: Recordable = None, prefix=""):
         """在一行内输出 前缀 和 LogMeter"""
         if meter is None:
             meter = LogMeter()
         logstr = self.format(meter, prefix=prefix, inline=True)
         self.handle(logstr)
 
-    def info(self, meter: LogMeter = None, prefix=""):
+    def info(self, meter: Recordable = None, prefix=""):
         """以行为单位输出 前缀 和 LogMeter"""
         if meter is None:
             meter = LogMeter()
@@ -86,7 +88,7 @@ class Logger:
         """换行"""
         self.handle("\n")
 
-    def handle(self, logstr, _="", end=""):
+    def handle(self, logstr, end=""):
         """
         handle log stinrg，以指定的方式输出
         :param logstr:
@@ -94,13 +96,16 @@ class Logger:
         :param end:
         :return:
         """
+        for listener in self.listener:
+            listener(logstr,end)
+
         if logstr.startswith("\r"):
             self.return_str = logstr
-            print(ScreenStr(logstr), end=end, flush=True)
+            self.print(ScreenStr(logstr), end=end)
         else:
             if len(self.return_str) != 0:
-                print(self.return_str, end="\n", flush=True)
-            print(logstr,end="",flush=True)
+                self.print(self.return_str, end="\n")
+            self.print(logstr,end="")
 
             for i in self.out_channel:
                 with open(i, "a", encoding="utf-8") as w:
@@ -110,6 +115,13 @@ class Logger:
 
             self.return_str = ""
 
+    def print(self,*args,end='\n'):
+        if self.stdout:
+            print(*args,end=end,flush=True)
+
+    def enbale_stdout(self,val):
+        self.stdout = val
+
     def add_pipe(self, fn):
         """添加一个输出到文件的管道"""
         if fn in self.pipe_key:
@@ -118,12 +130,16 @@ class Logger:
         path, _ = os.path.split(fn)
         os.makedirs(path, exist_ok=True)
         i = 0
+
         fni = "{}.{}".format(fn, i)
         while os.path.exists(fni):
             i += 1
             fni = "{}.{}".format(fn, i)
 
-        print("add output channel on {}".format(fni))
+        self.print("add output channel on {}".format(fni))
         self.out_channel.append(fni)
         self.pipe_key.add(fn)
         return True
+
+    def add_log_listener(self,func):
+        self.listener.append(func)

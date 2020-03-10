@@ -1,4 +1,4 @@
-'''
+"""
    Copyright 2020 Sailist
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
     温馨提示：
         抵制不良代码，拒绝乱用代码。
 
@@ -21,7 +21,7 @@
         适当编程益脑，沉迷编程伤身。
 
         合理安排时间，享受健康生活！
-'''
+"""
 import shutil
 import time
 from collections import OrderedDict
@@ -37,6 +37,8 @@ def test_str(n: int = 30):
 
 class WalkDict(OrderedDict):
     """
+    能够遍历字典中的嵌套字典的类
+
     支持
     {
         "model_a"=ModelA(),
@@ -57,6 +59,10 @@ class WalkDict(OrderedDict):
     """
 
     def walk_items(self):
+        """
+        迭代所有的k，v，
+        如果在迭代的过程中遇到了dict类，则递归迭代字典，而不是返回该字典
+        """
         return self._recur_items(self)
 
     def walk_keys(self):
@@ -203,6 +209,8 @@ class ScreenStr():
         txt = "{}{}{}{}".format(head, debug, txt, tail)
 
         return txt + margin
+
+
 
 
 if __name__ == '__main__':

@@ -1,5 +1,9 @@
+该库作为试验版本，目前已被废弃，请移步更好用更简洁的 [thexp](https://github.com/sailist/thexp)。
+
 # TorchHelper
 写的一个torch的帮助类，帮助使用者专注于训练逻辑，避免其他重复性劳动。建议有一定torch使用经验者用。
+
+
 
 > 先定一个小目标：torch界的kears？
 

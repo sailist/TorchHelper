@@ -15,8 +15,32 @@
    
     温馨提示：
         抵制不良代码，拒绝乱用代码。
+        
         注意自我保护，谨防上当受骗。
+        
         适当编程益脑，沉迷编程伤身。
+        
         合理安排时间，享受健康生活！
 '''
 
+from torchhelper.frame.parameter import HistoryMeter
+
+h = HistoryMeter()
+
+h.ad += 1
+h.ad = 2
+h.ad = 3
+
+h.ad += 4
+
+h.mu *= 1
+h.mu *= 2
+h.mu *= 3
+h.mu *= 4
+
+
+h.updata(a=1,b=2)
+h.updata(a=2,b=3)
+
+print(h)
+print(h.get_historys())

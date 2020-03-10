@@ -25,14 +25,16 @@
     用于Trainer 执行过程中各方法的回调，
 '''
 import inspect
+import os
 import re
 import traceback
 from functools import wraps
 from typing import Any
 
+import matplotlib.pyplot as plt
 import torch
 
-from .parameter import TrainParam, LogMeter
+from .parameter import TrainParam, LogMeter, HistoryMeter
 from .trainer import BaseTrainer
 
 
@@ -49,16 +51,18 @@ class Callback():
         trainer.add_callback(func=trainer.train, callback=cb)
 
     """
-    priority = 0
+    priority = 0  # 所有内部实现的Callback优先级均在 [0-100] 以内
 
     def __new__(cls, *_, **__) -> Any:
         self = super().__new__(cls)
+        self.enable = True
 
-        def wrapper(func):
+        def hook_wrap(func):
+            """钩子第一次调用的时候执行"""
+
             @wraps(func)
             def on_hooked(*args, **kwargs):
                 self.first = getattr(self, "first", True)
-                self.disposable = False
                 if self.first:
                     self.on_first_hooked(*args, **kwargs)
                     self.first = False
@@ -66,7 +70,35 @@ class Callback():
 
             return on_hooked
 
-        self.on_hooked = wrapper(self.on_hooked)
+        def ecp_wrap(func):
+            """同一个异常第一次调用的时候运行"""
+
+            @wraps(func)
+            def on_exception(trainer: BaseTrainer, tfunc, param: TrainParam, e: BaseException, *args, **kwargs):
+                self.ecp = getattr(self, "ecp", None)
+                if self.ecp != e:
+                    self.on_first_exception(trainer, tfunc, param, e, *args, **kwargs)
+                    self.ecp = e
+                func(trainer, tfunc, param, e, *args, **kwargs)
+
+            return on_exception
+
+        def hook_failed_wrap(func):
+            """钩子第一次调用的时候执行"""
+
+            @wraps(func)
+            def on_hook_failed(*args, **kwargs):
+                self.first_failed = getattr(self, "first_failed", True)
+                if self.first_failed:
+                    self.on_first_hooked_failed(*args, **kwargs)
+                    self.first_failed = False
+                func(*args, **kwargs)
+
+            return on_hook_failed
+
+        self.on_hook_failed = hook_failed_wrap(self.on_hook_failed)
+        self.on_hooked = hook_wrap(self.on_hooked)
+        self.on_exception = ecp_wrap(self.on_exception)
         return self
 
     def on_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
@@ -74,7 +106,14 @@ class Callback():
 
     def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
         """第一次绑定时调用，由元类控制，不受on_hooked等重写逻辑控制"""
+        trainer.logger.line("{} hooked on {}.".format(self, trainer))
+
+    def on_first_exception(self, trainer: BaseTrainer, func, param: TrainParam, e: BaseException, *args, **kwargs):
+        """第一次绑定时调用，由元类控制，不受on_exception等重写逻辑控制"""
         pass
+
+    def on_first_hooked_failed(self, trainer, func, message):
+        trainer.logger.line("{} hooked failed,msg={}".format(self, message))
 
     def on_hook_failed(self, trainer, func, message):
         pass
@@ -90,9 +129,6 @@ class Callback():
 
     def __le__(self, other):
         return self.priority <= other.priority
-
-    def __eq__(self, other) -> bool:
-        return self.priority == other.priority
 
     def __lt__(self, other):
         return self.priority < other.priority
@@ -124,6 +160,19 @@ class Callback():
             value = getattr(self, name, None)
             if callable(value) and name.startswith("on_"):
                 setattr(self, name, NULLptr)
+
+    def _repr_by_val(self, *vals):
+        vstr = "; ".join(["{}={}".format(val, str(getattr(self, val, None))) for val in vals])
+        return "{}([{}])".format(self.__class__.__name__, vstr)
+
+    def __repr__(self) -> str:
+        return self._repr_by_val("priority")
+
+    def toggle_enable(self, toggle=None):
+        if toggle is not None:
+            self.enable = toggle
+        else:
+            self.enable = not self.enable
 
 
 class TrainCallback(Callback):
@@ -205,8 +254,8 @@ class DispatchCallback(Callback):
 
 
 class DrawCallBack(TrainCallback):
-    def __init__(self, base_dir, write_interval=50):
-        self.dir_path = base_dir
+    def __init__(self, write_interval=50, path=None):
+        self.path = path
         self.interval = write_interval
 
     def on_train_batch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
@@ -219,7 +268,7 @@ class DrawCallBack(TrainCallback):
 
     def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
         trainer.logger.info(prefix="{} hooked {}.".format(self.__class__.__name__, trainer.__class__.__name__))
-        trainer.set_writter(self.dir_path)
+        trainer.set_writter(self.path)
 
     def on_train_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
         super().on_train_begin(trainer, func, param, *args, **kwargs)
@@ -281,17 +330,17 @@ class ModelCheckpoint(TrainCallback):
 
     """
 
-    def __init__(self, monitor, base_dir=None, max_to_keep=3, mode="min"):
-        self.dir_path = base_dir
+    def __init__(self, monitor, max_to_keep=3, mode="min", path=None):
         self.monitor = monitor
+        self.path = path
         self.max_to_keep = max_to_keep
         self.mode = mode
 
     def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
-        trainer.logger.info(prefix="{} hooked {}.".format(self.__class__.__name__, trainer.__class__.__name__))
-        trainer.set_saver(self.dir_path, max_to_keep=self.max_to_keep)
+        super().on_first_hooked(trainer, func, param)
+        trainer.set_saver(self.path, max_to_keep=self.max_to_keep)
 
-    def on_exception(self, trainer: BaseTrainer, func, param: TrainParam, e: BaseException, *args, **kwargs):
+    def on_first_exception(self, trainer: BaseTrainer, func, param: TrainParam, e: BaseException, *args, **kwargs):
         if not isinstance(e, KeyboardInterrupt):
             return False
 
@@ -334,34 +383,47 @@ class ModelCheckpoint(TrainCallback):
 
         trainer.logger.info(cmeter, "Model Saved")
 
+    def on_eval_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        super().on_eval_end(trainer, func, param, meter, *args, **kwargs)
+
+    def on_test_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        super().on_test_end(trainer, func, param, meter, *args, **kwargs)
+
+    def __repr__(self) -> str:
+        return self._repr_by_val("monitor", "max_to_keep", "mode", "path")
+
+
 class ExpCheckpoint(TrainCallback):
-    def __init__(self,per_epoch = 100):
+    def __init__(self, per_epoch=100, start_epoch=0):
         self.per_epoch = per_epoch
+        self.start_epoch = start_epoch
 
     def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
-        trainer.logger.info(
-            prefix="{} hooked {}, model will be kept permanently every {} epoch  ."
-                .format(self.__class__.__name__,
-                        trainer.__class__.__name__,
-                        self.per_epoch))
+        super().on_first_hooked(trainer, func, param)
+        assert trainer.saver is not None, "Please call set_saver() to set a saver"
 
     def on_train_epoch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
-        if param.eidx % self.per_epoch == self.per_epoch-1:
+        if (param.eidx - 1) % self.per_epoch == self.per_epoch - 1 and self.start_epoch < (param.eidx - 1):
             ckpt_dict = trainer.create_checkpoint_dict()
             ckpt_dict.update(meter.logdict())
+            ckpt_dict["eidx"] += 1
             ckpt_fn = trainer.saver.check_keyepoch(param.eidx, ckpt_dict)
             trainer.logger.info(LogMeter(), "Model saved in {}".format(ckpt_fn))
 
     def on_eval_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
-        if param.eidx % self.per_epoch == self.per_epoch-1:
+        if (param.eidx - 1) % self.per_epoch == self.per_epoch - 1 and self.start_epoch < (param.eidx - 1):
             ckpt_fn = trainer.saver.append_info_to_keyepoch(param.eidx, meter.logdict())
             trainer.logger.info(LogMeter(), "Eval Result Append to {}".format(ckpt_fn))
+
+    def __repr__(self) -> str:
+        return self._repr_by_val("per_epoch","start_epoch")
+
 
 class Traininfo(TrainCallback):
     """用于实时输出模型训练信息"""
 
     def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
-        trainer.logger.info(prefix="{} hooked {}.".format(self.__class__.__name__, trainer.__class__.__name__))
+        super().on_first_hooked(trainer, func, param)
 
     def on_train_begin(self, trainer: BaseTrainer, func, param: TrainParam, *args, **kwargs):
         trainer.logger.line("Train start")
@@ -393,6 +455,9 @@ class Traininfo(TrainCallback):
 
     def on_train_batch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
         trainer.logger.inline(meter, "Train Batch:")
+
+    def on_train_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        trainer.logger.inline(meter, "Train End:")
 
 
 class EarlyStop(TrainCallback):
@@ -448,3 +513,67 @@ class AutoDevice(TrainCallback):
     def auto_hook(self, trainer: BaseTrainer):
         trainer.add_callback(trainer.regist_device, self)
         trainer.add_callback(trainer.train_batch, self)
+
+
+class PltRecorder(TrainCallback):
+    def __init__(self, monitor_vars, per_batch=5, save_epochs=(100, 1, 1), fmts=('jpg',), path=None):
+        """
+        :param monitor_vars:
+        :param per_batch:
+        :param save_epochs:
+        :param fmts:
+            supported formats: eps, jpeg, jpg, pdf, pgf, png, ps, raw, rgba, svg, svgz, tif, tiff
+        """
+        super().__init__()
+        self.history = HistoryMeter()
+        self.per_batch = per_batch
+        self.monitor_vars = monitor_vars
+        self.fmts = fmts
+        assert len(save_epochs) == 3, "the length of save_epochs must equal to 3, map to (train,eval,test)"
+        self.save_epochs = save_epochs
+        if path is None:
+            path = "plots"
+        self.path = path
+
+    def on_first_hooked(self, trainer: BaseTrainer, func, param: TrainParam):
+        super().on_first_hooked(trainer, func, param)
+        self.path = trainer.hold_dir(self.path)
+
+    def _draw_history(self, val, step_key="plt_step"):
+        plt.plot(self.history.get_one_history("plt_step"), self.history.get_one_history(val))
+        for fmt in self.fmts:
+            fn = os.path.join(self.path, "{}_{}.{}".format(val, self.history[step_key], fmt))
+            plt.savefig(fn)
+
+    def on_train_epoch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        meter_dict = meter.var_dict()
+        # self.history.merge_dict(meter_dict)
+        # self.history.updata(plt_step=param.global_step)
+        if param.eidx % self.save_epochs[0] == self.save_epochs[0] - 1:
+            for k in self.monitor_vars:
+                if k in meter_dict:
+                    self._draw_history(k)
+            trainer.logger.line("Curves saved in {}.(step={})".format(trainer.hold_dir(self.path), param.eidx))
+
+    def on_train_batch_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        if param.global_step % self.per_batch == 0:
+            self.history.merge_dict(meter.var_dict())
+            self.history.updata(plt_step=param.global_step)
+
+    def on_eval_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        meter_dict = meter.var_dict()
+        self.history.merge_dict(meter_dict)
+        self.history.updata(eval_step=param.eidx)
+        if param.eidx % self.save_epochs[0] == self.save_epochs[0] - 1:
+            for k in self.monitor_vars:
+                if k in meter_dict:
+                    self._draw_history(k, "eval_step")
+
+    def on_test_end(self, trainer: BaseTrainer, func, param: TrainParam, meter: LogMeter, *args, **kwargs):
+        meter_dict = meter.var_dict()
+        self.history.merge_dict(meter_dict)
+        self.history.updata(test_step=param.eidx)
+        if param.eidx % self.save_epochs[0] == self.save_epochs[0] - 1:
+            for k in self.monitor_vars:
+                if k in meter_dict:
+                    self._draw_history(k, "test_step")

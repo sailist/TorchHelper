@@ -22,22 +22,29 @@
 
         合理安排时间，享受健康生活！
 '''
+from collections import defaultdict
 # from collections import Iterable
 from collections.abc import Iterable
+from typing import Any
+
 import fire
 import torch
 
 from torchhelper.base.recordable import Recordable
+from ..base.noneitem import NoneItem
 
 
 class TrainParam(Recordable):
     """用于Trainer 训练过程中获取参数使用"""
 
     def __init__(self):
-        super().__init__(None)
+        super().__init__()
+        self._save_in_subdir = True
         self.global_step = 0
         self.epoch = 5
-        self.eidx = 0
+        self.test_in_per_epoch = 0  # 不在训练过程中测试
+        self.eval_in_per_epoch = 1
+        self.eidx = 1
         self.idx = 0
         self.topk = (1, 5)
         self.auto_device = False
@@ -76,9 +83,14 @@ class TrainParam(Recordable):
         self._exp_name = sep.join(res)
         return self._exp_name
 
+    def set_save_in_subdir(self, val):
+        self._save_in_subdir = val
+
+    def is_save_in_subdir(self):
+        return self._save_in_subdir
+
     def get_exp_name(self):
         assert hasattr(self, "_exp_name"), "please first call build_exp_path()!"
-
         return self._exp_name
 
     def from_opt(self):
@@ -89,16 +101,21 @@ class TrainParam(Recordable):
         fire.Fire(func)
         return self
 
+    def update_opt(self, **kwargs):
+        for k, v in kwargs.items():
+            self[k] = v
+        return self
+
 
 class LogMeter(Recordable):
-    def __init__(self, default_type=None):
+    def __init__(self):
         """
-        :param default_type: 变量的默认类型，如果需要从零计数，那么可以直接
-            meter = LogMeter(int)
-            meter.var += 1
-            而不需要事先判断该变量是否存在等逻辑
+        第一次出现的变量无论什么运算符均等于和 "0" 或 "1"进行运算
+        meter = LogMeter()
+        meter.var += 1
+        不需要事先判断该变量是否存在等逻辑
         """
-        super().__init__(default_type)
+        super().__init__()
         self._mapfn = lambda d: d
 
     def set_mapfn(self, fn):
@@ -112,6 +129,13 @@ class LogMeter(Recordable):
         for k, v in kwargs.items():
             self[k] = v
 
+    def merge_meter(self, meter):
+        # meter = meter  # type:(LogMeter)
+        self._param_dict.update(meter._param_dict)
+        self._format_dict.update(meter._format_dict)
+        self._ignore_set.update(meter._ignore_set)
+        self._short_dict.update(meter._short_dict)
+
     @property
     def k(self):
         return self._k
@@ -122,7 +146,48 @@ class LogMeter(Recordable):
     def __call__(self, *args, **kwargs):
         return self._k
 
-    def __getattr__(self, item:str):
+    def __getattr__(self, item: str):
         if item.endswith("_"):
             return item.rstrip("_")
+
+        if item not in self._param_dict:
+            return NoneItem()
         return super().__getattr__(item)
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        super().__setattr__(name, value)
+
+    def clear(self):
+        self._param_dict.clear()
+
+
+class HistoryMeter(LogMeter):
+    def __init__(self, max=None):
+        super().__init__()
+        self._history = defaultdict(list)
+        self._max = max
+
+    def get_one_history(self, name, offset=0):
+        return [self.to_record(i) for i in self._history[name][offset:]]
+
+    def to_record(self, i):
+        if isinstance(i, torch.Tensor):
+            if len(i.shape) == 0:
+                return i.item()
+        elif type(i) in {int, float}:
+            return i
+
+        return None
+
+    def get_historys(self):
+        return self._history
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        super().__setattr__(name, value)
+        if not name.startswith("_"):
+            self._history[name].append(value)
+            while self._max is not None and len(self._history[name]) > self._max:
+                self._history[name].pop(0)
+
+    def __repr__(self) -> str:
+        return " - ".join(["@{}={}".format(k, v) for k, v in self.get_historys().items()])

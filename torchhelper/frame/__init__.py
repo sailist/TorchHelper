@@ -28,4 +28,4 @@ from .trainer import Trainer,TrainParam
 from .saver import Saver
 from .logger import LogMeter
 from . import callbacks
-from .databundler import DataBundler,ToyDataLoader
+from .databundler import DataBundler

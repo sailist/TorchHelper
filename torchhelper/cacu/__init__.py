@@ -1,4 +1,4 @@
-'''
+"""
    Copyright 2020 Sailist
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +12,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-   
+
     温馨提示：
         抵制不良代码，拒绝乱用代码。
 
@@ -24,5 +24,5 @@
 
 
     用于一些loss和accuracy的计算，后续将随着我的经历或其他贡献添加上去
-'''
+"""
 

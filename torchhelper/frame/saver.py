@@ -48,12 +48,13 @@ class Saver:
         """如果该目录是saver留下的目录，那么就加载该目录的信息，否则初始化该目录"""
         if not os.path.exists(self._save_dir):
             os.makedirs(self._save_dir, exist_ok=True)
-            info = dict(pointers=[])
+            info = dict(pointers=[], key=[])
             self._updata_info(info)
             return info
         elif not os.path.exists(self._infofn):
             info = dict(
                 pointers=[],
+                key=[],
             )
             self._updata_info(info)
             return info
@@ -63,7 +64,12 @@ class Saver:
                 return {tryint(k): v for k, v in x.items()}
 
             with open(self._infofn, encoding="utf-8") as f:
-                return json.load(f, object_hook=keystr2int)
+                var = json.load(f, object_hook=keystr2int)
+                # if "key" not in var:
+                #     var["key"] = []
+                # if "pointers" not in var:
+                #     var['pointers'] = []
+                return var
 
     def _updata_info(self, info):
         """在save方法调用后更新维护断点信息"""
@@ -152,6 +158,11 @@ class Saver:
             json.dump(info_dict, w, indent=2)
 
         torch.save(ckpt_dict, ckpt_fn)
+
+        if ckpt_fn not in self._info.setdefault('key',[]):
+            self._info.setdefault('key',[]).append(ckpt_fn)
+            # self._info['key']
+            self._updata_info(self._info)
         return ckpt_fn
 
     def checkpoint(self, epoch, ckpt_dict):
@@ -196,7 +207,8 @@ class Saver:
         :param pointer: 返回保存的第几个断点，默认是-1，即返回最近的
         :return:
         """
-        assert pointer == -1 or pointer > self._max_to_keep, "do not have this checkpoint"
+        assert pointer >= -self._max_to_keep \
+               or pointer < self._max_to_keep, "do not have this checkpoint"
 
         return torch.load(self._info[self.pointers[pointer]])
 
@@ -204,14 +216,14 @@ class Saver:
         ckpt_fn = self._build_model_path("key_model", epoch, rewrite=True)
         return torch.load(ckpt_fn)
 
-    def append_info_to_keyepoch(self,epoch,ckpt_dict):
+    def append_info_to_keyepoch(self, epoch, ckpt_dict):
         ckpt_fn = self._build_model_path("key_model", epoch, rewrite=True)
         ckpt_info_fn = "{}.json".format(ckpt_fn)
         info_dict = {k: self._format_tensor(v) for k, v in ckpt_dict.items() if self._is_info(v)}
 
-        with open(ckpt_info_fn,"r",encoding="utf-8") as r:
+        with open(ckpt_info_fn, "r", encoding="utf-8") as r:
             old_info = json.load(r)
-        for k,v in old_info.items():
+        for k, v in old_info.items():
             info_dict[k] = v
 
         with open(ckpt_info_fn, "w", encoding="utf-8") as w:

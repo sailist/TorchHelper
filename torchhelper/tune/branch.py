@@ -26,7 +26,6 @@ class VarDict(dict):
 class FuncGraph:
     """
     模仿TensorFlow的静态图构造出的静态执行方法的类
-
     ::
         def add(a, b):
         print("add")

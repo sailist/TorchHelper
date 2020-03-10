@@ -23,14 +23,3 @@
         合理安排时间，享受健康生活！
 '''
 
-from torchhelper import *
-from torchhelper import __version__
-from torchhelper.base.structure import ScreenStr,test_str
-from torchhelper.frame.logger import Logger
-from torchhelper.frame.parameter import LogMeter
-print(__version__)
-# ScreenStr.debug = True
-import time
-for i in range(10000):
-    print(ScreenStr(test_str(50)),end="",flush=True)
-    time.sleep(0.01)

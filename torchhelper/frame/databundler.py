@@ -17,7 +17,7 @@ from collections import OrderedDict
 from itertools import cycle, chain
 
 from torch.utils.data import DataLoader
-
+import torch
 
 class DataBundler:
     """
@@ -104,6 +104,13 @@ class DataBundler:
 
         assert False
 
+    def choice_batch(self)->tuple:
+        return next(iter(self))
+
+    def choice_sample(self)->tuple:
+        xs,ys = next(iter(self)) # type:(torch.Tensor,torch.Tensor)
+        return (xs[0],ys[0])
+
     def zip_iter(self):
         """切换为zip方式提供所有添加的数据集"""
         self.iter_mode = "zip"
@@ -117,24 +124,3 @@ class DataBundler:
         """
         self.iter_mode = "chain"
         return self
-
-
-class ToyDataLoader(DataLoader):
-    """用于做临时的数据提供，指定提供的数据的shape和数据batch大小即可"""
-    def __init__(self,xshape,yshape,len = 50) -> None:
-        self.xshape = xshape
-        self.yshape = yshape
-        self.len = len
-
-    def __len__(self) -> int:
-        return self.len
-
-    def __iter__(self) :
-        import torch
-        if self.len == -1:
-            while True:
-                yield torch.rand(self.xshape),torch.randint(0,10,self.yshape,dtype=torch.long)
-
-        for i in range(self.len):
-            yield torch.rand(self.xshape),torch.randint(0,10,self.yshape,dtype=torch.long)
-

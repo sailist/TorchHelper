@@ -24,19 +24,26 @@
 '''
 
 from torchhelper import *
+from torchhelper.base.noneitem import NoneItem
 from torchhelper.frame.trainer import Trainer
-
+from torchhelper.base.averageitem import AvgItem
 meter = LogMeter()
 
 meter.loss = 0.1638574968
 meter.loss2 = 1.1235435465
 meter.loss3 = torch.tensor(1.1235467868)
-meter.other = "{}/{}".format(1,20)
-meter.all_loss = meter.loss + meter.loss2 + meter.loss3
+meter.other = "{}/{}".format(1, 20)
+
+# 第一次使用的使用可以直接覆盖
+meter.all_loss += meter.loss + meter.loss2 + meter.loss3
+
+noneitem = meter.none_test  # type:(NoneItem)
+print(meter.none_test)
+print(meter.none_test)
 
 meter.float(meter.loss_, acc=6)
 meter.ignore(meter.loss2_)
-meter.short(meter.all_loss_,"AL")
+meter.short(meter.all_loss_, "AL")
 
 print(meter.loss)
 print(meter.loss_)
@@ -44,12 +51,21 @@ print(meter.k.loss)
 print(meter._k.loss)
 
 param = TrainParam()
-exp_name = param.build_exp_name(["epoch","noval"])
+exp_name = param.build_exp_name(["epoch", "noval"])
 print(exp_name)
+
+meter.exploss = AvgItem()
+meter.exploss = 1
+meter.exploss = 3
+meter.exploss = 6
+meter.exploss += 9
+
+print(meter.exploss)
+
+
 
 trainer = Trainer(param)
 trainer.add_log_path("./logs/")
-
 
 for i in range(10):
     trainer.logger.inline(meter, prefix="Logger inline:")
